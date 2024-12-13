@@ -19,7 +19,7 @@ async function bootstrap() {
         name: 'Authorization',
         description: 'Bearer token',
         schema: {
-          type: 'string | undefined',
+          type: 'string',
           default: 'Bearer {{token}}',
         },
       })
