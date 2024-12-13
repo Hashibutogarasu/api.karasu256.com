@@ -17,10 +17,9 @@ async function bootstrap() {
       .addGlobalParameters({
         in: 'header',
         name: 'Authorization',
-        required: false,
         description: 'Bearer token',
         schema: {
-          type: 'string',
+          type: 'string | undefined',
           default: 'Bearer {{token}}',
         },
       })

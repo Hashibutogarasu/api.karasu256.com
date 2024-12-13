@@ -1,6 +1,6 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { GoogleGuard } from './google.guard';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { GoogleService } from './google.service';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('auth/google')
 export class GoogleController {
