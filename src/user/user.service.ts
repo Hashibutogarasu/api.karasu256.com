@@ -31,7 +31,7 @@ export class UserService {
   }
 
   async updateUser({ display_name, prismaUserId, email, full_name, avatar_url }: { display_name: string, prismaUserId: string, email: string, full_name: string, avatar_url: string }): Promise<{ message: string }> {
-    const { data, error } = await this.supabase.from("users").upsert({
+    const { data, error } = await this.supabase.from("users").update({
       display_name: display_name,
       prismaUserId: prismaUserId,
       email: email,
