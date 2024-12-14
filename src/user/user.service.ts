@@ -29,4 +29,21 @@ export class UserService {
       message: "User created successfully",
     }
   }
+
+  async updateUser({ display_name, prismaUserId, email, full_name, avatar_url }: { display_name: string, prismaUserId: string, email: string, full_name: string, avatar_url: string }): Promise<{ message: string }> {
+    const { data, error } = await this.supabase.from("users").upsert({
+      display_name: display_name,
+      prismaUserId: prismaUserId,
+      email: email,
+      full_name: full_name,
+      avatar_url: avatar_url,
+    });
+    if (error) {
+      throw error;
+    }
+
+    return {
+      message: "User updated successfully",
+    }
+  }
 }

@@ -51,4 +51,21 @@ export class UserController {
       avatar_url,
     });
   }
+
+  @ApiOkResponse({
+    description: "User updated successfully",
+  })
+  @ApiBody({
+    type: CreateUserPayload,
+  })
+  @Post("update")
+  async updateUser(@Body() display_name: string, @Body() prismaUserId: string, @Body() email: string, @Body() full_name: string, @Body() avatar_url: string) {
+    return this.userService.updateUser({
+      display_name,
+      prismaUserId,
+      email,
+      full_name,
+      avatar_url,
+    });
+  }
 }
