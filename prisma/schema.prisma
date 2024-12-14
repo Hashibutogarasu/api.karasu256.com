@@ -12,3 +12,93 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model UserProfile {
+  id             String         @id @default(cuid())
+  role           Role           @default(USER)
+  supabaseUserId String         @unique
+  displayName    String
+  email          String         @unique
+  emailIsPublic  Boolean        @default(false)
+  name           String?
+  bio            String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  Post           Post[]
+  Node           Node[]
+  Device         Device[]
+  following      UserProfile[]  @relation("UserFollowing")
+  followers      UserProfile[]  @relation("UserFollowing")
+  Notification   Notification[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Post {
+  id        String      @id @default(cuid())
+  title     String
+  content   String
+  published Boolean     @default(false)
+  author    UserProfile @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Node {
+  id            String        @id @default(cuid())
+  name          String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  nodeListId    String?
+  NodeChild     NodeChild[]
+  NodeContent   NodeContent[]
+  UserProfile   UserProfile?  @relation(fields: [userProfileId], references: [id])
+  userProfileId String?
+}
+
+model NodeChild {
+  id          String        @id @default(cuid())
+  name        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  parentId    String
+  parent      Node          @relation(fields: [parentId], references: [id])
+  NodeContent NodeContent[]
+}
+
+model NodeContent {
+  id          String    @id @default(cuid())
+  content     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  nodeId      String
+  nodeContent NodeChild @relation(fields: [nodeId], references: [id], map: "NodeContent_nodeChildId_fkey")
+  Node        Node      @relation(fields: [nodeId], references: [id])
+}
+
+model Device {
+  id            String         @id @default(cuid())
+  name          String
+  os            String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  UserProfile   UserProfile?   @relation(fields: [userProfileId], references: [id])
+  userProfileId String?
+  Notification  Notification[]
+}
+
+model Notification {
+  id        String      @id @default(cuid())
+  message   String
+  appId     String      @map("app_id")
+  userId    String      @map("user_id")
+  deviceId  String      @map("device_id")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      UserProfile @relation(fields: [userId], references: [id])
+  device    Device      @relation(fields: [deviceId], references: [id])
+}
