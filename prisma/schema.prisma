@@ -24,11 +24,11 @@ model UserProfile {
   bio            String?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
+  following      String[]       @default([])
+  followers      String[]       @default([])
   Post           Post[]
   Node           Node[]
   Device         Device[]
-  following      UserProfile[]  @relation("UserFollowing")
-  followers      UserProfile[]  @relation("UserFollowing")
   Notification   Notification[]
 }
 

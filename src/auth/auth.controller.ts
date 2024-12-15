@@ -9,31 +9,10 @@ import {
   ApiQuery,
   ApiResponse,
 } from "@nestjs/swagger";
-import { User } from "@supabase/supabase-js";
+import { AccessTokenDto, SignInWithOtpDto } from "./auth.dto";
+import { MessageDto } from "../user/user.controller";
 
-export class UserPayload {
-  @ApiProperty()
-  user: User;
-}
-
-export class AccessTokenPayload {
-  @ApiProperty()
-  accessToken: string;
-}
-
-export class SignInPasswordlessPayload {
-  @ApiProperty()
-  message: string;
-}
-
-export class SignInWithOtpPayload {
-  @ApiProperty()
-  message: string;
-  @ApiProperty()
-  token: string;
-}
-
-@ApiExtraModels(UserPayload, AccessTokenPayload, SignInPasswordlessPayload, SignInWithOtpPayload)
+@ApiExtraModels(AccessTokenDto, MessageDto, SignInWithOtpDto)
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -58,19 +37,16 @@ export class AuthController {
   })
   @ApiOkResponse({
     description: "User successfully signed up",
-    type: UserPayload,
+    type: Object,
   })
   @ApiResponse({
     status: 401,
     description: "Unauthorized",
   })
   @Post("signup")
-  async signUp(
-    @Body("email") email: string,
-    @Body("password") password: string,
-  ): Promise<UserPayload> {
+  async signUp(@Body("email") email: string, @Body("password") password: string): Promise<Object> {
     const user = await this.authService.signUp(email, password);
-    return { user };
+    return user;
   }
 
   @ApiBody({
@@ -92,7 +68,7 @@ export class AuthController {
   })
   @ApiOkResponse({
     description: "User successfully signed in",
-    type: AccessTokenPayload,
+    type: AccessTokenDto,
   })
   @ApiResponse({
     status: 201,
@@ -109,7 +85,7 @@ export class AuthController {
   async signIn(
     @Body("email") email: string,
     @Body("password") password: string,
-  ): Promise<AccessTokenPayload> {
+  ): Promise<AccessTokenDto> {
     const token = await this.authService.signIn(email, password);
     return {
       accessToken: token,
@@ -118,7 +94,7 @@ export class AuthController {
 
   @ApiOkResponse({
     description: "User successfully signin with Google",
-    type: AccessTokenPayload,
+    type: AccessTokenDto,
   })
   @ApiBody({
     schema: {
@@ -140,7 +116,7 @@ export class AuthController {
     },
   })
   @Post("signin/passwordless")
-  async googlePasswordless(@Body("email") email: string): Promise<SignInPasswordlessPayload> {
+  async googlePasswordless(@Body("email") email: string): Promise<MessageDto> {
     return this.authService.signInWithOtp({
       email: email,
       redirectTo: `${process.env.BASE_URL}/auth/callback?`,
@@ -155,7 +131,7 @@ export class AuthController {
   })
   @ApiOkResponse({
     description: "User successfully signed in",
-    type: SignInWithOtpPayload,
+    type: SignInWithOtpDto,
   })
   @ApiResponse({
     status: 200,
@@ -166,7 +142,7 @@ export class AuthController {
     },
   })
   @Get("otp")
-  async signInWithOTP(@Query("hash") tokenhash): Promise<SignInWithOtpPayload> {
+  async signInWithOTP(@Query("hash") tokenhash): Promise<SignInWithOtpDto> {
     const data = await this.authService.verifyOTPhash({ tokenhash });
     if (data) {
       return {
@@ -201,7 +177,7 @@ export class AuthController {
   })
   @ApiOkResponse({
     description: "User successfully signed in",
-    type: SignInWithOtpPayload,
+    type: SignInWithOtpDto,
   })
   @ApiResponse({
     status: 200,
@@ -212,7 +188,7 @@ export class AuthController {
     description: "Unauthorized",
   })
   @Post("otp")
-  async verifyOTP(@Body("email") email, @Query("code") code): Promise<SignInWithOtpPayload> {
+  async verifyOTP(@Body("email") email, @Query("code") code): Promise<SignInWithOtpDto> {
     const data = await this.authService.verifyOTP({ email, token: code });
     if (data) {
       return {
