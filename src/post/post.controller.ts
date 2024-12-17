@@ -30,7 +30,7 @@ export class PostController {
   @UseGuards(AuthGuard)
   @Delete("delete")
   async deletePost(@Req() req, @Body() dto: DeletePostDto): Promise<MessageDto> {
-    return await this.postService.deletePost(req.user, dto.id);
+    return await this.postService.deletePost(req.user, dto);
   }
 
   @Get("get")

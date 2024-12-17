@@ -32,6 +32,12 @@ export class SignUpDto extends SignInDto {
   name: string;
 
   @ApiProperty()
+  email: string;
+
+  @ApiProperty()
+  password: string;
+
+  @ApiProperty()
   displayName: string;
 }
 

@@ -1,6 +1,12 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import { User } from "@supabase/supabase-js";
-import { CreatePostDto, GetAllPostsDto, GetPostDto, UpdatePostDto } from "./post.dto";
+import {
+  CreatePostDto,
+  DeletePostDto,
+  GetAllPostsDto,
+  GetPostDto,
+  UpdatePostDto,
+} from "./post.dto";
 import { PostsEntity } from "./post.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -62,7 +68,7 @@ export class PostService {
     return await this.postsRepository.save(post);
   }
 
-  async deletePost(user: User, id: string): Promise<MessageDto> {
+  async deletePost(user: User, { id }: DeletePostDto): Promise<MessageDto> {
     const UsersEntity = await this.usersRepository.findOne({
       where: {
         supaseId: user.id,
@@ -73,15 +79,21 @@ export class PostService {
       throw new UnauthorizedException("User not found");
     }
 
-    if (this.postsRepository.findOne({ where: { ...UsersEntity, id } })) {
+    const post = await this.postsRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!post) {
       throw new HttpException("Post not found", HttpStatus.NOT_FOUND);
     }
 
-    if (UsersEntity.supaseId !== user.id) {
+    if (post.userId !== UsersEntity.id) {
       throw new UnauthorizedException("User not authorized to delete this post");
     }
 
-    await this.postsRepository.delete({ ...UsersEntity, id });
+    await this.postsRepository.delete({ id });
 
     return { message: "Post deleted successfully" };
   }

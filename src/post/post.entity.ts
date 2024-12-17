@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -34,9 +35,10 @@ export class PostsEntity extends BaseEntity {
   @ApiProperty()
   updatedAt: string;
 
+  @Column({ type: "uuid", name: "user_id" })
   @ApiProperty()
   userId: string;
 
-  @ManyToOne(() => UsersEntity, (user) => user.posts)
+  @OneToOne(() => UsersEntity, (user) => user.posts)
   user: UsersEntity;
 }
