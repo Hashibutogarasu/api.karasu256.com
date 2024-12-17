@@ -9,6 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { ParentNodeEntity } from "../node/node.entity";
+import { IsOptional } from "class-validator";
 
 export enum Role {
   ADMIN = "admin",
@@ -20,6 +22,10 @@ export class UsersEntity extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
+
+  @Column({ type: "varchar", default: null, name: "supabase_id" })
+  @ApiProperty()
+  supaseId: string | undefined;
 
   @Column({ type: "enum", enum: Role, default: Role.USER })
   @ApiProperty()
@@ -38,10 +44,12 @@ export class UsersEntity extends BaseEntity {
   emailIsPublic: boolean;
 
   @Column({ type: "varchar" })
+  @IsOptional()
   @ApiProperty()
-  name: string;
+  name: string | null;
 
   @Column({ type: "varchar", nullable: true })
+  @IsOptional()
   @ApiProperty()
   bio: string | null;
 
@@ -57,12 +65,17 @@ export class UsersEntity extends BaseEntity {
   @ApiProperty()
   updatedAt: string;
 
+  @Column({ type: "varchar", array: true, default: [] })
   @ApiProperty()
   following: string[];
 
+  @Column({ type: "varchar", array: true, default: [] })
   @ApiProperty()
   followers: string[];
 
   @OneToMany(() => PostsEntity, (post) => post.user)
   posts: PostsEntity[];
+
+  @OneToMany(() => ParentNodeEntity, (parentNode) => parentNode.user)
+  parentNode: ParentNodeEntity[];
 }

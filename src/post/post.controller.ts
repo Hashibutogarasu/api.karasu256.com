@@ -1,20 +1,45 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Query, Req, UseGuards } from "@nestjs/common";
 import { PostService } from "./post.service";
-import { ApiBody } from "@nestjs/swagger";
 import { PostsEntity } from "./post.entity";
-import { CreatePostDto, UpdatePostDto } from "./post.dto";
-import { UsersEntity } from "../user/user.entity";
+import {
+  CreatePostDto,
+  DeletePostDto,
+  GetAllPostsDto,
+  GetPostDto,
+  UpdatePostDto,
+} from "./post.dto";
+import { AuthGuard } from "../auth/auth.guard";
+import { MessageDto } from "user/user.controller";
 
-@Controller("post")
+@Controller("posts")
 export class PostController {
   constructor(private readonly postService: PostService) {}
+
+  @UseGuards(AuthGuard)
   @Post("create")
-  async createPost(@Body() user: UsersEntity, @Body() dto: CreatePostDto): Promise<PostsEntity> {
-    return await this.postService.createPost(user, dto);
+  async createPost(@Req() req, @Body() dto: CreatePostDto): Promise<PostsEntity> {
+    return await this.postService.createPost(req.user, dto);
   }
 
+  @UseGuards(AuthGuard)
   @Post("update")
-  async updatePost(@Body() user: UsersEntity, @Body() dto: UpdatePostDto): Promise<PostsEntity> {
-    return await this.postService.updatePost(user, dto);
+  async updatePost(@Req() req, @Body() dto: UpdatePostDto): Promise<PostsEntity> {
+    return await this.postService.updatePost(req.user, dto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete("delete")
+  async deletePost(@Req() req, @Body() dto: DeletePostDto): Promise<MessageDto> {
+    return await this.postService.deletePost(req.user, dto.id);
+  }
+
+  @Get("get")
+  async getPost(@Query() dto: GetPostDto): Promise<PostsEntity> {
+    return await this.postService.getPost(dto);
+  }
+
+  @Get("get-all")
+  async getAllPosts(@Query() dto: GetAllPostsDto): Promise<PostsEntity[]> {
+    return await this.postService.getAllPosts(dto);
   }
 }

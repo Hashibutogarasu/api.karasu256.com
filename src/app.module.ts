@@ -5,11 +5,11 @@ import { SupabaseModule } from "./supabase/supabase.module";
 import { AuthModule } from "./auth/auth.module";
 import { EventsModule } from "./events/events.module";
 import { UserModule } from "./user/user.module";
-import { NodeController } from "./node/node.controller";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PostModule } from "./post/post.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { typeormConfig } from "typeorm/typeorm.config";
+import { typeormConfig } from "./config/db/typeorm.config";
+import { NodeModule } from "./node/node.module";
 
 @Module({
   imports: [
@@ -22,8 +22,9 @@ import { typeormConfig } from "typeorm/typeorm.config";
     EventsModule,
     UserModule,
     PostModule,
+    NodeModule,
   ],
-  controllers: [AppController, NodeController],
+  controllers: [AppController],
   providers: [AppService, ConfigService],
 })
 export class AppModule {}

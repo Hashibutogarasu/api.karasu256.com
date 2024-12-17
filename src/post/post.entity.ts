@@ -16,13 +16,13 @@ export class PostsEntity extends BaseEntity {
   @ApiProperty()
   id: string;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", nullable: true })
   @ApiProperty()
-  title: string;
+  title: string | null;
 
-  @Column({ type: "text" })
+  @Column({ type: "text", nullable: true })
   @ApiProperty()
-  content: string;
+  content: string | null;
 
   @Column({ type: "varchar" })
   @ApiProperty()

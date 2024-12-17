@@ -1,25 +1,75 @@
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { Injectable, Inject, UnauthorizedException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { SupabaseClient, User } from "@supabase/supabase-js";
+import { Repository } from "typeorm";
+import { UsersEntity } from "../user/user.entity";
+import {
+  PasswordLessSignInDto,
+  SignInDto,
+  SignInOtpDto,
+  SignUpDto,
+  VerifyOTPDto,
+} from "./auth.dto";
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('SUPABASE_CLIENT') private readonly supabase: SupabaseClient,
-  ) { }
+    @Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient,
+    @InjectRepository(UsersEntity) private readonly usersRepository: Repository<UsersEntity>,
+  ) {}
 
-  async signUp(email: string, password: string) {
-    const { data, error } = await this.supabase.auth.signUp({
+  async signUp({ name, email, password, displayName }: SignUpDto) {
+    let user: User;
+
+    const _data = await this.supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (error) {
-      throw new UnauthorizedException(error.message);
+
+    if (_data.data.user) {
+      user = _data.data.user;
+    } else {
+      const { data, error } = await this.supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) {
+        throw new UnauthorizedException(error.message);
+      }
+
+      user = data.user;
     }
 
-    return data.user;
+    const { id } = user;
+
+    if (
+      !(await this.usersRepository.findOne({
+        where: {
+          email: email,
+        },
+      }))
+    ) {
+      await this.usersRepository.save({
+        displayName: displayName,
+        name: name,
+        email: email,
+        supabaseId: id,
+      });
+    }
+
+    await this.usersRepository.save({
+      ...(await this.usersRepository.findOne({
+        where: {
+          email: email,
+        },
+      })),
+      supaseId: id,
+    });
+
+    return user;
   }
 
-  async signIn(email: string, password: string) {
+  async signIn({ email, password }: SignInDto) {
     const { data, error } = await this.supabase.auth.signInWithPassword({
       email,
       password,
@@ -27,13 +77,14 @@ export class AuthService {
     if (error) {
       throw new UnauthorizedException(error.message);
     }
+
     return data.session.access_token;
   }
 
-  async verifyOTPhash({ tokenhash }: { tokenhash: string }) {
+  async verifyOTPhash({ hash }: SignInOtpDto) {
     const { data, error } = await this.supabase.auth.verifyOtp({
-      token_hash: tokenhash,
-      type: 'magiclink'
+      token_hash: hash,
+      type: "magiclink",
     });
     if (error) {
       throw new UnauthorizedException(error.message);
@@ -41,11 +92,11 @@ export class AuthService {
     return data.session.access_token;
   }
 
-  async verifyOTP({ email, token }: { email: string; token: string }) {
+  async verifyOTP({ email, token }: VerifyOTPDto) {
     const { data, error } = await this.supabase.auth.verifyOtp({
       email: email,
       token: token,
-      type: 'magiclink',
+      type: "magiclink",
     });
     if (error) {
       throw new UnauthorizedException(error.message);
@@ -55,7 +106,7 @@ export class AuthService {
 
   async checkSession(token: string): Promise<boolean> {
     if (!token) {
-      throw new UnauthorizedException('Token not found');
+      throw new UnauthorizedException("Token not found");
     }
 
     const { data, error } = await this.supabase.auth.getUser(token);
@@ -66,12 +117,12 @@ export class AuthService {
     return !data;
   }
 
-  async signInWithOtp({ email, redirectTo }: { email: string; redirectTo: string | undefined; }) {
+  async signInWithOtp({ email }: PasswordLessSignInDto, redirectTo: string) {
     const { data, error } = await this.supabase.auth.signInWithOtp({
       email: email,
       options: {
-        emailRedirectTo: redirectTo
-      }
+        emailRedirectTo: redirectTo,
+      },
     });
 
     if (error) {
@@ -79,7 +130,7 @@ export class AuthService {
     }
 
     return {
-      message: 'OTP sent to email. Check your email box.',
+      message: "OTP sent to email. Check your email box.",
     };
   }
 }

@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UsersEntity } from "../user/user.entity";
 import { IsString, IsNotEmpty, MaxLength, IsOptional } from "class-validator";
+import { Column } from "typeorm";
 
 export class CreatePostDto {
   @IsString()
@@ -21,16 +22,28 @@ export class GetPostDto {
   id: string;
 }
 
+export class GetAllPostsDto {
+  @IsOptional()
+  @ApiProperty()
+  page: number | null = 1;
+
+  @IsOptional()
+  @ApiProperty()
+  limit: number | null = 10;
+}
+
 export class UpdatePostDto {
-  @IsNotEmpty()
   @ApiProperty()
-  user: UsersEntity;
+  title: string;
 
-  @IsOptional()
   @ApiProperty()
-  title: string | null;
+  content: string;
 
-  @IsOptional()
   @ApiProperty()
-  content: string | null;
+  postId: string;
+}
+
+export class DeletePostDto {
+  @ApiProperty()
+  id: string;
 }

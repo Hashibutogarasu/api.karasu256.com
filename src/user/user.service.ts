@@ -90,7 +90,7 @@ export class UserService {
     email,
     emailIsPublic,
     name,
-  }: UpdateUserDto): Promise<{ message: string }> {
+  }: UpdateUserDto): Promise<MessageDto> {
     const user = await this.usersRepository.findOne({ where: { displayName } });
 
     if (!user) {

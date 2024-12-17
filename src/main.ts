@@ -1,15 +1,16 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import * as dotenv from "dotenv";
+import { config } from "dotenv";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import { WsAdapter } from "./adapter/ws-adapter";
 import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
-  dotenv.config();
+  config({
+    path: `.env.${process.env.NODE_ENV}`,
+  });
   const app = await NestFactory.create(AppModule);
 
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "local") {
     const config = new DocumentBuilder()
       .setTitle(`Karasu Lab API ${process.env.NODE_ENV}`)
       .setDescription("API documentation for Karasu Lab")

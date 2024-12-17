@@ -25,7 +25,7 @@ export class MessageDto {
 
 @ApiBearerAuth()
 @ApiExtraModels(UsersEntity, UserExistsDto, UserExistsResponseDto, MessageDto)
-@Controller("user")
+@Controller("users")
 @UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
