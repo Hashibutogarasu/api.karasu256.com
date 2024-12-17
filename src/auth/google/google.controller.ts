@@ -1,19 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
-import { GoogleService } from './google.service';
-import { ApiResponse } from '@nestjs/swagger';
+import { Controller, Get } from "@nestjs/common";
+import { GoogleService } from "./google.service";
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
 
-@Controller('auth/google')
+@Controller("auth/google")
 export class GoogleController {
-  constructor(
-    private readonly googleService: GoogleService,
-  ) {
-  }
+  constructor(private readonly googleService: GoogleService) {}
 
   @ApiResponse({
     status: 200,
-    description: 'Redirects to Google OAuth page',
+    description: "Redirects to Google OAuth page",
   })
-  @Get('login')
+  @ApiTags("Auth")
+  @Get("login")
   async google() {
     return this.googleService.getOAuthUrl({
       redirectTo: process.env.FRONTEND_URL,

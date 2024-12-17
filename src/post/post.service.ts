@@ -23,33 +23,16 @@ export class PostService {
     private readonly usersRepository: Repository<UsersEntity>,
   ) {}
 
-  async createPost(user: User, dto: CreatePostDto): Promise<PostsEntity> {
-    const UsersEntity = await this.usersRepository.findOne({
-      where: {
-        supaseId: user.id,
-      },
-    });
-
-    if (!UsersEntity) {
-      throw new UnauthorizedException("User not found");
-    }
-
+  async createPost(user: UsersEntity, dto: CreatePostDto): Promise<PostsEntity> {
     const post = new PostsEntity();
-    post.userId = UsersEntity.id;
+    post.userId = user.id;
     post.title = dto.title;
     post.content = dto.content;
 
     return this.postsRepository.save(post);
   }
 
-  async updatePost(user: User, dto: UpdatePostDto): Promise<PostsEntity> {
-    const post = new PostsEntity();
-
-    if (dto.title) post.title = dto.title;
-    if (dto.content) post.content = dto.content;
-
-    post.id = dto.postId;
-
+  async updatePost(user: UsersEntity, dto: UpdatePostDto): Promise<PostsEntity> {
     const UsersEntity = await this.usersRepository.findOne({
       where: {
         supaseId: user.id,
@@ -59,6 +42,13 @@ export class PostService {
     if (!UsersEntity) {
       throw new UnauthorizedException("User not found");
     }
+
+    const post = new PostsEntity();
+
+    if (dto.title) post.title = dto.title;
+    if (dto.content) post.content = dto.content;
+
+    post.id = dto.postId;
 
     if (UsersEntity.supaseId !== user.id) {
       throw new UnauthorizedException("User not authorized to update this post");
@@ -68,17 +58,7 @@ export class PostService {
     return await this.postsRepository.save(post);
   }
 
-  async deletePost(user: User, { id }: DeletePostDto): Promise<MessageDto> {
-    const UsersEntity = await this.usersRepository.findOne({
-      where: {
-        supaseId: user.id,
-      },
-    });
-
-    if (!UsersEntity) {
-      throw new UnauthorizedException("User not found");
-    }
-
+  async deletePost(user: UsersEntity, { id }: DeletePostDto): Promise<MessageDto> {
     const post = await this.postsRepository.findOne({
       where: {
         id,
@@ -89,7 +69,7 @@ export class PostService {
       throw new HttpException("Post not found", HttpStatus.NOT_FOUND);
     }
 
-    if (post.userId !== UsersEntity.id) {
+    if (post.userId !== user.id) {
       throw new UnauthorizedException("User not authorized to delete this post");
     }
 

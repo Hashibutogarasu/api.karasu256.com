@@ -10,10 +10,12 @@ import { PostModule } from "./post/post.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { typeormConfig } from "./config/db/typeorm.config";
 import { NodeModule } from "./node/node.module";
+import { UsersEntity } from "./user/user.entity";
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeormConfig),
+    TypeOrmModule.forFeature([UsersEntity]),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
