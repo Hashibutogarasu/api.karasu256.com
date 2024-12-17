@@ -1,5 +1,4 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
-import { User } from "@supabase/supabase-js";
 import {
   CreatePostDto,
   DeletePostDto,
@@ -28,16 +27,6 @@ export class PostService {
     post.userId = user.id;
     post.title = dto.title;
     post.content = dto.content;
-
-    const currentPost = await this.postsRepository.findOne({
-      where: {
-        title: dto.title,
-      },
-    });
-
-    if (currentPost) {
-      throw new HttpException("Post with this title already exists", HttpStatus.BAD_REQUEST);
-    }
 
     return this.postsRepository.save(post);
   }
