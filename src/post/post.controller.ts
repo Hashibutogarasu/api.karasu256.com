@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Query, Req, UseGuards } from "@nestjs/common";
 import { PostService } from "./post.service";
 import { PostsEntity } from "./post.entity";
 import {
@@ -9,7 +9,7 @@ import {
   UpdatePostDto,
 } from "./post.dto";
 import { AuthGuard } from "../auth/auth.guard";
-import { MessageDto } from "user/user.controller";
+import { MessageDto } from "../user/user.controller";
 
 @Controller("posts")
 export class PostController {

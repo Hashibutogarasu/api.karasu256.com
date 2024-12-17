@@ -1,7 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UsersEntity } from "../user/user.entity";
-import { IsString, IsNotEmpty, MaxLength, IsOptional } from "class-validator";
-import { Column } from "typeorm";
+import { IsString, IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreatePostDto {
   @IsString()

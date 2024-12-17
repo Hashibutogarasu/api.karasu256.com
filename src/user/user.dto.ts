@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, MaxLength, IsOptional } from "class-validator";
+import { IsString, IsNotEmpty, IsOptional } from "class-validator";
 import { Column } from "typeorm";
 
 export class CreateUserDto {

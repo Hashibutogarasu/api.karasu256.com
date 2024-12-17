@@ -5,7 +5,7 @@ import { PostsEntity } from "./post.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UsersEntity } from "../user/user.entity";
-import { MessageDto } from "user/user.controller";
+import { MessageDto } from "../user/user.controller";
 
 @Injectable()
 export class PostService {
