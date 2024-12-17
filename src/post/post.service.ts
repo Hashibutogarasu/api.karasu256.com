@@ -29,6 +29,16 @@ export class PostService {
     post.title = dto.title;
     post.content = dto.content;
 
+    const currentPost = await this.postsRepository.findOne({
+      where: {
+        title: dto.title,
+      },
+    });
+
+    if (currentPost) {
+      throw new HttpException("Post with this title already exists", HttpStatus.BAD_REQUEST);
+    }
+
     return this.postsRepository.save(post);
   }
 
@@ -41,6 +51,16 @@ export class PostService {
 
     if (!UsersEntity) {
       throw new UnauthorizedException("User not found");
+    }
+
+    const currentPost = await this.postsRepository.findOne({
+      where: {
+        id: dto.postId,
+      },
+    });
+
+    if (!currentPost) {
+      throw new HttpException("Post not found", HttpStatus.NOT_FOUND);
     }
 
     const post = new PostsEntity();
