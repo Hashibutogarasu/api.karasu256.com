@@ -1,10 +1,10 @@
 {
   "name": "api.karasu256.com",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "API for api.karasu256.com",
+  "author": "Hashibutogarasu",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "vercel-build": "tsc && pnpm run lint && pnpm run build",
