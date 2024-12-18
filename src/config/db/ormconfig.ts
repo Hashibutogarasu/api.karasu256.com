@@ -1,11 +1,8 @@
 import { DataSource } from "typeorm";
-import { config } from "dotenv";
-import { join } from "path";
+import { loadEnv } from "../../utils/dotenv";
 import { typeormConfig } from "./typeorm.config";
 
-config({
-  path: `.env.${process.env.NODE_ENV}`,
-});
+loadEnv();
 
 const DATABASE_HOST = process.env.DATABASE_HOST;
 const DATABASE_USER = process.env.DATABASE_USER;

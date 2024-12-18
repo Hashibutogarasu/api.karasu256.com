@@ -30,13 +30,7 @@ export class GetAllPostsDto {
   limit: number | null = 10;
 }
 
-export class UpdatePostDto {
-  @ApiProperty()
-  title: string;
-
-  @ApiProperty()
-  content: string;
-
+export class UpdatePostDto extends CreatePostDto {
   @ApiProperty()
   postId: string;
 }

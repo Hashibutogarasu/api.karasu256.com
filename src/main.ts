@@ -1,13 +1,12 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { config } from "dotenv";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
+import { loadEnv } from "./utils/dotenv";
 
 async function bootstrap() {
-  config({
-    path: `.env.${process.env.NODE_ENV}`,
-  });
+  loadEnv();
+
   const app = await NestFactory.create(AppModule);
 
   if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "local") {
