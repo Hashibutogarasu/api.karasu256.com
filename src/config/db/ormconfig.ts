@@ -1,18 +1,5 @@
 import { DataSource } from "typeorm";
-import { loadEnv } from "../../utils/dotenv";
-import { typeormConfig } from "./typeorm.config";
-
-loadEnv();
-
-const DATABASE_HOST = process.env.DATABASE_HOST;
-const DATABASE_USER = process.env.DATABASE_USER;
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
-const DATABASE_PORT = process.env.DATABASE_PORT;
-const DATABASE_DB = process.env.DATABASE_DB;
-
-if (!DATABASE_HOST || !DATABASE_USER || !DATABASE_PASSWORD || !DATABASE_PORT || !DATABASE_DB) {
-  throw new Error("Enviroment Database Error");
-}
+import { typeormConfig } from "../../config/db/typeorm.config";
 
 const source = new DataSource(typeormConfig as any);
 

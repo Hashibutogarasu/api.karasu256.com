@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { UsersEntity } from "../user/user.entity";
+import { UsersEntity } from "@/entities/user.entity";
 
 @Entity("parent_nodes")
 export class ParentNodeEntity extends BaseEntity {
@@ -64,7 +64,4 @@ export class NodeChildEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
-
-  @ManyToOne(() => ParentNodeEntity, (parentNode) => parentNode.nodeChild)
-  parentNode: ParentNodeEntity;
 }

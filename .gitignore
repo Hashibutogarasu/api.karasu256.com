@@ -63,3 +63,5 @@ swagger-spec.json
 scripts/
 
 dist/
+
+src/config/db/migrations/

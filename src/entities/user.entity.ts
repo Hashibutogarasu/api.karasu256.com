@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { PostsEntity } from "../post/post.entity";
+import { PostsEntity } from "@/entities/post.entity";
 import {
   BaseEntity,
   Column,
@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { ParentNodeEntity } from "../node/node.entity";
+import { ParentNodeEntity } from "@/entities/node.entity";
 import { IsOptional } from "class-validator";
 
 export enum Role {

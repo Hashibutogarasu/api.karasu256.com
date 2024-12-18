@@ -7,16 +7,16 @@ import {
   ApiProperty,
   ApiResponse,
 } from "@nestjs/swagger";
-import { AuthGuard } from "../auth/auth.guard";
-import { UserService } from "./user.service";
+import { AuthGuard } from "@/auth/auth.guard";
+import { UserService } from "@/user/user.service";
 import {
   CreateUserDto,
   GetUserDto,
   UpdateUserDto,
   UserExistsDto,
   UserExistsResponseDto,
-} from "./user.dto";
-import { UsersEntity } from "./user.entity";
+} from "@/user/user.dto";
+import { UsersEntity } from "@/entities/user.entity";
 
 export class MessageDto {
   @ApiProperty()

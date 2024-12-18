@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { MessageDto } from "../user/user.controller";
+import { MessageDto } from "@/user/user.controller";
 
 export class SignInDto {
   @ApiProperty()

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post, UseGuards } from "@nestjs/common";
-import { NodeService } from "./node.service";
-import { CreateParentNodeDto, DeleteNodeDto, UpdateParentNodeDto } from "./node.dto";
-import { AuthGuard } from "auth/auth.guard";
+import { NodeService } from "@/node/node.service";
+import { CreateParentNodeDto, DeleteNodeDto, UpdateParentNodeDto } from "@/node/node.dto";
+import { AuthGuard } from "@/auth/auth.guard";
 
 @UseGuards(AuthGuard)
 @Controller("nodes")

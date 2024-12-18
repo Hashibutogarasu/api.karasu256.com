@@ -20,8 +20,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-commonjs",
-    "sync": "pnpx typeorm schema:sync -- -d ./src/config/db/ormconfig.ts"
+    "generate:migration": "cross-env NODE_ENV=local npx typeorm-ts-node-commonjs migration:generate -d src/config/db/ormconfig.ts ./src/config/db/migrations/InitialSchema",
+    "migration:run": "cross-env NODE_ENV=local npx typeorm-ts-node-commonjs migration:run -d src/config/db/ormconfig.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",

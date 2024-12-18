@@ -1,5 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
-import { GoogleService } from "./google.service";
+import { GoogleService } from "@/auth/google/google.service";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @Controller("auth/google")

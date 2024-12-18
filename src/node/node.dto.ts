@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { NodeChildEntity } from "./node.entity";
+import { NodeChildEntity } from "@/entities/node.entity";
 import { IsOptional } from "class-validator";
 
 export class CreateParentNodeDto {

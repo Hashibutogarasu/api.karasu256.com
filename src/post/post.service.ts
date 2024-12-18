@@ -5,12 +5,12 @@ import {
   GetAllPostsDto,
   GetPostDto,
   UpdatePostDto,
-} from "./post.dto";
-import { PostsEntity } from "./post.entity";
+} from "@/post/post.dto";
+import { PostsEntity } from "@/entities/post.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { UsersEntity } from "../user/user.entity";
-import { MessageDto } from "../user/user.controller";
+import { UsersEntity } from "@/entities/user.entity";
+import { MessageDto } from "@/user/user.controller";
 
 @Injectable()
 export class PostService {

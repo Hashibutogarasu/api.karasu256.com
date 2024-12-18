@@ -1,39 +1,38 @@
-import { Logger, OnModuleInit } from '@nestjs/common';
+import { Logger, OnModuleInit } from "@nestjs/common";
 import {
   ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-} from '@nestjs/websockets';
-import { Socket, Server } from 'socket.io';
-import { EventsService } from './events.service';
+} from "@nestjs/websockets";
+import { Socket, Server } from "socket.io";
+import { EventsService } from "@/events/events.service";
 
 type Client = {
   socket: Socket;
   tokenCheck: NodeJS.Timeout;
-}
-
+};
 
 @WebSocketGateway()
 export class EventsGateway implements OnModuleInit {
-  constructor(
-    private readonly eventsService: EventsService,
-  ) { }
+  constructor(private readonly eventsService: EventsService) {}
 
-  private logger = new Logger('EventsGateway');
+  private logger = new Logger("EventsGateway");
   private clients: Client[] = [];
 
   @WebSocketServer()
   server: Server;
 
   onModuleInit() {
-    this.logger.log('Events Gateway Initialized');
+    this.logger.log("Events Gateway Initialized");
   }
 
   afterInit(server: Server) {
     this.server.use(this.eventsService.verifyClient.bind(this.eventsService));
-    this.server.use(this.eventsService.disconnectPreviouslyConnectedSocket.bind(this.eventsService));
+    this.server.use(
+      this.eventsService.disconnectPreviouslyConnectedSocket.bind(this.eventsService),
+    );
     this.eventsService.setServer(server);
   }
 
@@ -42,8 +41,8 @@ export class EventsGateway implements OnModuleInit {
 
     const tokenCheck = setInterval(() => {
       if (!this.eventsService.userExists(socket)) {
-        socket.emit('authState', {
-          msg: 'Not Authenticated',
+        socket.emit("authState", {
+          msg: "Not Authenticated",
         });
         socket.disconnect(true);
       }
@@ -62,18 +61,17 @@ export class EventsGateway implements OnModuleInit {
     }
   }
 
-  @SubscribeMessage('newMessage')
+  @SubscribeMessage("newMessage")
   onnewMessage(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
     this.clients.forEach((client) => {
       if (socket.user) {
-        client.socket.emit('onMessage', {
-          user: socket.user?.user_metadata.name || 'Anonymous',
+        client.socket.emit("onMessage", {
+          user: socket.user?.user_metadata.name || "Anonymous",
           content: body,
         });
-      }
-      else {
-        client.socket.emit('error', {
-          message: 'Not Authenticated',
+      } else {
+        client.socket.emit("error", {
+          message: "Not Authenticated",
         });
       }
     });

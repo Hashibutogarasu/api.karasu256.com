@@ -1,22 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { SupabaseClient, User } from '@supabase/supabase-js';
-import { Server, Socket } from 'socket.io';
+import { Inject, Injectable } from "@nestjs/common";
+import { SupabaseClient, User } from "@supabase/supabase-js";
+import { Server, Socket } from "socket.io";
 
 @Injectable()
 export class EventsService {
-  constructor(
-    @Inject('SUPABASE_CLIENT') private readonly supabase: SupabaseClient,
-  ) { }
+  constructor(@Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient) {}
   private server: Server;
 
   async onVerifyClient(socket: Socket, user: User) {
     if (socket.authorized) {
-      console.log('User connected:', user.email);
+      console.log("User connected:", user.email);
     }
-  };
+  }
 
   async userExists(socket: Socket): Promise<boolean> {
-    const token = socket.handshake.headers.authorization.split(' ')[1];
+    const token = socket.handshake.headers.authorization.split(" ")[1];
     const { data } = await this.supabase.auth.getUser(token);
     return data !== null;
   }
@@ -30,7 +28,7 @@ export class EventsService {
       return;
     }
 
-    const token = socket.handshake.headers.authorization.split(' ')[1];
+    const token = socket.handshake.headers.authorization.split(" ")[1];
 
     if (!token) {
       this.unAuthorized(socket);

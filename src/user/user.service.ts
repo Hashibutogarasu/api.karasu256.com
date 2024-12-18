@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { SupabaseClient, User } from "@supabase/supabase-js";
-import { CreateUserDto, UpdateUserDto, UserExistsDto } from "./user.dto";
-import { UsersEntity } from "./user.entity";
-import { MessageDto } from "./user.controller";
+import { CreateUserDto, UpdateUserDto, UserExistsDto } from "@/user/user.dto";
+import { UsersEntity } from "@/entities/user.entity";
+import { MessageDto } from "@/user/user.controller";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
