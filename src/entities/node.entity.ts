@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -35,7 +34,7 @@ export class ParentNodeEntity extends BaseEntity {
   @ManyToOne(() => NodeChildEntity, (nodeChild) => nodeChild.parentId)
   nodeChild: NodeChildEntity[];
 
-  @OneToOne(() => UsersEntity, (user) => user.id)
+  @ManyToOne(() => UsersEntity, (user) => user.id)
   user: UsersEntity;
 }
 
@@ -64,4 +63,7 @@ export class NodeChildEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
+
+  @ManyToOne(() => ParentNodeEntity, (parentNode) => parentNode.id)
+  parentNode: ParentNodeEntity;
 }

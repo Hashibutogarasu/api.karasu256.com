@@ -11,12 +11,15 @@ import { AuthGuard } from "@/auth/auth.guard";
 import { UserService } from "@/user/user.service";
 import {
   CreateUserDto,
+  CreateUsersPublicProfileDto,
   GetUserDto,
   UpdateUserDto,
+  UpdateUsersPublicProfileDto,
   UserExistsDto,
   UserExistsResponseDto,
 } from "@/user/user.dto";
-import { UsersEntity } from "@/entities/user.entity";
+import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
+import { UserGuard } from "./user.guard";
 
 export class MessageDto {
   @ApiProperty()
@@ -26,7 +29,6 @@ export class MessageDto {
 @ApiBearerAuth()
 @ApiExtraModels(UsersEntity, UserExistsDto, UserExistsResponseDto, MessageDto)
 @Controller("users")
-@UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -35,24 +37,9 @@ export class UserController {
     type: Object,
   })
   @Get()
+  @UseGuards(AuthGuard)
   async getUser(@Req() req) {
     return req.user;
-  }
-
-  @ApiOkResponse({
-    description: "User profile successfully retrieved",
-  })
-  @ApiBody({
-    description: "User profile",
-    type: GetUserDto,
-  })
-  @ApiResponse({
-    status: 400,
-    description: "User not found",
-  })
-  @Get("profile")
-  async getProfile(@Body() { displayName }: GetUserDto): Promise<UsersEntity | MessageDto> {
-    return this.userService.getProfile(displayName);
   }
 
   @ApiOkResponse({
@@ -67,11 +54,12 @@ export class UserController {
     status: 400,
     description: "The user with display name already exists. Please use a different display name.",
   })
+  @UseGuards(AuthGuard)
   @Post("create")
   async createUser(
     @Body() { avatarUrl, bio, displayName, email, emailIsPublic, name }: CreateUserDto,
-  ) {
-    return this.userService.createUser({
+  ): Promise<MessageDto> {
+    return await this.userService.createUser({
       avatarUrl,
       bio,
       displayName,
@@ -89,9 +77,10 @@ export class UserController {
     description: "User exists",
     type: UserExistsDto,
   })
+  @UseGuards(AuthGuard)
   @Post("exists")
   async userExists(@Body() { id }: UserExistsDto): Promise<UserExistsResponseDto> {
-    return this.userService.userExists({
+    return await this.userService.userExists({
       id,
     });
   }
@@ -104,17 +93,9 @@ export class UserController {
     description: "User profile",
     type: UpdateUserDto,
   })
+  @UseGuards(UserGuard)
   @Post("update")
-  async updateUser(
-    @Body() { avatarUrl, bio, displayName, email, emailIsPublic, name }: UpdateUserDto,
-  ) {
-    return this.userService.updateUser({
-      avatarUrl,
-      bio,
-      displayName,
-      email,
-      emailIsPublic,
-      name,
-    });
+  async updateUser(@Req() req, @Body() dto: UpdateUserDto): Promise<UsersEntity> {
+    return await this.userService.updateUser(req.user, dto);
   }
 }

@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UsersEntity } from "@/entities/user.entity";
+import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -38,6 +38,6 @@ export class PostsEntity extends BaseEntity {
   @ApiProperty()
   userId: string;
 
-  @OneToOne(() => UsersEntity, (user) => user.posts)
+  @ManyToOne(() => UsersEntity, (user) => user.posts)
   user: UsersEntity;
 }

@@ -29,16 +29,10 @@ export class VerifyOTPDto {
 
 export class SignUpDto extends SignInDto {
   @ApiProperty()
-  name: string;
-
-  @ApiProperty()
   email: string;
 
   @ApiProperty()
   password: string;
-
-  @ApiProperty()
-  displayName: string;
 }
 
 export class AccessTokenDto {

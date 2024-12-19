@@ -40,11 +40,8 @@ export class UpdateUserDto {
   @Column({ type: "varchar", name: "display_name" })
   @IsOptional()
   @ApiProperty()
+  @IsString()
   displayName: string | null;
-
-  @IsOptional()
-  @ApiProperty()
-  email: string | null;
 
   @Column("bool", { default: false, name: "email_is_public" })
   @IsOptional()
@@ -52,21 +49,69 @@ export class UpdateUserDto {
   emailIsPublic: boolean | null;
 
   @IsOptional()
+  @IsString()
   @ApiProperty()
   name: string | null;
 
   @IsOptional()
+  @IsString()
   @ApiProperty()
   bio: string | null;
 
   @Column({ type: "varchar", name: "avatar_url" })
   @IsOptional()
+  @IsString()
+  @ApiProperty()
+  avatarUrl: string | null;
+}
+
+export class CreateUsersPublicProfileDto {
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  displayName: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  name: string | null;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  bio: string | null;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  avatarUrl: string | null;
+}
+
+export class UpdateUsersPublicProfileDto {
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  name: string | null;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  displayName: string | null;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  bio: string | null;
+
+  @IsOptional()
+  @IsString()
   @ApiProperty()
   avatarUrl: string | null;
 }
 
 export class UserExistsDto {
   @IsNotEmpty()
+  @IsString()
   @ApiProperty()
   id: string;
 }

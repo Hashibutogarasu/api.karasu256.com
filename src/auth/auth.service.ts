@@ -2,7 +2,7 @@ import { Injectable, Inject, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { Repository } from "typeorm";
-import { UsersEntity } from "@/entities/user.entity";
+import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
 import {
   PasswordLessSignInDto,
   SignInDto,
@@ -13,12 +13,9 @@ import {
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient,
-    @InjectRepository(UsersEntity) private readonly usersRepository: Repository<UsersEntity>,
-  ) {}
+  constructor(@Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient) {}
 
-  async signUp({ name, email, password, displayName }: SignUpDto) {
+  async signUp({ email, password }: SignUpDto) {
     let user: User;
 
     const _data = await this.supabase.auth.signInWithPassword({
@@ -39,32 +36,6 @@ export class AuthService {
 
       user = data.user;
     }
-
-    const { id } = user;
-
-    if (
-      !(await this.usersRepository.findOne({
-        where: {
-          email: email,
-        },
-      }))
-    ) {
-      await this.usersRepository.save({
-        displayName: displayName,
-        name: name,
-        email: email,
-        supabaseId: id,
-      });
-    }
-
-    await this.usersRepository.save({
-      ...(await this.usersRepository.findOne({
-        where: {
-          email: email,
-        },
-      })),
-      supaseId: id,
-    });
 
     return user;
   }

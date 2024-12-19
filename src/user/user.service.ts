@@ -1,7 +1,13 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { SupabaseClient, User } from "@supabase/supabase-js";
-import { CreateUserDto, UpdateUserDto, UserExistsDto } from "@/user/user.dto";
-import { UsersEntity } from "@/entities/user.entity";
+import {
+  CreateUserDto,
+  CreateUsersPublicProfileDto,
+  UpdateUserDto,
+  UpdateUsersPublicProfileDto,
+  UserExistsDto,
+} from "@/user/user.dto";
+import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
 import { MessageDto } from "@/user/user.controller";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -11,6 +17,8 @@ export class UserService {
   constructor(
     @Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient,
     @InjectRepository(UsersEntity) private readonly usersRepository: Repository<UsersEntity>,
+    @InjectRepository(UsersPublicProfileEntity)
+    private readonly userPublicProfileRepository: Repository<UsersPublicProfileEntity>,
   ) {}
 
   async getUser(id: string): Promise<User> {
@@ -30,8 +38,8 @@ export class UserService {
     email,
     emailIsPublic,
     name,
-  }: CreateUserDto): Promise<{ message: string }> {
-    const user = await this.usersRepository.findOne({ where: { displayName } });
+  }: CreateUserDto): Promise<MessageDto> {
+    const user = await this.userPublicProfileRepository.findOne({ where: { displayName } });
 
     if (user) {
       return {
@@ -59,8 +67,8 @@ export class UserService {
     };
   }
 
-  async getProfile(displayName: string): Promise<UsersEntity | MessageDto> {
-    const user = await this.usersRepository.findOne({
+  async getProfile(displayName: string): Promise<UsersPublicProfileEntity | MessageDto> {
+    const user = await this.userPublicProfileRepository.findOne({
       where: {
         displayName: displayName,
       },
@@ -83,39 +91,16 @@ export class UserService {
     };
   }
 
-  async updateUser({
-    avatarUrl,
-    bio,
-    displayName,
-    email,
-    emailIsPublic,
-    name,
-  }: UpdateUserDto): Promise<MessageDto> {
-    const user = await this.usersRepository.findOne({ where: { displayName } });
+  async updateUser(user: UsersEntity, dto: UpdateUserDto): Promise<UsersEntity> {
+    const { avatarUrl, bio, displayName, emailIsPublic, name } = dto;
 
-    if (!user) {
-      return {
-        message: `The user with display name ${displayName} does not exist.`,
-      };
-    }
-
-    try {
-      await this.usersRepository.update(user.id, {
-        avatarUrl,
-        bio,
-        displayName,
-        email,
-        emailIsPublic,
-        name,
-      });
-    } catch (e) {
-      return {
-        message: e.message,
-      };
-    }
-
-    return {
-      message: "User updated successfully",
-    };
+    return await this.usersRepository.save({
+      ...user,
+      avatarUrl,
+      bio,
+      displayName,
+      emailIsPublic,
+      name,
+    });
   }
 }

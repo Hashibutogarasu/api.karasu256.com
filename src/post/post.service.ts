@@ -34,7 +34,7 @@ export class PostService {
   async updatePost(user: UsersEntity, dto: UpdatePostDto): Promise<PostsEntity> {
     const UsersEntity = await this.usersRepository.findOne({
       where: {
-        supaseId: user.id,
+        supabaseId: user.id,
       },
     });
 
@@ -59,7 +59,7 @@ export class PostService {
 
     post.id = dto.postId;
 
-    if (UsersEntity.supaseId !== user.id) {
+    if (UsersEntity.supabaseId !== user.id) {
       throw new UnauthorizedException("User not authorized to update this post");
     }
 

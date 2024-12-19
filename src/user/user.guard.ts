@@ -27,7 +27,7 @@ export class UserGuard implements CanActivate {
 
     const user = await this.usersRepository.findOne({
       where: {
-        supaseId: supabaseUser.user.id,
+        supabaseId: supabaseUser.user.id,
       },
     });
 

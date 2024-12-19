@@ -5,10 +5,10 @@ import { AuthService } from "@/auth/auth.service";
 import { GoogleModule } from "@/auth/google/google.module";
 import { UserService } from "@/user/user.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UsersEntity } from "@/entities/user.entity";
+import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
 
 @Module({
-  imports: [GoogleModule, TypeOrmModule.forFeature([UsersEntity])],
+  imports: [GoogleModule, TypeOrmModule.forFeature([UsersEntity, UsersPublicProfileEntity])],
   controllers: [AuthController, UserController],
   providers: [AuthService, UserService],
 })

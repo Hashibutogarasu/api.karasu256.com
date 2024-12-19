@@ -32,7 +32,16 @@ async function bootstrap() {
     SwaggerModule.setup("api", app, documentFactory);
   }
 
-  app.useGlobalPipes(new ValidationPipe());
+  if (process.env.NODE_ENV === "production") {
+    app.useGlobalPipes(
+      new ValidationPipe({
+        disableErrorMessages: true,
+      }),
+    );
+  } else {
+    app.useGlobalPipes(new ValidationPipe());
+  }
+
   await app.listen(8080);
 }
 bootstrap();

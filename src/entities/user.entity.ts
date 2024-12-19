@@ -5,7 +5,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -25,15 +28,11 @@ export class UsersEntity extends BaseEntity {
 
   @Column({ type: "varchar", default: null, name: "supabase_id" })
   @ApiProperty()
-  supaseId: string | undefined;
+  supabaseId: string | undefined;
 
   @Column({ type: "enum", enum: Role, default: Role.USER })
   @ApiProperty()
   role: Role = Role.USER;
-
-  @Column({ type: "varchar", name: "display_name" })
-  @ApiProperty()
-  displayName: string;
 
   @Column({ type: "varchar" })
   @ApiProperty()
@@ -42,6 +41,38 @@ export class UsersEntity extends BaseEntity {
   @Column("bool", { default: false, name: "email_is_public" })
   @ApiProperty()
   emailIsPublic: boolean;
+
+  @Column("bool", { default: true, name: "profile_is_public" })
+  @ApiProperty()
+  profileIsPublic: boolean;
+
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: string;
+
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: string;
+
+  @OneToMany(() => PostsEntity, (post) => post.user)
+  posts: PostsEntity[];
+
+  @OneToMany(() => ParentNodeEntity, (parentNode) => parentNode.user)
+  parentNode: ParentNodeEntity[];
+
+  @OneToMany(() => UsersPublicProfileEntity, (profile) => profile.user)
+  userPublicProfile?: UsersPublicProfileEntity[];
+}
+
+@Entity("user_public_profile")
+export class UsersPublicProfileEntity extends BaseEntity {
+  @PrimaryGeneratedColumn("uuid")
+  @ApiProperty()
+  id: string;
+
+  @Column({ type: "varchar", name: "display_name" })
+  @ApiProperty()
+  displayName: string;
 
   @Column({ type: "varchar" })
   @IsOptional()
@@ -73,9 +104,7 @@ export class UsersEntity extends BaseEntity {
   @ApiProperty()
   followers: string[];
 
-  @OneToMany(() => PostsEntity, (post) => post.user)
-  posts: PostsEntity[];
-
-  @OneToMany(() => ParentNodeEntity, (parentNode) => parentNode.user)
-  parentNode: ParentNodeEntity[];
+  @JoinColumn({ name: "user_uuid" })
+  @ManyToOne(() => UsersEntity, (user) => user.userPublicProfile, { nullable: true })
+  user?: UsersEntity | null;
 }
