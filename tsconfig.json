@@ -1,8 +1,6 @@
 {
   "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ]
+    "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
     "module": "commonjs",
@@ -24,8 +22,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@/*": ["*"]
-    },
+    }
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules"]
 }
