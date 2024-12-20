@@ -1,11 +1,11 @@
-import { Global, Module } from '@nestjs/common';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Global, Module } from "@nestjs/common";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 @Global()
 @Module({
   providers: [
     {
-      provide: 'SUPABASE_CLIENT',
+      provide: "SUPABASE_CLIENT",
       useFactory: (): SupabaseClient => {
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -13,6 +13,6 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
       },
     },
   ],
-  exports: ['SUPABASE_CLIENT'],
+  exports: ["SUPABASE_CLIENT"],
 })
 export class SupabaseModule {}

@@ -1,15 +1,15 @@
-import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { UserController } from 'src/user/user.controller';
-import { SamlController } from 'src/saml/saml.controller';
-import { AuthService } from './auth.service';
-import { GoogleModule } from './google/google.module';
+import { Module } from "@nestjs/common";
+import { AuthController } from "@/auth/auth.controller";
+import { UserController } from "@/user/user.controller";
+import { AuthService } from "@/auth/auth.service";
+import { GoogleModule } from "@/auth/google/google.module";
+import { UserService } from "@/user/user.service";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
 
 @Module({
-  imports: [GoogleModule],
-  controllers: [AuthController, UserController, SamlController],
-  providers: [AuthService],
+  imports: [GoogleModule, TypeOrmModule.forFeature([UsersEntity, UsersPublicProfileEntity])],
+  controllers: [AuthController, UserController],
+  providers: [AuthService, UserService],
 })
-export class AuthModule {
-
-}
+export class AuthModule {}
