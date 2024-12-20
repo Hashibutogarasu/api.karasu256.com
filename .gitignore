@@ -65,3 +65,5 @@ scripts/
 dist/
 
 src/config/db/migrations/
+
+supabase/
