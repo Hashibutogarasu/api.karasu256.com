@@ -1,13 +1,9 @@
 import { config } from "dotenv";
 
 function loadEnv() {
-  if (process.env.NODE_ENV === "production") {
-    config();
-  } else {
-    config({
-      path: `.env.${process.env.NODE_ENV}`,
-    });
-  }
+  config({
+    path: process.env.NODE_ENV !== "production" ? `.env.${process.env.NODE_ENV}` : undefined,
+  });
 }
 
 export { loadEnv };
