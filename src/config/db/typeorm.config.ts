@@ -9,7 +9,7 @@ loadEnv();
 // const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
 // const DATABASE_PORT = process.env.DATABASE_PORT;
 // const DATABASE_DB = process.env.DATABASE_DB;
-const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = process.env.POSTGRES_URL;
 
 if (!DATABASE_URL) {
   throw new Error("Enviroment Database Error");
