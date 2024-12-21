@@ -60,7 +60,7 @@ export class AuthController {
     description: "Unauthorized",
   })
   @Post("signup")
-  async signUp(@Body() dto: SignUpDto): Promise<Object> {
+  async signUp(@Body() dto: SignUpDto): Promise<object> {
     const user = await this.authService.signUp(dto);
     return user;
   }
