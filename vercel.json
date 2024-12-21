@@ -1,20 +1,15 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "outputDirectory": "dist",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm run vercel-build",
-  "devCommand": "pnpm run start:dev",
+  "version": 2,
   "builds": [
     {
-      "src": "dist/main.hs",
+      "src": "dist/main.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/main.js",
-      "methods": ["GET", "POST", "PUT", "DELETE"]
+      "dest": "dist/main.js"
     }
   ]
 }
