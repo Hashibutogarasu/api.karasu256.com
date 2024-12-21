@@ -67,3 +67,4 @@ dist/
 src/config/db/migrations/
 
 supabase/
+.env*.local
