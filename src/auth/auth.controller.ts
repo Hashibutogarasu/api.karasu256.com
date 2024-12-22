@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Get, Query, UnauthorizedException } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Query,
+  UnauthorizedException,
+  UseGuards,
+} from "@nestjs/common";
 import { AuthService } from "@/auth/auth.service";
 import {
   ApiBody,
@@ -18,6 +26,7 @@ import {
   VerifyOTPDto,
 } from "./auth.dto";
 import { MessageDto } from "../user/user.controller";
+import { AuthGuard } from "./auth.guard";
 
 @ApiExtraModels(
   MessageDto,
@@ -208,5 +217,13 @@ export class AuthController {
     }
 
     throw new UnauthorizedException("Failed to log in");
+  }
+
+  @UseGuards(AuthGuard)
+  @Get("verify")
+  async verify(): Promise<MessageDto> {
+    return {
+      message: "Authorized",
+    };
   }
 }
