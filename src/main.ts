@@ -30,7 +30,9 @@ async function bootstrap() {
   });
   const documentFactory = () => document;
 
-  SwaggerModule.setup("api", app, documentFactory);
+  SwaggerModule.setup("api", app, documentFactory, {
+    useGlobalPrefix: true,
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
