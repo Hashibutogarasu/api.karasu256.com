@@ -26,6 +26,11 @@ export class MessageDto {
   message: string;
 }
 
+export class MessageWithUserDto extends MessageDto {
+  @ApiProperty()
+  user: UsersEntity;
+}
+
 @ApiBearerAuth()
 @ApiExtraModels(UsersEntity, UserExistsDto, UserExistsResponseDto, MessageDto)
 @Controller("users")

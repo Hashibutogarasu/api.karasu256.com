@@ -6,6 +6,7 @@ import {
   Query,
   UnauthorizedException,
   UseGuards,
+  Req,
 } from "@nestjs/common";
 import { AuthService } from "@/auth/auth.service";
 import {
@@ -25,7 +26,7 @@ import {
   SignUpDto,
   VerifyOTPDto,
 } from "./auth.dto";
-import { MessageDto } from "../user/user.controller";
+import { MessageDto, MessageWithUserDto } from "../user/user.controller";
 import { AuthGuard } from "./auth.guard";
 
 @ApiExtraModels(
@@ -221,9 +222,10 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get("verify")
-  async verify(): Promise<MessageDto> {
+  async verify(@Req() req): Promise<MessageWithUserDto> {
     return {
       message: "Authorized",
+      user: req.user,
     };
   }
 }
