@@ -28,7 +28,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   const documentFactory = () => document;
 
-  SwaggerModule.setup("/", app, documentFactory, {
+  SwaggerModule.setup("docs", app, documentFactory, {
     useGlobalPrefix: true,
     customCssUrl:
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui.min.css',
