@@ -19,7 +19,7 @@ export class UserService {
     @InjectRepository(UsersEntity) private readonly usersRepository: Repository<UsersEntity>,
     @InjectRepository(UsersPublicProfileEntity)
     private readonly userPublicProfileRepository: Repository<UsersPublicProfileEntity>,
-  ) {}
+  ) { }
 
   async getUser(id: string): Promise<User> {
     const { data: users, error } = await this.supabase.from("users").select().eq("id", id);
@@ -31,17 +31,23 @@ export class UserService {
     return users[0];
   }
 
-  async createUser({
-    avatarUrl,
-    bio,
-    displayName,
-    email,
-    emailIsPublic,
-    name,
-  }: CreateUserDto): Promise<MessageDto> {
-    const user = await this.userPublicProfileRepository.findOne({ where: { displayName } });
+  async createUser(
+    {
+      user,
+      avatarUrl,
+      bio,
+      displayName,
+      email,
+      emailIsPublic,
+      name,
+    }: CreateUserDto): Promise<MessageDto> {
+    const publicProfile = await this.usersRepository.findOne({
+      where: {
+        supabaseId: user.id,
+      }
+    });
 
-    if (user) {
+    if (publicProfile) {
       return {
         message: `The user with display name ${displayName} already exists. Please use a different display name.`,
       };
@@ -49,6 +55,7 @@ export class UserService {
 
     try {
       await this.usersRepository.save({
+        supabaseId: user.id,
         avatarUrl,
         bio,
         displayName,

@@ -57,9 +57,11 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Post("create")
   async createUser(
+    @Req() req,
     @Body() { avatarUrl, bio, displayName, email, emailIsPublic, name }: CreateUserDto,
   ): Promise<MessageDto> {
     return await this.userService.createUser({
+      user: req.user,
       avatarUrl,
       bio,
       displayName,

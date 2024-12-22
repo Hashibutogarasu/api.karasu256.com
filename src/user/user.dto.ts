@@ -1,8 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { User } from "@supabase/supabase-js";
 import { IsString, IsNotEmpty, IsOptional } from "class-validator";
 import { Column } from "typeorm";
 
 export class CreateUserDto {
+  user: User;
+
   @Column({ type: "varchar", name: "display_name" })
   @IsNotEmpty()
   @IsString()
