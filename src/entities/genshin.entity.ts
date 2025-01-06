@@ -6,9 +6,69 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+
+@Entity("translations")
+export class TranslationEntity extends BaseEntity {
+  @PrimaryGeneratedColumn("uuid")
+  @ApiProperty()
+  id: string;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  key: string;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  value: string;
+
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: string;
+
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: string;
+
+  @OneToMany(() => GenshinCharacterEntity, (character) => character.id)
+  character: GenshinCharacterEntity;
+
+  @OneToMany(() => GenshinElementEntity, (element) => element.id)
+  element: GenshinElementEntity;
+
+  @OneToMany(() => GenshinWeaponEntity, (weapon) => weapon.id)
+  weapon: GenshinWeaponEntity;
+
+  @OneToMany(() => GenshinWeapon, (weaponType) => weaponType.id)
+  weaponType: GenshinWeapon;
+
+  @OneToMany(() => GenshinArtifactEntity, (artifact) => artifact.id)
+  artifact: GenshinArtifactEntity;
+
+  @OneToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
+  artifactSet: GenshinArtifactSetEntity;
+
+  @OneToMany(() => GenshinNormalAttackEntity, (normalAttack) => normalAttack.id)
+  normalAttack: GenshinNormalAttackEntity;
+
+  @OneToMany(() => GenshinChargedAttackEntity, (chargedAttack) => chargedAttack.id)
+  chargedAttack: GenshinChargedAttackEntity;
+
+  @OneToMany(() => GenshinElementSkillEntity, (elementSkill) => elementSkill.id)
+  elementSkill: GenshinElementSkillEntity;
+
+  @OneToMany(() => GenshinTalentEntity, (talent) => talent.id)
+  talent: GenshinTalentEntity;
+
+  @OneToMany(() => GenshinSpecialSkillEntity, (specialSkill) => specialSkill.id)
+  specialSkill: GenshinSpecialSkillEntity;
+
+  @OneToMany(() => GenshinCountryEntity, (country) => country.id)
+  country: GenshinCountryEntity;
+}
 
 @Entity("genshin_characters")
 export class GenshinCharacterEntity extends BaseEntity {
@@ -38,7 +98,32 @@ export class GenshinCharacterEntity extends BaseEntity {
   @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.id)
   weapon: GenshinWeaponEntity;
 
-  // recoomend artifact sets
+  @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
+  artifactSet: GenshinArtifactSetEntity;
+
+  @ManyToMany(() => GenshinNormalAttackEntity, (normalAttack) => normalAttack.id)
+  normalAttack: GenshinNormalAttackEntity;
+
+  @ManyToMany(() => GenshinChargedAttackEntity, (chargedAttack) => chargedAttack.id)
+  chargedAttack: GenshinChargedAttackEntity;
+
+  @ManyToMany(() => GenshinElementSkillEntity, (elementSkill) => elementSkill.id)
+  elementSkill: GenshinElementSkillEntity;
+
+  @ManyToMany(() => GenshinTalentEntity, (talent) => talent.id)
+  talent: GenshinTalentEntity;
+
+  @ManyToMany(() => GenshinSpecialSkillEntity, (specialSkill) => specialSkill.id)
+  specialSkill: GenshinSpecialSkillEntity;
+
+  @ManyToOne(() => GenshinCountryEntity, (country) => country.id)
+  country: GenshinCountryEntity;
+
+  @ManyToOne(() => GenshinWeapon, (weaponType) => weaponType.id)
+  weaponType: GenshinWeapon;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 @Entity("genshin_elements")
@@ -75,6 +160,9 @@ export class GenshinElementEntity extends BaseEntity {
 
   @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
   artifactSet: GenshinArtifactSetEntity;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 @Entity("genshin_weapons")
@@ -107,6 +195,9 @@ export class GenshinWeaponEntity extends BaseEntity {
 
   @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
   artifactSet: GenshinArtifactSetEntity;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 enum GenshinWeaponType {
@@ -143,6 +234,9 @@ export class GenshinWeapon extends BaseEntity {
   @Column({ type: "enum", enum: GenshinWeaponType })
   @ApiProperty()
   type: GenshinWeaponType;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 enum GenshinArtifactPart {
@@ -216,6 +310,9 @@ export class GenshinArtifactEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 @Entity("genshin_artifact_sets")
@@ -270,6 +367,9 @@ export class GenshinArtifactSetEntity extends BaseEntity {
 
   @ManyToMany(() => GenshinArtifactEntity, (artifact) => artifact.id)
   artifacts: GenshinArtifactEntity[];
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 @Entity("genshin_normal_attacks")
@@ -293,6 +393,9 @@ export class GenshinNormalAttackEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 @Entity("genshin_charged_attacks")
@@ -316,6 +419,9 @@ export class GenshinChargedAttackEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 @Entity("genshin_element_skills")
@@ -339,6 +445,9 @@ export class GenshinElementSkillEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 @Entity("genshin_talents")
@@ -362,6 +471,9 @@ export class GenshinTalentEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
 
 @Entity("genshin_special_skills")
@@ -385,4 +497,36 @@ export class GenshinSpecialSkillEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
+}
+
+@Entity("genshin_countries")
+export class GenshinCountryEntity extends BaseEntity {
+  @PrimaryGeneratedColumn("uuid")
+  @ApiProperty()
+  id: string;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  name: string;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  backgroundDescription: string;
+
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: string;
+
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: string;
+
+  @ManyToOne(() => GenshinCharacterEntity, (character) => character.id)
+  character: GenshinCharacterEntity;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
 }
