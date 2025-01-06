@@ -26,7 +26,7 @@ export class GenshinArtifactSetEntity extends BaseEntity {
 
   @Column({ type: "varchar" })
   @ApiProperty()
-  backgroundDescription: string;
+  description: string;
 
   @Column({ type: "int" })
   @ApiProperty()

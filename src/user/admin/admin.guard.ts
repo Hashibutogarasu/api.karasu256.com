@@ -1,9 +1,15 @@
+import { Role, UsersEntity } from "@/entities/user.entity";
 import { CanActivate, ExecutionContext, Inject, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class AdminGuard implements CanActivate {
-  constructor(@Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient) {}
+  constructor(
+    @Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient,
+    @InjectRepository(UsersEntity) private readonly userRepository: Repository<UsersEntity>
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -14,18 +20,18 @@ export class AdminGuard implements CanActivate {
     }
 
     const { data: supabaseUser, error } = await this.supabase.auth.getUser(accessToken);
-    const { data, error: userError } = await this.supabase
-      .from("users")
-      .select()
-      .eq("supabaseUserId", supabaseUser.user.id)
-      .single();
+    const user = await this.userRepository.findOne({
+      where: {
+        supabaseId: supabaseUser.user.id
+      }
+    });
 
-    if (error || !data) {
+    if (error || !user) {
       return false;
     }
 
-    if (data.user.role == "ADMIN") {
-      request.user = data.user;
+    if (user.role == Role.ADMIN) {
+      request.user = user;
       return true;
     }
 

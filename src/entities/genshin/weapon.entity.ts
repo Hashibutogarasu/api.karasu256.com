@@ -14,7 +14,7 @@ import { GenshinCharacterEntity } from "./character.entity";
 import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
 import { TranslationEntity } from "./translation.entity";
 
-enum GenshinWeaponType {
+export enum GenshinWeaponType {
   // 片手剣
   SWORD = "sword",
   // 両手剣
@@ -39,11 +39,39 @@ export class GenshinWeaponEntity extends BaseEntity {
 
   @Column({ type: "varchar" })
   @ApiProperty()
-  backgroundDescription: string;
+  slug: string;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  description: string;
 
   @Column({ type: "enum", enum: GenshinWeaponType })
   @ApiProperty()
   type: GenshinWeaponType;
+
+  @Column({ type: "int", default: 1 })
+  @ApiProperty()
+  rarity: number = 1;
+
+  @Column({ type: "int" })
+  @ApiProperty()
+  baseAttack: number;
+
+  @Column({ type: "varchar", nullable: true })
+  @ApiProperty()
+  subStat?: string | undefined;
+
+  @Column({ type: "int", nullable: true })
+  @ApiProperty()
+  subStatValue?: number | undefined;
+
+  @Column({ type: "varchar", nullable: true })
+  @ApiProperty()
+  specialAbility?: string | undefined;
+
+  @Column({ type: "varchar", nullable: true })
+  @ApiProperty()
+  specialAbilityDescription?: string | undefined;
 
   @CreateDateColumn()
   @ApiProperty()
@@ -55,10 +83,6 @@ export class GenshinWeaponEntity extends BaseEntity {
 
   @ManyToOne(() => GenshinCharacterEntity, (character) => character.id)
   character: GenshinCharacterEntity;
-
-  @Column({ type: "enum", enum: GenshinWeaponType })
-  @ApiProperty()
-  weaponType: GenshinWeaponType;
 
   @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
   artifactSet: GenshinArtifactSetEntity;

@@ -6,9 +6,12 @@ import { ArtifactSetsModule } from './artifact-sets/artifact-sets.module';
 import { ElementsModule } from './elements/elements.module';
 import { GenshinController } from './genshin.controller';
 import { GenshinService } from './genshin.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersEntity } from '@/entities/user.entity';
+import { CountriesModule } from './countries/countries.module';
 
 @Module({
-  imports: [CharactersModule, WeaponsModule, ArtifactsModule, ArtifactSetsModule, ElementsModule],
+  imports: [CharactersModule, WeaponsModule, ArtifactsModule, ArtifactSetsModule, ElementsModule, TypeOrmModule.forFeature([UsersEntity]), CountriesModule],
   controllers: [GenshinController],
   providers: [GenshinService]
 })

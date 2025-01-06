@@ -27,11 +27,7 @@ export class GenshinElementEntity extends BaseEntity {
 
   @Column({ type: "varchar" })
   @ApiProperty()
-  element: string;
-
-  @Column({ type: "varchar" })
-  @ApiProperty()
-  vision: string;
+  slug: string;
 
   @CreateDateColumn()
   @ApiProperty()

@@ -24,7 +24,7 @@ export class GenshinChargedAttackEntity extends BaseEntity {
 
   @Column({ type: "varchar" })
   @ApiProperty()
-  backgroundDescription: string;
+  description: string;
 
   @CreateDateColumn()
   @ApiProperty()

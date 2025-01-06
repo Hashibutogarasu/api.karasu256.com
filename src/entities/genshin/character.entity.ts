@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { GenshinElementEntity } from "./element.entity";
-import { GenshinWeaponEntity } from "./weapon.entity";
+import { GenshinWeaponEntity, GenshinWeaponType } from "./weapon.entity";
 import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
 import { GenshinNormalAttackEntity } from "./skills/normal_attack.entity";
 import { GenshinChargedAttackEntity } from "./skills/charged_attack.entity";
@@ -33,7 +33,15 @@ export class GenshinCharacterEntity extends BaseEntity {
 
   @Column({ type: "varchar" })
   @ApiProperty()
-  backgroundDescription: string;
+  slug: string;
+
+  @Column({ type: "varchar", enum: GenshinWeaponType, name: "weapon_type" })
+  @ApiProperty()
+  weaponType: GenshinWeaponType;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  description: string;
 
   @CreateDateColumn()
   @ApiProperty()
@@ -47,7 +55,7 @@ export class GenshinCharacterEntity extends BaseEntity {
   element: GenshinElementEntity;
 
   @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
-  artifactSet: GenshinArtifactSetEntity;
+  artifactSet: GenshinArtifactSetEntity[];
 
   @ManyToMany(() => GenshinNormalAttackEntity, (normalAttack) => normalAttack.id)
   normalAttack: GenshinNormalAttackEntity;
@@ -68,7 +76,7 @@ export class GenshinCharacterEntity extends BaseEntity {
   country: GenshinCountryEntity;
 
   @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.id)
-  weapon: GenshinWeaponEntity;
+  motifWeapon: GenshinWeaponEntity;
 
   @ManyToOne(() => TranslationEntity, (translation) => translation.id)
   translation: TranslationEntity;

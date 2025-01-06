@@ -25,7 +25,7 @@ export class GenshinArtifactEntity extends BaseEntity {
 
   @Column({ type: "varchar" })
   @ApiProperty()
-  backgroundDescription: string;
+  description: string;
 
   @Column({ type: "enum", enum: GenshinArtifactPart })
   @ApiProperty()

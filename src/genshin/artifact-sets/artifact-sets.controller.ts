@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('artifact-sets')
+@Controller('genshin/artifact-sets')
 export class ArtifactSetsController {}
