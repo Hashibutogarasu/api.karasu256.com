@@ -1,0 +1,75 @@
+import { ApiProperty } from "@nestjs/swagger";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { GenshinElementEntity } from "./element.entity";
+import { GenshinWeaponEntity } from "./weapon.entity";
+import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
+import { GenshinNormalAttackEntity } from "./skills/normal_attack.entity";
+import { GenshinChargedAttackEntity } from "./skills/charged_attack.entity";
+import { GenshinElementSkillEntity } from "./skills/element_skill.entity";
+import { GenshinTalentEntity } from "./skills/talent.entity";
+import { GenshinSpecialSkillEntity } from "./skills/special_skill.entity";
+import { GenshinCountryEntity } from "./country.entity";
+import { TranslationEntity } from "./translation.entity";
+
+@Entity("genshin_characters")
+export class GenshinCharacterEntity extends BaseEntity {
+  @PrimaryGeneratedColumn("uuid")
+  @ApiProperty()
+  id: string;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  name: string;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  backgroundDescription: string;
+
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: string;
+
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: string;
+
+  @ManyToOne(() => GenshinElementEntity, (element) => element.id)
+  element: GenshinElementEntity;
+
+  @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
+  artifactSet: GenshinArtifactSetEntity;
+
+  @ManyToMany(() => GenshinNormalAttackEntity, (normalAttack) => normalAttack.id)
+  normalAttack: GenshinNormalAttackEntity;
+
+  @ManyToMany(() => GenshinChargedAttackEntity, (chargedAttack) => chargedAttack.id)
+  chargedAttack: GenshinChargedAttackEntity;
+
+  @ManyToMany(() => GenshinElementSkillEntity, (elementSkill) => elementSkill.id)
+  elementSkill: GenshinElementSkillEntity;
+
+  @ManyToMany(() => GenshinTalentEntity, (talent) => talent.id)
+  talent: GenshinTalentEntity;
+
+  @ManyToMany(() => GenshinSpecialSkillEntity, (specialSkill) => specialSkill.id)
+  specialSkill: GenshinSpecialSkillEntity;
+
+  @ManyToOne(() => GenshinCountryEntity, (country) => country.id)
+  country: GenshinCountryEntity;
+
+  @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.id)
+  weapon: GenshinWeaponEntity;
+
+  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
+  translation: TranslationEntity;
+}
