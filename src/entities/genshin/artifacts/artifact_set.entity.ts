@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { GenshinArtifactEntity } from "./artifact.entity";
-import { GenshinArtifactMainStat, GenshinArtifactSubStat } from "./artifact_type";
+import { GenshinArtifactSubStat } from "./artifact_type";
 import { TranslationEntity } from "../translation.entity";
 
 @Entity("genshin_artifact_sets")
@@ -32,33 +32,17 @@ export class GenshinArtifactSetEntity extends BaseEntity {
   @ApiProperty()
   description: string;
 
-  @Column({ type: "int" })
+  @Column({ type: "varchar", array: true })
   @ApiProperty()
-  setCount: number;
+  artifactIds: string[];
 
-  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
+  @Column({ type: "enum", enum: GenshinArtifactSubStat, array: true, default: "{}" })
   @ApiProperty()
-  mainStatOfFlower?: GenshinArtifactMainStat | undefined;
+  recommendedSubStats?: GenshinArtifactSubStat[];
 
-  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
+  @Column({ type: "varchar", array: true, default: "{}" })
   @ApiProperty()
-  mainStatOfPlume?: GenshinArtifactMainStat | undefined;
-
-  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
-  @ApiProperty()
-  mainStatOfSands?: GenshinArtifactMainStat | undefined;
-
-  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
-  @ApiProperty()
-  mainStatOfGoblet?: GenshinArtifactMainStat | undefined;
-
-  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
-  @ApiProperty()
-  mainStatOfCirclet?: GenshinArtifactMainStat | undefined;
-
-  @Column({ type: "enum", enum: GenshinArtifactSubStat, array: true, nullable: true })
-  @ApiProperty()
-  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
+  recommendedCharacterIds: string[];
 
   @CreateDateColumn()
   @ApiProperty()

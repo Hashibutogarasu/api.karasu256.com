@@ -17,25 +17,13 @@ export class CreateArtifactSetsDto {
   description: string;
 
   @ApiProperty()
-  setCount: number;
+  artifactIds: string[];
 
   @ApiProperty()
-  mainStatOfFlower: GenshinArtifactMainStat;
+  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
 
   @ApiProperty()
-  mainStatOfPlume: GenshinArtifactMainStat;
-
-  @ApiProperty()
-  mainStatOfSands: GenshinArtifactMainStat;
-
-  @ApiProperty()
-  mainStatOfGoblet: GenshinArtifactMainStat;
-
-  @ApiProperty()
-  mainStatOfCirclet: GenshinArtifactMainStat;
-
-  @ApiProperty()
-  mainStatOfSubStats: GenshinArtifactSubStat[];
+  recommendedCharacterIds?: string[] | undefined;
 }
 
 export class UpdateArtifactSetsDto {
@@ -52,25 +40,13 @@ export class UpdateArtifactSetsDto {
   description?: string | undefined;
 
   @ApiProperty()
-  setCount?: number | undefined;
+  artifactIds?: string[] | undefined;
 
   @ApiProperty()
-  mainStatOfFlower?: GenshinArtifactMainStat | undefined;
+  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
 
   @ApiProperty()
-  mainStatOfPlume?: GenshinArtifactMainStat | undefined;
-
-  @ApiProperty()
-  mainStatOfSands?: GenshinArtifactMainStat | undefined;
-
-  @ApiProperty()
-  mainStatOfGoblet?: GenshinArtifactMainStat | undefined;
-
-  @ApiProperty()
-  mainStatOfCirclet?: GenshinArtifactMainStat | undefined;
-
-  @ApiProperty()
-  mainStatOfSubStats?: GenshinArtifactSubStat[] | undefined;
+  recommendedCharacterIds?: string[] | undefined;
 }
 
 export class DeleteArtifactSetsDto {
