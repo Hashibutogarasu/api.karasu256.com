@@ -6,6 +6,29 @@ export class FindArtifactSetsBySlugDto {
   slug: string;
 }
 
+export class FindArtifactSetsDto {
+  @ApiProperty()
+  id?: string | undefined;
+
+  @ApiProperty()
+  name?: string | undefined;
+
+  @ApiProperty()
+  slug?: string | undefined;
+
+  @ApiProperty()
+  description?: string | undefined;
+
+  @ApiProperty()
+  artifactIds?: string[] | undefined;
+
+  @ApiProperty()
+  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
+
+  @ApiProperty()
+  recommendedCharacterIds?: string[] | undefined;
+}
+
 export class CreateArtifactSetsDto {
   @ApiProperty()
   name: string;

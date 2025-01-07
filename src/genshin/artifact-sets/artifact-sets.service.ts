@@ -2,7 +2,7 @@ import { GenshinArtifactSetEntity } from '@/entities/genshin/artifacts/artifact_
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateArtifactSetsDto, DeleteArtifactSetsDto, FindArtifactSetsBySlugDto, UpdateArtifactSetsDto } from './artifact-sets.dto';
+import { CreateArtifactSetsDto, DeleteArtifactSetsDto, FindArtifactSetsBySlugDto, FindArtifactSetsDto, UpdateArtifactSetsDto } from './artifact-sets.dto';
 
 @Injectable()
 export class ArtifactSetsService {
@@ -23,8 +23,19 @@ export class ArtifactSetsService {
     });
   }
 
+  async find(dto: FindArtifactSetsDto) {
+    return await this.artifactSetsRepository.findOne({
+      where: {
+        id: dto.id,
+        name: dto.name,
+        slug: dto.slug,
+        description: dto.description,
+      }
+    });
+  }
+
   async create(dto: CreateArtifactSetsDto) {
-    const data = this.artifactSetsRepository.findOne({
+    const data = await this.artifactSetsRepository.findOne({
       where: {
         slug: dto.slug
       }
@@ -38,7 +49,7 @@ export class ArtifactSetsService {
   }
 
   async update(dto: UpdateArtifactSetsDto) {
-    const data = this.artifactSetsRepository.findOne({
+    const data = await this.artifactSetsRepository.findOne({
       where: {
         slug: dto.slug
       }
@@ -52,7 +63,7 @@ export class ArtifactSetsService {
   }
 
   async delete(dto: DeleteArtifactSetsDto) {
-    const data = this.artifactSetsRepository.findOne({
+    const data = await this.artifactSetsRepository.findOne({
       where: {
         id: dto.id
       }
