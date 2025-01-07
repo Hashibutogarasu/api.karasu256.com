@@ -16,13 +16,13 @@ export class UpdateCountryDto {
   id: string;
 
   @ApiProperty()
-  name?: string;
+  name?: string | undefined;
 
   @ApiProperty()
-  slug?: string;
+  slug?: string | undefined;
 
   @ApiProperty()
-  description?: string;
+  description?: string | undefined;
 }
 
 export class FindCountryDto {

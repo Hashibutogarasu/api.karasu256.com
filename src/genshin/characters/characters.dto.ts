@@ -32,28 +32,28 @@ export class UpdateCharacterDto {
   id: string;
 
   @ApiProperty()
-  name?: string;
+  name?: string | undefined;
 
   @ApiProperty()
-  slug?: string;
+  slug?: string | undefined;
 
   @ApiProperty()
-  description?: string;
+  description?: string | undefined;
 
   @ApiProperty()
-  weaponType?: GenshinWeaponType;
+  weaponType?: GenshinWeaponType | undefined;
 
   @ApiProperty()
-  elementId?: string;
+  elementId?: string | undefined;
 
   @ApiProperty()
-  weaponId?: string;
+  weaponId?: string | undefined;
 
   @ApiProperty()
-  countryId?: string;
+  countryId?: string | undefined;
 
   @ApiProperty()
-  artifactSetIds?: string[];
+  artifactSetIds?: string[] | undefined;
 }
 
 export class DeleteCharacterDto {
@@ -68,28 +68,34 @@ export class GetCharacterDto {
 
 export class GetCharactersDto {
   @ApiProperty()
-  page?: number;
+  id?: string | undefined;
 
   @ApiProperty()
-  limit?: number;
+  page?: number = 1;
 
   @ApiProperty()
-  name?: string;
+  limit?: number = 10;
 
   @ApiProperty()
-  elementId?: string;
+  name?: string | undefined;
 
   @ApiProperty()
-  weaponType: GenshinWeaponType;
+  slug?: string | undefined;
 
   @ApiProperty()
-  weaponId?: string;
+  elementId?: string | undefined;
 
   @ApiProperty()
-  countryId?: string;
+  weaponType: GenshinWeaponType | undefined;
 
   @ApiProperty()
-  artifactSetIds?: string[];
+  weaponId?: string | undefined;
+
+  @ApiProperty()
+  countryId?: string | undefined;
+
+  @ApiProperty()
+  artifactSetIds?: string[] | undefined;
 };
 
 export class FindCharacterDto {
@@ -103,17 +109,17 @@ export class FindCharacterDto {
   slug?: string | undefined;
 
   @ApiProperty()
-  elementId?: string;
+  elementId?: string | undefined;
 
   @ApiProperty()
-  weaponType: GenshinWeaponType;
+  weaponType: GenshinWeaponType | undefined;
 
   @ApiProperty()
-  weaponId?: string;
+  weaponId?: string | undefined;
 
   @ApiProperty()
-  countryId?: string;
+  countryId?: string | undefined;
 
   @ApiProperty()
-  artifactSetIds?: string[];
+  artifactSetIds?: string[] | undefined;
 };

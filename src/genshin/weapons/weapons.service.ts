@@ -17,6 +17,12 @@ export class WeaponsService {
     });
   }
 
+  async findOne(dto: FindWeaponDto): Promise<GenshinWeaponEntity> {
+    return await this.weaponRepository.findOne({
+      where: dto
+    });
+  }
+
   async create(weapon: CreateWeaponDto): Promise<GenshinWeaponEntity> {
     const data = await this.weaponRepository.findOne({
       where: {

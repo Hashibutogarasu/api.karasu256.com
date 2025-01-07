@@ -13,6 +13,7 @@ import {
 import { GenshinCharacterEntity } from "./character.entity";
 import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
 import { TranslationEntity } from "./translation.entity";
+import { GenshinValueType } from "@/types/genshin/value_type";
 
 export enum GenshinWeaponType {
   // 片手剣
@@ -64,6 +65,10 @@ export class GenshinWeaponEntity extends BaseEntity {
   @Column({ type: "int", nullable: true })
   @ApiProperty()
   subStatValue?: number | undefined;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
+  subStatValueType: GenshinValueType;
 
   @Column({ type: "varchar", nullable: true })
   @ApiProperty()

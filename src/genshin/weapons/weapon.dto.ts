@@ -1,4 +1,5 @@
 import { GenshinWeaponType } from "@/entities/genshin/weapon.entity";
+import { GenshinValueType } from "@/types/genshin/value_type";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateWeaponDto {
@@ -22,6 +23,9 @@ export class CreateWeaponDto {
 
   @ApiProperty()
   subStatValue: number;
+
+  @ApiProperty()
+  subStatType: GenshinValueType;
 
   @ApiProperty()
   specialAbility: string;
@@ -116,4 +120,9 @@ export class FindWeaponDto {
 
   @ApiProperty()
   slug?: string | undefined;
+}
+
+export class FindWeaponBySlugDto {
+  @ApiProperty()
+  slug: string;
 }
