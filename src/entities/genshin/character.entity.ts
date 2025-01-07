@@ -43,6 +43,10 @@ export class GenshinCharacterEntity extends BaseEntity {
   @ApiProperty()
   description: string;
 
+  @Column({ type: "varchar", array: true, default: "{}" })
+  @ApiProperty()
+  artifactIds: string[];
+
   @CreateDateColumn()
   @ApiProperty()
   createdAt: string;
