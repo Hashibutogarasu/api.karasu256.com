@@ -26,35 +26,39 @@ export class GenshinArtifactSetEntity extends BaseEntity {
 
   @Column({ type: "varchar" })
   @ApiProperty()
+  slug: string;
+
+  @Column({ type: "varchar" })
+  @ApiProperty()
   description: string;
 
   @Column({ type: "int" })
   @ApiProperty()
   setCount: number;
 
-  @Column({ type: "enum", enum: GenshinArtifactMainStat })
+  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
   @ApiProperty()
-  mainStatOfFlower: GenshinArtifactMainStat;
+  mainStatOfFlower?: GenshinArtifactMainStat | undefined;
 
-  @Column({ type: "enum", enum: GenshinArtifactMainStat })
+  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
   @ApiProperty()
-  mainStatOfPlume: GenshinArtifactMainStat;
+  mainStatOfPlume?: GenshinArtifactMainStat | undefined;
 
-  @Column({ type: "enum", enum: GenshinArtifactMainStat })
+  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
   @ApiProperty()
-  mainStatOfSands: GenshinArtifactMainStat;
+  mainStatOfSands?: GenshinArtifactMainStat | undefined;
 
-  @Column({ type: "enum", enum: GenshinArtifactMainStat })
+  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
   @ApiProperty()
-  mainStatOfGoblet: GenshinArtifactMainStat;
+  mainStatOfGoblet?: GenshinArtifactMainStat | undefined;
 
-  @Column({ type: "enum", enum: GenshinArtifactMainStat })
+  @Column({ type: "enum", enum: GenshinArtifactMainStat, nullable: true })
   @ApiProperty()
-  mainStatOfCirclet: GenshinArtifactMainStat;
+  mainStatOfCirclet?: GenshinArtifactMainStat | undefined;
 
-  @Column({ type: "enum", enum: GenshinArtifactSubStat, array: true })
+  @Column({ type: "enum", enum: GenshinArtifactSubStat, array: true, nullable: true })
   @ApiProperty()
-  recommendedSubStats: GenshinArtifactSubStat[];
+  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
 
   @CreateDateColumn()
   @ApiProperty()

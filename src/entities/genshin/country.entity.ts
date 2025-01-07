@@ -27,9 +27,9 @@ export class GenshinCountryEntity extends BaseEntity {
   @ApiProperty()
   slug: string;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", nullable: true })
   @ApiProperty()
-  description: string;
+  description?: string | undefined;
 
   @CreateDateColumn()
   @ApiProperty()
