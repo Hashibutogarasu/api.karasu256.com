@@ -11,14 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { GenshinElementEntity } from "./element.entity";
-import { GenshinWeaponEntity, GenshinWeaponType } from "./weapon.entity";
-import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
-import { GenshinNormalAttackEntity } from "./skills/normal_attack.entity";
-import { GenshinChargedAttackEntity } from "./skills/charged_attack.entity";
-import { GenshinElementSkillEntity } from "./skills/element_skill.entity";
-import { GenshinTalentEntity } from "./skills/talent.entity";
-import { GenshinSpecialSkillEntity } from "./skills/special_skill.entity";
-import { GenshinCountryEntity } from "./country.entity";
+import { GenshinWeaponType } from "./weapon.entity";
 import { TranslationEntity } from "./translation.entity";
 
 @Entity("genshin_characters")
@@ -63,7 +56,7 @@ export class GenshinCharacterEntity extends BaseEntity {
   @ApiProperty()
   updatedAt: string;
 
-  @ManyToOne(() => GenshinElementEntity, (element) => element.id)
+  @ManyToOne(() => GenshinElementEntity, (element) => element.slug)
   element: GenshinElementEntity;
 
   @ManyToOne(() => TranslationEntity, (translation) => translation.id)

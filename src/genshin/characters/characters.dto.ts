@@ -1,3 +1,4 @@
+import { GenshinElementEntity } from "@/entities/genshin/element.entity";
 import { GenshinWeaponType } from "@/entities/genshin/weapon.entity";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -15,7 +16,7 @@ export class CreateCharacterDto {
   weaponType: GenshinWeaponType;
 
   @ApiProperty()
-  elementId: string;
+  element: string;
 
   @ApiProperty()
   rarity: number;
@@ -44,7 +45,7 @@ export class UpdateCharacterDto {
   weaponType?: GenshinWeaponType | undefined;
 
   @ApiProperty()
-  elementId?: string | undefined;
+  element?: string | undefined;
 
   @ApiProperty()
   rarity?: number | undefined;
@@ -83,9 +84,6 @@ export class GetCharactersDto {
   slug?: string | undefined;
 
   @ApiProperty()
-  elementId?: string | undefined;
-
-  @ApiProperty()
   rarity?: number | undefined;
 
   @ApiProperty()
@@ -98,6 +96,17 @@ export class GetCharactersDto {
   countryId?: string | undefined;
 };
 
+export class GetCharactersByElementSlugDto {
+  @ApiProperty()
+  element: string;
+
+  @ApiProperty()
+  page?: number = 1;
+
+  @ApiProperty()
+  limit?: number = 10;
+}
+
 export class FindCharacterDto {
   @ApiProperty()
   id?: string | undefined;
@@ -109,7 +118,7 @@ export class FindCharacterDto {
   slug?: string | undefined;
 
   @ApiProperty()
-  elementId?: string | undefined;
+  element?: string | undefined;
 
   @ApiProperty()
   rarity?: number | undefined;

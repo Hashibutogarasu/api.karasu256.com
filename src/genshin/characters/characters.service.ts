@@ -29,7 +29,7 @@ export class CharactersService {
       weaponType: dto.weaponType,
       image: dto.image,
       element: {
-        id: dto.elementId
+        slug: dto.element
       },
       country: {
         id: dto.countryId
@@ -56,9 +56,14 @@ export class CharactersService {
       }
     }
 
+    const { element, ...rest } = updateData;
+
     return await this.characterRepository.save({
       id: dto.id,
-      ...updateData
+      element: {
+        slug: element
+      },
+      ...rest,
     });
   }
 
@@ -69,8 +74,25 @@ export class CharactersService {
   }
 
   async find(dto: FindCharacterDto) {
+    const { id, element, slug, ...rest } = dto;
     return await this.characterRepository.find({
-      where: dto
+      where: {
+        id,
+        element: {
+          slug: element
+        },
+        ...rest
+      }
+    });
+  }
+
+  async findByElementSlug(slug: string) {
+    return await this.characterRepository.find({
+      where: {
+        element: {
+          slug
+        }
+      }
     });
   }
 
