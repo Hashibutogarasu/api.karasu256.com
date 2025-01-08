@@ -54,24 +54,17 @@ export class CharactersService {
       throw new HttpException('Character not found', 404);
     }
 
+    const { id, ...updateData } = dto;
+
+    for (const key in updateData) {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    }
+
     return await this.characterRepository.save({
       id: dto.id,
-      name: dto.name,
-      slug: dto.slug,
-      description: dto.description,
-      image: dto.image,
-      element: {
-        id: dto.elementId
-      },
-      motifWeapon: {
-        id: dto.weaponId
-      },
-      country: {
-        id: dto.countryId
-      },
-      artifactSets: dto.artifactSetIds.map(id => ({
-        id
-      }))
+      ...updateData
     });
   }
 
