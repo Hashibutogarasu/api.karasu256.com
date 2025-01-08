@@ -24,13 +24,7 @@ export class CreateCharacterDto {
   image?: string | undefined;
 
   @ApiProperty()
-  weaponId: string;
-
-  @ApiProperty()
   countryId: string;
-
-  @ApiProperty()
-  artifactSetIds: string[];
 }
 
 export class UpdateCharacterDto {
@@ -59,13 +53,7 @@ export class UpdateCharacterDto {
   image?: string | undefined;
 
   @ApiProperty()
-  weaponId?: string | undefined;
-
-  @ApiProperty()
   countryId?: string | undefined;
-
-  @ApiProperty()
-  artifactSetIds?: string[] | undefined;
 }
 
 export class DeleteCharacterDto {
@@ -107,13 +95,7 @@ export class GetCharactersDto {
   weaponType: GenshinWeaponType | undefined;
 
   @ApiProperty()
-  weaponId?: string | undefined;
-
-  @ApiProperty()
   countryId?: string | undefined;
-
-  @ApiProperty()
-  artifactSetIds?: string[] | undefined;
 };
 
 export class FindCharacterDto {
@@ -139,11 +121,5 @@ export class FindCharacterDto {
   weaponType: GenshinWeaponType | undefined;
 
   @ApiProperty()
-  weaponId?: string | undefined;
-
-  @ApiProperty()
   countryId?: string | undefined;
-
-  @ApiProperty()
-  artifactSetIds?: string[] | undefined;
 };

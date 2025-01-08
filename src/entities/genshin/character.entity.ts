@@ -66,30 +66,6 @@ export class GenshinCharacterEntity extends BaseEntity {
   @ManyToOne(() => GenshinElementEntity, (element) => element.id)
   element: GenshinElementEntity;
 
-  @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
-  artifactSet: GenshinArtifactSetEntity[];
-
-  @ManyToMany(() => GenshinNormalAttackEntity, (normalAttack) => normalAttack.id)
-  normalAttack: GenshinNormalAttackEntity;
-
-  @ManyToMany(() => GenshinChargedAttackEntity, (chargedAttack) => chargedAttack.id)
-  chargedAttack: GenshinChargedAttackEntity;
-
-  @ManyToMany(() => GenshinElementSkillEntity, (elementSkill) => elementSkill.id)
-  elementSkill: GenshinElementSkillEntity;
-
-  @ManyToMany(() => GenshinTalentEntity, (talent) => talent.id)
-  talent: GenshinTalentEntity;
-
-  @ManyToMany(() => GenshinSpecialSkillEntity, (specialSkill) => specialSkill.id)
-  specialSkill: GenshinSpecialSkillEntity;
-
-  @ManyToOne(() => GenshinCountryEntity, (country) => country.id, { nullable: true })
-  country?: GenshinCountryEntity | undefined;
-
-  @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.id)
-  motifWeapon: GenshinWeaponEntity;
-
   @ManyToOne(() => TranslationEntity, (translation) => translation.id)
   translation: TranslationEntity;
 }
