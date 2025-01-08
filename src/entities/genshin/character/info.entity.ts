@@ -11,7 +11,7 @@ import { GenshinCountryEntity } from "../country.entity";
 import { GenshinWeaponEntity, GenshinWeaponType } from "../weapon.entity";
 import { TranslationEntity } from "../translation.entity";
 
-@Entity()
+@Entity('genshin_character_info')
 export class GenshinCharacterInfoEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
