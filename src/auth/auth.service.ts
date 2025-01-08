@@ -8,7 +8,7 @@ import {
   SignInDto,
   SignInOtpDto,
   SignUpDto,
-  VerifyOTPDto,
+  VerifyOtpDto,
 } from "./auth.dto";
 
 @Injectable()
@@ -52,29 +52,6 @@ export class AuthService {
     return data.session.access_token;
   }
 
-  async verifyOTPhash({ hash }: SignInOtpDto) {
-    const { data, error } = await this.supabase.auth.verifyOtp({
-      token_hash: hash,
-      type: "magiclink",
-    });
-    if (error) {
-      throw new UnauthorizedException(error.message);
-    }
-    return data.session.access_token;
-  }
-
-  async verifyOTP({ email, token }: VerifyOTPDto) {
-    const { data, error } = await this.supabase.auth.verifyOtp({
-      email: email,
-      token: token,
-      type: "magiclink",
-    });
-    if (error) {
-      throw new UnauthorizedException(error.message);
-    }
-    return data.session.access_token;
-  }
-
   async checkSession(token: string): Promise<boolean> {
     if (!token) {
       throw new UnauthorizedException("Token not found");
@@ -102,6 +79,22 @@ export class AuthService {
 
     return {
       message: "OTP sent to email. Check your email box.",
+    };
+  }
+
+  async confirm(dto: VerifyOtpDto) {
+    const { data, error } = await this.supabase.auth.verifyOtp({
+      token_hash: dto.token_hash,
+      type: dto.type as any,
+    });
+
+    if (error) {
+      throw new UnauthorizedException(error.message);
+    }
+
+    return {
+      message: "Successfully logged in",
+      token: data.session.access_token,
     };
   }
 }

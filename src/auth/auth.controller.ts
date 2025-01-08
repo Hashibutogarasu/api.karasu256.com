@@ -24,7 +24,7 @@ import {
   SignInOtpDto,
   SignInWithOtpDto,
   SignUpDto,
-  VerifyOTPDto,
+  VerifyOtpDto,
 } from "./auth.dto";
 import { MessageDto, MessageWithUserDto } from "../user/user.controller";
 import { AuthGuard } from "./auth.guard";
@@ -36,7 +36,6 @@ import { AuthGuard } from "./auth.guard";
   SignUpDto,
   SignInDto,
   PasswordLessSignInDto,
-  VerifyOTPDto,
   SignInOtpDto,
 )
 @Controller("auth")
@@ -143,83 +142,6 @@ export class AuthController {
     return this.authService.signInWithOtp(dto, `${process.env.BASE_URL}/auth/callback?`);
   }
 
-  @ApiParam({
-    name: "hash",
-    type: "string",
-    required: true,
-    description: "Token hash",
-  })
-  @ApiOkResponse({
-    description: "User successfully signed in",
-    type: SignInWithOtpDto,
-  })
-  @ApiResponse({
-    status: 200,
-    description: "User successfully signed in",
-    example: {
-      message: "Successfully logged in",
-      token: "Bearer token",
-    },
-  })
-  @Get("otp")
-  async signInWithOTP(@Query() dto: SignInOtpDto): Promise<SignInWithOtpDto> {
-    const data = await this.authService.verifyOTPhash(dto);
-    if (data) {
-      return {
-        message: "Successfully logged in",
-        token: data,
-      };
-    }
-
-    return {
-      token: null,
-      message: "Failed to log in",
-    };
-  }
-
-  @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        email: {
-          type: "string",
-          example: "example@example.com",
-          default: "{{email}}",
-        },
-      },
-    },
-  })
-  @ApiQuery({
-    name: "code",
-    type: "string",
-    required: true,
-    description: "OTP code",
-  })
-  @ApiOkResponse({
-    description: "User successfully signed in",
-    type: SignInWithOtpDto,
-  })
-  @ApiResponse({
-    status: 200,
-    description: "User successfully signed in",
-  })
-  @ApiResponse({
-    status: 401,
-    description: "Unauthorized",
-  })
-  @Post("otp")
-  async verifyOTP(@Body() dto: VerifyOTPDto): Promise<SignInWithOtpDto> {
-    const data = await this.authService.verifyOTP(dto);
-    if (data) {
-      return {
-        message: "Successfully logged in",
-        token: data,
-      };
-    }
-
-    throw new UnauthorizedException("Failed to log in");
-  }
-
   @UseGuards(AuthGuard)
   @Get("verify")
   async verify(@Req() req): Promise<MessageWithUserDto> {
@@ -227,5 +149,10 @@ export class AuthController {
       message: "Authorized",
       user: req.user,
     };
+  }
+
+  @Get("confirm")
+  async confirm(@Query() dto: VerifyOtpDto) {
+    return await this.authService.confirm(dto);
   }
 }

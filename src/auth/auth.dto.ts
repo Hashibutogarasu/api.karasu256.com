@@ -19,14 +19,6 @@ export class SignInOtpDto {
   hash: string;
 }
 
-export class VerifyOTPDto {
-  @ApiProperty()
-  email: string;
-
-  @ApiProperty()
-  token: string;
-}
-
 export class SignUpDto extends SignInDto {
   @ApiProperty()
   email: string;
@@ -43,4 +35,12 @@ export class AccessTokenDto {
 export class SignInWithOtpDto extends MessageDto {
   @ApiProperty()
   token: string;
+}
+
+export class VerifyOtpDto {
+  @ApiProperty()
+  token_hash: string;
+
+  @ApiProperty()
+  type: string;
 }
