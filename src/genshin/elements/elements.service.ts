@@ -25,10 +25,10 @@ export class ElementsService {
     return await this.elementRepository.save(element);
   }
 
-  async update(element: UpdateElementDto) {
+  async update(dto: UpdateElementDto) {
     const data = await this.elementRepository.findOne({
       where: {
-        slug: element.slug,
+        slug: dto.slug,
       },
     });
 
@@ -36,7 +36,18 @@ export class ElementsService {
       throw new HttpException('Element does not exist', 400);
     }
 
-    return await this.elementRepository.save(element);
+    const { id, ...updateData } = dto;
+
+    for (const key in updateData) {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    }
+
+    return await this.elementRepository.save({
+      id: dto.id,
+      ...updateData,
+    });
   }
 
   async delete({ id }: DeleteElementDto) {

@@ -37,10 +37,10 @@ export class WeaponsService {
     return await this.weaponRepository.save(weapon);
   }
 
-  async update(weapon: UpdateWeaponDto): Promise<GenshinWeaponEntity> {
+  async update(dto: UpdateWeaponDto): Promise<GenshinWeaponEntity> {
     const data = await this.weaponRepository.findOne({
       where: {
-        id: weapon.id
+        id: dto.id
       }
     });
 
@@ -48,7 +48,18 @@ export class WeaponsService {
       throw new HttpException('Weapon not found', 404);
     }
 
-    return await this.weaponRepository.save(weapon);
+    const { id, ...updateData } = dto;
+
+    for (const key in updateData) {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    }
+
+    return await this.weaponRepository.save({
+      id: dto.id,
+      ...updateData
+    });
   }
 
   async delete(dto: DeleteWeaponDto): Promise<void> {

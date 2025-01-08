@@ -59,7 +59,18 @@ export class ArtifactSetsService {
       throw new HttpException('Artifact Sets not found', 404);
     }
 
-    return await this.artifactSetsRepository.save(dto);
+    const { id, ...updateData } = dto;
+
+    for (const key in updateData) {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    }
+
+    return await this.artifactSetsRepository.save({
+      id,
+      ...updateData
+    });
   }
 
   async delete(dto: DeleteArtifactSetsDto) {

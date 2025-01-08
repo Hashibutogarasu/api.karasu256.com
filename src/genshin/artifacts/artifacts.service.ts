@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateArtifactDto, DeleteArtifactDto, FindArtifactBySlugDto, UpdateArtifactDto } from './artifacts.dto';
 import { AdminGuard } from '@/user/admin/admin.guard';
+import { GenshinArtifactMainStat, GenshinArtifactPart } from '@/entities/genshin/artifacts/artifact_type';
 
 @Injectable()
 export class ArtifactsService {
@@ -58,13 +59,19 @@ export class ArtifactsService {
       throw new HttpException('Artifact not found', 404);
     }
 
+    const { id, part, mainStat, ...updateData } = dto;
+
+    for (const key in updateData) {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    }
+
     return await this.artifactRepository.save({
-      name: dto.name,
-      slug: dto.slug,
-      description: dto.description,
-      parts: dto.part,
-      mainStats: dto.mainStat,
-      mainStatValueType: dto.mainStatValueType,
+      id: dto.id,
+      ...updateData,
+      part: part as GenshinArtifactPart,
+      mainStat: mainStat as GenshinArtifactMainStat,
     });
   }
 

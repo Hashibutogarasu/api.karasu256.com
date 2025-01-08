@@ -48,7 +48,18 @@ export class CountriesService {
       throw new HttpException('Country not found', 404);
     }
 
-    return this.countryRepository.save(dto);
+    const { id, ...updateData } = dto;
+
+    for (const key in updateData) {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    }
+
+    return this.countryRepository.save({
+      id: dto.id,
+      ...updateData,
+    });
   }
 
   async delete(dto: DeleteCountryDto) {
