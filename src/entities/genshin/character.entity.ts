@@ -51,6 +51,10 @@ export class GenshinCharacterEntity extends BaseEntity {
   @ApiProperty()
   rarity: number;
 
+  @Column({ type: "varchar", nullable: true })
+  @ApiProperty()
+  image?: string | undefined;
+
   @CreateDateColumn()
   @ApiProperty()
   createdAt: string;
