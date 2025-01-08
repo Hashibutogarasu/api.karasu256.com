@@ -27,6 +27,7 @@ export class CharactersService {
       slug: dto.slug,
       description: dto.description,
       weaponType: dto.weaponType,
+      image: dto.image,
       element: {
         id: dto.elementId
       },
@@ -57,6 +58,7 @@ export class CharactersService {
       name: dto.name,
       slug: dto.slug,
       description: dto.description,
+      image: dto.image,
       element: {
         id: dto.elementId
       },
