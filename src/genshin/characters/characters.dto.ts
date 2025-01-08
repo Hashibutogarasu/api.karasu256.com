@@ -130,6 +130,12 @@ export class FindCharacterDto {
   elementId?: string | undefined;
 
   @ApiProperty()
+  rarity?: number | undefined;
+
+  @ApiProperty()
+  image?: string | undefined;
+
+  @ApiProperty()
   weaponType: GenshinWeaponType | undefined;
 
   @ApiProperty()
