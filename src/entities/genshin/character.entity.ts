@@ -84,8 +84,8 @@ export class GenshinCharacterEntity extends BaseEntity {
   @ManyToMany(() => GenshinSpecialSkillEntity, (specialSkill) => specialSkill.id)
   specialSkill: GenshinSpecialSkillEntity;
 
-  @ManyToOne(() => GenshinCountryEntity, (country) => country.id)
-  country: GenshinCountryEntity;
+  @ManyToOne(() => GenshinCountryEntity, (country) => country.id, { nullable: true })
+  country?: GenshinCountryEntity | undefined;
 
   @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.id)
   motifWeapon: GenshinWeaponEntity;
