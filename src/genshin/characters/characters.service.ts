@@ -55,6 +55,7 @@ export class CharactersService {
     }
 
     return await this.characterRepository.save({
+      id: dto.id,
       name: dto.name,
       slug: dto.slug,
       description: dto.description,
