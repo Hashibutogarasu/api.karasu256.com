@@ -18,6 +18,9 @@ export class CreateCharacterDto {
   elementId: string;
 
   @ApiProperty()
+  rarity: number;
+
+  @ApiProperty()
   weaponId: string;
 
   @ApiProperty()
@@ -45,6 +48,9 @@ export class UpdateCharacterDto {
 
   @ApiProperty()
   elementId?: string | undefined;
+
+  @ApiProperty()
+  rarity?: number | undefined;
 
   @ApiProperty()
   weaponId?: string | undefined;
@@ -84,6 +90,9 @@ export class GetCharactersDto {
 
   @ApiProperty()
   elementId?: string | undefined;
+
+  @ApiProperty()
+  rarity?: number | undefined;
 
   @ApiProperty()
   weaponType: GenshinWeaponType | undefined;
