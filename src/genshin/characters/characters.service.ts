@@ -31,15 +31,9 @@ export class CharactersService {
       element: {
         id: dto.elementId
       },
-      motifWeapon: {
-        id: dto.weaponId
-      },
       country: {
         id: dto.countryId
       },
-      artifactSets: dto.artifactSetIds.map(id => ({
-        id
-      }))
     });
   }
 
