@@ -1,3 +1,5 @@
+import { GenshinEntity } from "@/types/genshin/genshin";
+import { SkillEntity } from "@/types/genshin/skill";
 import { ApiProperty } from "@nestjs/swagger";
 import {
   BaseEntity,
@@ -10,10 +12,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { TranslationEntity } from "../translation.entity";
 
 @Entity("genshin_talents")
-export class GenshinTalentEntity extends BaseEntity {
+export class GenshinTalentEntity extends SkillEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -33,7 +34,4 @@ export class GenshinTalentEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
 }

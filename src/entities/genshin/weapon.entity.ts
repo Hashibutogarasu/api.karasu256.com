@@ -12,8 +12,8 @@ import {
 } from "typeorm";
 import { GenshinCharacterEntity } from "./character.entity";
 import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
-import { TranslationEntity } from "./translation.entity";
 import { GenshinValueType } from "@/types/genshin/value_type";
+import { GenshinEntity } from "@/types/genshin/genshin";
 
 export enum GenshinWeaponType {
   // 片手剣
@@ -29,7 +29,7 @@ export enum GenshinWeaponType {
 }
 
 @Entity("genshin_weapons")
-export class GenshinWeaponEntity extends BaseEntity {
+export class GenshinWeaponEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -91,7 +91,4 @@ export class GenshinWeaponEntity extends BaseEntity {
 
   @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
   artifactSet: GenshinArtifactSetEntity;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
 }

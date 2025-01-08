@@ -1,4 +1,4 @@
-import { GenshinArtifactMainStat, GenshinArtifactSubStat } from "@/entities/genshin/artifacts/artifact_type";
+import { GenshinArtifactMainStat, GenshinArtifactSubStat } from "@/types/genshin/artifact_type";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class FindArtifactSetsBySlugDto {

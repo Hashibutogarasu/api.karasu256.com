@@ -1,4 +1,4 @@
-import { GenshinArtifactMainStat, GenshinArtifactPart } from "@/entities/genshin/artifacts/artifact_type";
+import { GenshinArtifactMainStat, GenshinArtifactPart } from "@/types/genshin/artifact_type";
 import { GenshinValueType } from "@/types/genshin/value_type";
 import { ApiProperty } from "@nestjs/swagger";
 

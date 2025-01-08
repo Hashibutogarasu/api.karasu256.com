@@ -10,12 +10,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { GenshinArtifactMainStat, GenshinArtifactPart } from "./artifact_type";
-import { TranslationEntity } from "../translation.entity";
+import { GenshinArtifactMainStat, GenshinArtifactPart } from "../../../types/genshin/artifact_type";
 import { GenshinValueType } from "@/types/genshin/value_type";
+import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_artifacts")
-export class GenshinArtifactEntity extends BaseEntity {
+export class GenshinArtifactEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -43,15 +43,5 @@ export class GenshinArtifactEntity extends BaseEntity {
   @Column({ type: "enum", enum: GenshinValueType })
   @ApiProperty()
   mainStatValueType: GenshinValueType;
+};
 
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
-}

@@ -13,10 +13,10 @@ import {
 import { GenshinCharacterEntity } from "./character.entity";
 import { GenshinWeaponEntity } from "./weapon.entity";
 import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
-import { TranslationEntity } from "./translation.entity";
+import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_elements")
-export class GenshinElementEntity extends BaseEntity {
+export class GenshinElementEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -29,14 +29,6 @@ export class GenshinElementEntity extends BaseEntity {
   @ApiProperty()
   slug: string;
 
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
-
   @ManyToOne(() => GenshinCharacterEntity, (character) => character.id)
   character: GenshinCharacterEntity;
 
@@ -45,7 +37,4 @@ export class GenshinElementEntity extends BaseEntity {
 
   @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
   artifactSet: GenshinArtifactSetEntity;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
 }

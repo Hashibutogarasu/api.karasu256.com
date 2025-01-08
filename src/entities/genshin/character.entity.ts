@@ -12,10 +12,10 @@ import {
 } from "typeorm";
 import { GenshinElementEntity } from "./element.entity";
 import { GenshinWeaponType } from "./weapon.entity";
-import { TranslationEntity } from "./translation.entity";
+import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_characters")
-export class GenshinCharacterEntity extends BaseEntity {
+export class GenshinCharacterEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -48,17 +48,6 @@ export class GenshinCharacterEntity extends BaseEntity {
   @ApiProperty()
   image?: string | undefined;
 
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
-
   @ManyToOne(() => GenshinElementEntity, (element) => element.slug)
   element: GenshinElementEntity;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
 }

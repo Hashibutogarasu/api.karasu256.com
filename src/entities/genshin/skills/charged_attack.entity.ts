@@ -1,3 +1,4 @@
+import { SkillEntity } from "@/types/genshin/skill";
 import { ApiProperty } from "@nestjs/swagger";
 import {
   BaseEntity,
@@ -10,30 +11,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { TranslationEntity } from "../translation.entity";
 
 @Entity("genshin_charged_attacks")
-export class GenshinChargedAttackEntity extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  @ApiProperty()
-  id: string;
-
-  @Column({ type: "varchar" })
-  @ApiProperty()
-  name: string;
-
-  @Column({ type: "varchar" })
-  @ApiProperty()
-  description: string;
-
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
-}
+export class GenshinChargedAttackEntity extends SkillEntity { }
