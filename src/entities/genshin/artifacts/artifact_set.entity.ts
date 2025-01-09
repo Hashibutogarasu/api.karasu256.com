@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { GenshinArtifactEntity } from "./artifact.entity";
-import { GenshinArtifactSubStat } from "../../../types/genshin/artifact_type";
+import { GenshinArtifactSubStat, GenshinArtifactSubStatSchema } from "../../../types/genshin/artifact_type";
 import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_artifact_sets")
@@ -36,7 +36,7 @@ export class GenshinArtifactSetEntity extends GenshinEntity {
   @ApiProperty()
   artifactIds: string[];
 
-  @Column({ type: "enum", enum: GenshinArtifactSubStat, array: true, default: "{}" })
+  @Column({ type: "enum", enum: GenshinArtifactSubStatSchema, array: true, default: "{}" })
   @ApiProperty()
   recommendedSubStats?: GenshinArtifactSubStat[];
 

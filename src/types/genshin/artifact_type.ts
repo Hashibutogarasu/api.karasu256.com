@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export enum GenshinArtifactPart {
   FLOWER_OF_LIFE = "flower_of_life",
   PLUME_OF_DEATH = "plume_of_death",
@@ -27,15 +29,17 @@ export enum GenshinArtifactMainStat {
   PHYSICAL_DAMAGE_BONUS = "physical_damage_bonus",
 }
 
-export enum GenshinArtifactSubStat {
-  ATK = "atk",
-  HP = "hp",
-  DEF = "def",
-  ATK_PERCENT = "atk_percent",
-  HP_PERCENT = "hp_percent",
-  DEF_PERCENT = "def_percent",
-  ELEMENTAL_MASTERY = "elemental_mastery",
-  ENERGY_RECHARGE = "energy_recharge",
-  CRIT_RATE = "crit_rate",
-  CRIT_DAMAGE = "crit_damage",
-}
+export const GenshinArtifactSubStatSchema = z.nativeEnum({
+  atk: "atk",
+  hp: "hp",
+  def: "def",
+  atk_percent: "atk_percent",
+  hp_percent: "hp_percent",
+  def_percent: "def_percent",
+  elemental_mastery: "elemental_mastery",
+  energy_recharge: "energy_recharge",
+  crit_rate: "crit_rate",
+  crit_damage: "crit_damage",
+});
+
+export type GenshinArtifactSubStat = z.infer<typeof GenshinArtifactSubStatSchema>;

@@ -1,38 +1,50 @@
-import { GenshinArtifactSubStat } from "@/types/genshin/artifact_type";
+import { GenshinArtifactSubStat, GenshinArtifactSubStatSchema } from "@/types/genshin/artifact_type";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class FindArtifactSetsBySlugDto {
-  slug: string;
-};
+export const FindArtifactSetsBySlugDtoSchema = z.object({
+  slug: z.string(),
+});
 
-export class FindArtifactSetsDto {
-  id?: string | undefined;
-  name?: string | undefined;
-  slug?: string | undefined;
-  description?: string | undefined;
-  artifactIds?: string[] | undefined;
-  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
-  recommendedCharacterIds?: string[] | undefined;
-};
+export class FindArtifactSetsBySlugDto extends createZodDto(FindArtifactSetsBySlugDtoSchema) { }
 
-export class CreateArtifactSetsDto {
-  name: string;
-  slug: string;
-  description: string;
-  artifactIds: string[];
-  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
-  recommendedCharacterIds?: string[] | undefined;
-};
+export const FindArtifactSetsDtoSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  artifactIds: z.array(z.string()).optional(),
+  recommendedSubStats: z.array(z.string()).optional(),
+  recommendedCharacterIds: z.array(z.string()).optional(),
+});
 
-export class UpdateArtifactSetsDto {
-  id: string;
-  name?: string | undefined;
-  slug?: string | undefined;
-  description?: string | undefined;
-  artifactIds?: string[] | undefined;
-  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
-  recommendedCharacterIds?: string[] | undefined;
-};
+export class FindArtifactSetsDto extends createZodDto(FindArtifactSetsDtoSchema) { }
 
-export class DeleteArtifactSetsDto {
-  id: string;
-};
+export const CreateArtifactSetsDtoSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  description: z.string(),
+  artifactIds: z.array(z.string()),
+  recommendedSubStats: z.array(GenshinArtifactSubStatSchema.optional()).optional(),
+  recommendedCharacterIds: z.array(z.string()).optional(),
+});
+
+export class CreateArtifactSetsDto extends createZodDto(CreateArtifactSetsDtoSchema) { }
+
+export const UpdateArtifactSetsDtoSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  artifactIds: z.array(z.string()).optional(),
+  recommendedSubStats: z.array(GenshinArtifactSubStatSchema.optional()).optional(),
+  recommendedCharacterIds: z.array(z.string()).optional(),
+});
+
+export class UpdateArtifactSetsDto extends createZodDto(UpdateArtifactSetsDtoSchema) { }
+
+export const DeleteArtifactSetsDtoSchema = z.object({
+  id: z.string(),
+});
+
+export class DeleteArtifactSetsDto extends createZodDto(DeleteArtifactSetsDtoSchema) { }
