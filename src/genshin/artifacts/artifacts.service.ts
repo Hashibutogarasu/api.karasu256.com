@@ -17,7 +17,7 @@ export class ArtifactsService {
     return await this.artifactRepository.find();
   }
 
-  async findOne(dto: FindArtifactBySlugDto): Promise<GenshinArtifactEntity> {
+  async findBySlug(dto: FindArtifactBySlugDto): Promise<GenshinArtifactEntity> {
     return await this.artifactRepository.findOne({
       where: {
         slug: dto.slug

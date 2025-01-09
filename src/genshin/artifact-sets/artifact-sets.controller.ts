@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ArtifactSetsService } from './artifact-sets.service';
 import { CreateArtifactSetsDto, CreateArtifactSetsDtoSchema, DeleteArtifactSetsDto, DeleteArtifactSetsDtoSchema, FindArtifactSetsBySlugDto, FindArtifactSetsBySlugDtoSchema, FindArtifactSetsDto, FindArtifactSetsDtoSchema, UpdateArtifactSetsDto, UpdateArtifactSetsDtoSchema } from './artifact-sets.dto';
-import { ApiBody, ApiExtraModels, ApiParam } from '@nestjs/swagger';
+import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { zodToOpenAPI, ZodValidationPipe } from 'nestjs-zod';
 
 @Controller('genshin/artifact-sets')
