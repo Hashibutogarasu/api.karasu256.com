@@ -15,7 +15,7 @@ if (!DATABASE_URL) {
   throw new Error("Enviroment Database Error");
 }
 
-const MIGRATION_DIR = join(__dirname, "/../../config/db/migrations/**/*.ts");
+const MIGRATION_DIR = join(__dirname, `/../../config/db/migrations${process.env.NODE_ENV}/**/*.ts`);
 const ENTITIES_DIR = join(__dirname, "/../../entities/**/*.{ts,js}");
 
 export const typeormConfig: TypeOrmModuleOptions = {
