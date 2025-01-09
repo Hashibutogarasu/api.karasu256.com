@@ -11,11 +11,11 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { GenshinArtifactEntity } from "./artifact.entity";
-import { GenshinArtifactSubStat } from "./artifact_type";
-import { TranslationEntity } from "../translation.entity";
+import { GenshinArtifactSubStat, GenshinArtifactSubStatSchema } from "../../../types/genshin/artifact_type";
+import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_artifact_sets")
-export class GenshinArtifactSetEntity extends BaseEntity {
+export class GenshinArtifactSetEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -36,7 +36,7 @@ export class GenshinArtifactSetEntity extends BaseEntity {
   @ApiProperty()
   artifactIds: string[];
 
-  @Column({ type: "enum", enum: GenshinArtifactSubStat, array: true, default: "{}" })
+  @Column({ type: "enum", enum: GenshinArtifactSubStatSchema, array: true, default: "{}" })
   @ApiProperty()
   recommendedSubStats?: GenshinArtifactSubStat[];
 
@@ -44,17 +44,6 @@ export class GenshinArtifactSetEntity extends BaseEntity {
   @ApiProperty()
   recommendedCharacterIds: string[];
 
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
-
   @ManyToMany(() => GenshinArtifactEntity, (artifact) => artifact.id)
   artifacts: GenshinArtifactEntity[];
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
 }

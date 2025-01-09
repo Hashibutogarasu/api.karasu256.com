@@ -12,24 +12,22 @@ import {
 } from "typeorm";
 import { GenshinCharacterEntity } from "./character.entity";
 import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
-import { TranslationEntity } from "./translation.entity";
 import { GenshinValueType } from "@/types/genshin/value_type";
+import { GenshinEntity } from "@/types/genshin/genshin";
+import { z } from "zod";
 
-export enum GenshinWeaponType {
-  // 片手剣
-  SWORD = "sword",
-  // 両手剣
-  CLAYMORE = "claymore",
-  // 弓
-  BOW = "bow",
-  // 法器
-  CATALYST = "catalyst",
-  // 長柄武器
-  POLEARM = "polearm",
-}
+export const GenshinWeaponTypeSchema = z.nativeEnum({
+  sword: "sword",
+  claymore: "claymore",
+  bow: "bow",
+  catalyst: "catalyst",
+  polearm: "polearm",
+});
+
+export type GenshinWeaponType = z.infer<typeof GenshinWeaponTypeSchema>;
 
 @Entity("genshin_weapons")
-export class GenshinWeaponEntity extends BaseEntity {
+export class GenshinWeaponEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -46,7 +44,7 @@ export class GenshinWeaponEntity extends BaseEntity {
   @ApiProperty()
   description: string;
 
-  @Column({ type: "enum", enum: GenshinWeaponType })
+  @Column({ type: "enum", enum: GenshinWeaponTypeSchema })
   @ApiProperty()
   type: GenshinWeaponType;
 
@@ -91,7 +89,4 @@ export class GenshinWeaponEntity extends BaseEntity {
 
   @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
   artifactSet: GenshinArtifactSetEntity;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
 }

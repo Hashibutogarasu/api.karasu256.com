@@ -10,7 +10,6 @@ import { PostsEntity } from "@/entities/post.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UsersEntity } from "@/entities/user.entity";
-import { MessageDto } from "@/user/user.controller";
 
 @Injectable()
 export class PostService {
@@ -67,7 +66,7 @@ export class PostService {
     return await this.postsRepository.save(post);
   }
 
-  async deletePost(user: UsersEntity, { id }: DeletePostDto): Promise<MessageDto> {
+  async deletePost(user: UsersEntity, { id }: DeletePostDto) {
     const post = await this.postsRepository.findOne({
       where: {
         id,

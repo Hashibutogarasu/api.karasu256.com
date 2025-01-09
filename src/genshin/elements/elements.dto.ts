@@ -1,52 +1,45 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreateElementDto {
-  @ApiProperty()
-  name?: string;
+export const CreateElementDtoSchema = z.object({
+  name: z.string().optional(),
+  slug: z.string().optional(),
+});
 
-  @ApiProperty()
-  slug?: string;
-}
+export class CreateElementDto extends createZodDto(CreateElementDtoSchema) { }
 
-export class UpdateElementDto {
-  @ApiProperty()
-  id: string;
+export const UpdateElementDtoSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+});
 
-  @ApiProperty()
-  name?: string | undefined;
+export class UpdateElementDto extends createZodDto(UpdateElementDtoSchema) { }
 
-  @ApiProperty()
-  slug?: string | undefined;
-}
+export const DeleteElementDtoSchema = z.object({
+  id: z.string(),
+});
 
-export class DeleteElementDto {
-  @ApiProperty()
-  id: string;
-}
+export class DeleteElementDto extends createZodDto(DeleteElementDtoSchema) { }
 
-export class GetElementDto {
-  @ApiProperty()
-  id: string;
-}
+export const GetElementDtoSchema = z.object({
+  id: z.string(),
+});
 
-export class GetElementsDto {
-  @ApiProperty()
-  page?: number = 1;
+export class GetElementDto extends createZodDto(GetElementDtoSchema) { }
 
-  @ApiProperty()
-  limit?: number = 10;
+export const GetElementsDtoSchema = z.object({
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  name: z.string().optional(),
+});
 
-  @ApiProperty()
-  name?: string | undefined;
-}
+export class GetElementsDto extends createZodDto(GetElementsDtoSchema) { }
 
-export class FindElementDto {
-  @ApiProperty()
-  id?: string | undefined;
+export const FindElementDtoSchema = z.object({
+  id: z.string().optional(),
+  slug: z.string().optional(),
+  name: z.string().optional(),
+});
 
-  @ApiProperty()
-  slug?: string | undefined;
-
-  @ApiProperty()
-  name?: string | undefined;
-}
+export class FindElementDto extends createZodDto(FindElementDtoSchema) { }

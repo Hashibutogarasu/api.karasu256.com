@@ -62,6 +62,9 @@ importers:
       typeorm:
         specifier: ^0.3.20
         version: 0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@20.17.10)(typescript@5.7.2))
+      validated-extendable:
+        specifier: ^7.3.0
+        version: 7.3.0(zod@3.24.1)
       ws:
         specifier: ^8.18.0
         version: 8.18.0
@@ -3377,6 +3380,11 @@ packages:
   v8-to-istanbul@9.3.0:
     resolution: {integrity: sha512-kiGUalWN+rgBJ/1OHZsBtU4rXZOfj/7rKQxULKlIzwzQSvMJUUNgPwJEEh7gU6xEVxC0ahoOBvN2YI8GH6FNgA==}
     engines: {node: '>=10.12.0'}
+
+  validated-extendable@7.3.0:
+    resolution: {integrity: sha512-OphJYKkDLq6OwVerzszD22+x9HaTXG3yZOSGX5133zh7xE0K8Ol0P6aFnAJAEQ0OerIafFGbcCj6FoXj/XWCDQ==}
+    peerDependencies:
+      zod: ^3.0.0
 
   validator@13.12.0:
     resolution: {integrity: sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg==}
@@ -7344,6 +7352,10 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.25
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
+
+  validated-extendable@7.3.0(zod@3.24.1):
+    dependencies:
+      zod: 3.24.1
 
   validator@13.12.0: {}
 

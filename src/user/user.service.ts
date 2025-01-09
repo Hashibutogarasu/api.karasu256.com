@@ -3,12 +3,12 @@ import { SupabaseClient, User } from "@supabase/supabase-js";
 import {
   CreateUserDto,
   CreateUsersPublicProfileDto,
+  MessageDto,
   UpdateUserDto,
   UpdateUsersPublicProfileDto,
   UserExistsDto,
 } from "@/user/user.dto";
 import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
-import { MessageDto } from "@/user/user.controller";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 

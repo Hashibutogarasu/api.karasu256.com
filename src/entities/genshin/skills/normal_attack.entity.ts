@@ -10,30 +10,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { TranslationEntity } from "../translation.entity";
+
+import { SkillEntity } from "@/types/genshin/skill";
 
 @Entity("genshin_normal_attacks")
-export class GenshinNormalAttackEntity extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  @ApiProperty()
-  id: string;
-
-  @Column({ type: "varchar" })
-  @ApiProperty()
-  name: string;
-
-  @Column({ type: "varchar" })
-  @ApiProperty()
-  description: string;
-
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
-}
+export class GenshinNormalAttackEntity extends SkillEntity { }

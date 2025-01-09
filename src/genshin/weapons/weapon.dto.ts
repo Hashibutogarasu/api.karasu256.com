@@ -1,128 +1,76 @@
-import { GenshinWeaponType } from "@/entities/genshin/weapon.entity";
-import { GenshinValueType } from "@/types/genshin/value_type";
-import { ApiProperty } from "@nestjs/swagger";
+import { GenshinWeaponType, GenshinWeaponTypeSchema } from "@/entities/genshin/weapon.entity";
+import { GenshinValueType, GenshinValueTypeSchema } from "@/types/genshin/value_type";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreateWeaponDto {
-  @ApiProperty()
-  name: string;
+export const CreateWeaponDtoSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  type: GenshinWeaponTypeSchema.default("sword"),
+  rarity: z.number(),
+  baseAttack: z.number(),
+  subStat: z.string(),
+  subStatValue: z.number(),
+  subStatType: GenshinValueTypeSchema.default("number"),
+  specialAbility: z.string(),
+  specialAbilityDescription: z.string(),
+  description: z.string(),
+});
 
-  @ApiProperty()
-  slug: string;
+export class CreateWeaponDto extends createZodDto(CreateWeaponDtoSchema) { }
 
-  @ApiProperty()
-  type: GenshinWeaponType;
+export const UpdateWeaponDtoSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  type: GenshinWeaponTypeSchema.optional(),
+  rarity: z.number().optional(),
+  baseAttack: z.number().optional(),
+  subStat: z.string().optional(),
+  subStatValue: z.number().optional(),
+  specialAbility: z.string().optional(),
+  specialAbilityDescription: z.string().optional(),
+  description: z.string().optional(),
+});
 
-  @ApiProperty()
-  rarity: number;
+export class UpdateWeaponDto extends createZodDto(UpdateWeaponDtoSchema) { }
 
-  @ApiProperty()
-  baseAttack: number;
+export const DeleteWeaponDtoSchema = z.object({
+  id: z.string(),
+});
 
-  @ApiProperty()
-  subStat: string;
+export class DeleteWeaponDto extends createZodDto(DeleteWeaponDtoSchema) { }
 
-  @ApiProperty()
-  subStatValue: number;
+export const GetWeaponDtoSchema = z.object({
+  id: z.string(),
+});
 
-  @ApiProperty()
-  subStatType: GenshinValueType;
+export class GetWeaponDto extends createZodDto(GetWeaponDtoSchema) { }
 
-  @ApiProperty()
-  specialAbility: string;
+export const GetWeaponsDtoSchema = z.object({
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  name: z.string().optional(),
+});
 
-  @ApiProperty()
-  specialAbilityDescription: string;
+export class GetWeaponsDto extends createZodDto(GetWeaponsDtoSchema) { }
 
-  @ApiProperty()
-  description: string;
-}
+export const FindWeaponDtoSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().optional(),
+  type: GenshinWeaponTypeSchema.optional(),
+  rarity: z.number().optional(),
+  baseAttack: z.number().optional(),
+  subStat: z.string().optional(),
+  page: z.number().optional().default(1),
+  limit: z.number().optional().default(10),
+  slug: z.string().optional(),
+});
 
-export class UpdateWeaponDto {
-  @ApiProperty()
-  id: string;
+export class FindWeaponDto extends createZodDto(FindWeaponDtoSchema) { }
 
-  @ApiProperty()
-  name?: string | undefined;
+export const FindWeaponBySlugDtoSchema = z.object({
+  slug: z.string(),
+});
 
-  @ApiProperty()
-  slug?: string | undefined;
-
-  @ApiProperty()
-  type?: GenshinWeaponType | undefined;
-
-  @ApiProperty()
-  rarity?: number | undefined;
-
-  @ApiProperty()
-  baseAttack?: number | undefined;
-
-  @ApiProperty()
-  subStat?: string | undefined;
-
-  @ApiProperty()
-  subStatValue?: number | undefined;
-
-  @ApiProperty()
-  specialAbility?: string | undefined;
-
-  @ApiProperty()
-  specialAbilityDescription?: string | undefined;
-
-  @ApiProperty()
-  description?: string | undefined;
-}
-
-export class DeleteWeaponDto {
-  @ApiProperty()
-  id: string;
-}
-
-export class GetWeaponDto {
-  @ApiProperty()
-  id: string;
-}
-
-export class GetWeaponsDto {
-  @ApiProperty()
-  page?: number = 1;
-
-  @ApiProperty()
-  limit?: number = 10;
-
-  @ApiProperty()
-  name?: string | undefined;
-}
-
-export class FindWeaponDto {
-  @ApiProperty()
-  id?: string | undefined;
-
-  @ApiProperty()
-  name?: string | undefined;
-
-  @ApiProperty()
-  type?: GenshinWeaponType | undefined;
-
-  @ApiProperty()
-  rarity?: number | undefined;
-
-  @ApiProperty()
-  baseAttack?: number | undefined;
-
-  @ApiProperty()
-  subStat?: string | undefined;
-
-  @ApiProperty()
-  page?: number = 1;
-
-  @ApiProperty()
-  limit?: number = 10;
-
-  @ApiProperty()
-  slug?: string | undefined;
-}
-
-export class FindWeaponBySlugDto {
-  @ApiProperty()
-  slug: string;
-}
+export class FindWeaponBySlugDto extends createZodDto(FindWeaponBySlugDtoSchema) { }

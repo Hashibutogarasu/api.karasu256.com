@@ -11,10 +11,10 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { GenshinCharacterEntity } from "./character.entity";
-import { TranslationEntity } from "./translation.entity";
+import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_countries")
-export class GenshinCountryEntity extends BaseEntity {
+export class GenshinCountryEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -31,17 +31,6 @@ export class GenshinCountryEntity extends BaseEntity {
   @ApiProperty()
   description?: string | undefined;
 
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
-
   @ManyToOne(() => GenshinCharacterEntity, (character) => character.id)
   character: GenshinCharacterEntity;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
 }

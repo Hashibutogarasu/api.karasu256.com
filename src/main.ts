@@ -3,11 +3,14 @@ import { AppModule } from "@/app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
 import { loadEnv } from "@/utils/dotenv";
+import { patchNestJsSwagger } from "nestjs-zod";
 
 async function bootstrap() {
   loadEnv();
 
   const app = await NestFactory.create(AppModule);
+  patchNestJsSwagger();
+
   app.enableCors();
 
   const config = new DocumentBuilder()

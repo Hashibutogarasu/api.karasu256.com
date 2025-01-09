@@ -1,36 +1,31 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreateCountryDto {
-  @ApiProperty()
-  name: string;
+export const CreateCountryDtoSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  description: z.string(),
+});
 
-  @ApiProperty()
-  slug: string;
+export class CreateCountryDto extends createZodDto(CreateCountryDtoSchema) { }
 
-  @ApiProperty()
-  description: string;
-}
+export const UpdateCountryDtoSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+});
 
-export class UpdateCountryDto {
-  @ApiProperty()
-  id: string;
+export class UpdateCountryDto extends createZodDto(UpdateCountryDtoSchema) { }
 
-  @ApiProperty()
-  name?: string | undefined;
+export const FindCountryDtoSchema = z.object({
+  slug: z.string(),
+});
 
-  @ApiProperty()
-  slug?: string | undefined;
+export class FindCountryDto extends createZodDto(FindCountryDtoSchema) { }
 
-  @ApiProperty()
-  description?: string | undefined;
-}
+export const DeleteCountryDtoSchema = z.object({
+  id: z.string(),
+});
 
-export class FindCountryDto {
-  @ApiProperty()
-  slug: string;
-}
-
-export class DeleteCountryDto {
-  @ApiProperty()
-  id: string;
-}
+export class DeleteCountryDto extends createZodDto(DeleteCountryDtoSchema) { }

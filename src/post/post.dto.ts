@@ -1,41 +1,38 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsNotEmpty, IsOptional } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreatePostDto {
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty()
-  title: string;
+export const CreatePostDtoSchema = z.object({
+  title: z.string().nonempty(),
+  content: z.string().nonempty(),
+});
 
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty()
-  content: string;
-}
+export class CreatePostDto extends createZodDto(CreatePostDtoSchema) { }
 
-export class GetPostDto {
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty()
-  id: string;
-}
+export const GetPostDtoSchema = z.object({
+  id: z.string().nonempty(),
+});
 
-export class GetAllPostsDto {
-  @IsOptional()
-  @ApiProperty()
-  page: number | null = 1;
+export class GetPostDto extends createZodDto(GetPostDtoSchema) { }
 
-  @IsOptional()
-  @ApiProperty()
-  limit: number | null = 10;
-}
+export const GetAllPostsDtoSchema = z.object({
+  page: z.number().optional().default(1),
+  limit: z.number().optional().default(10),
+});
 
-export class UpdatePostDto extends CreatePostDto {
-  @ApiProperty()
-  postId: string;
-}
+export class GetAllPostsDto extends createZodDto(GetAllPostsDtoSchema) { }
 
-export class DeletePostDto {
-  @ApiProperty()
-  id: string;
-}
+export const UpdatePostDtoSchema = z.object({
+  postId: z.string().nonempty(),
+  title: z.string().optional(),
+  content: z.string().optional(),
+});
+
+export class UpdatePostDto extends createZodDto(UpdatePostDtoSchema) { }
+
+export const DeletePostDtoSchema = z.object({
+  id: z.string().nonempty(),
+});
+
+export class DeletePostDto extends createZodDto(DeletePostDtoSchema) { }

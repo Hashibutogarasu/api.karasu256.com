@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ElementsService } from './elements.service';
-import { CreateElementDto, DeleteElementDto, FindElementDto, UpdateElementDto } from './elements.dto';
+import { CreateElementDto, CreateElementDtoSchema, DeleteElementDto, DeleteElementDtoSchema, FindElementDto, FindElementDtoSchema, UpdateElementDto, UpdateElementDtoSchema } from './elements.dto';
 import { AdminGuard } from '@/user/admin/admin.guard';
-import { ApiExtraModels } from '@nestjs/swagger';
+import { ApiBody, ApiExtraModels, ApiQuery, getSchemaPath } from '@nestjs/swagger';
+import { zodToOpenAPI } from 'nestjs-zod';
+import { ZodValidationPipe } from '@/pipe/zod_validation_pipe';
 
 @Controller('genshin/elements')
 @ApiExtraModels(FindElementDto, CreateElementDto, UpdateElementDto, DeleteElementDto)
@@ -11,26 +13,44 @@ export class ElementsController {
     private readonly elementsService: ElementsService,
   ) { }
 
+  @ApiQuery({
+    required: false,
+    name: 'queryParams',
+    explode: true,
+    type: 'object',
+    schema: {
+      $ref: getSchemaPath(FindElementDto),
+    },
+  })
   @Get()
-  async find(@Query() dto: FindElementDto) {
+  async find(@Query(new ZodValidationPipe(FindElementDtoSchema)) dto: FindElementDto) {
     return this.elementsService.find(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(CreateElementDtoSchema),
+  })
   @UseGuards(AdminGuard)
   @Post('create')
-  async create(@Body() dto: CreateElementDto) {
+  async create(@Body(new ZodValidationPipe(CreateElementDtoSchema)) dto: CreateElementDto) {
     return await this.elementsService.create(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(UpdateElementDtoSchema),
+  })
   @UseGuards(AdminGuard)
   @Post('update')
-  async update(@Body() dto: UpdateElementDto) {
+  async update(@Body(new ZodValidationPipe(UpdateElementDtoSchema)) dto: UpdateElementDto) {
     return await this.elementsService.update(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(DeleteElementDtoSchema),
+  })
   @UseGuards(AdminGuard)
-  @Post('delete')
-  async delete(@Body() element: DeleteElementDto) {
+  @Delete('delete')
+  async delete(@Body(new ZodValidationPipe(DeleteElementDtoSchema)) element: DeleteElementDto) {
     return await this.elementsService.delete(element);
   }
 }

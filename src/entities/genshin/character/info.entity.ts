@@ -8,11 +8,11 @@ import { GenshinElementSkillEntity } from "../skills/element_skill.entity";
 import { GenshinTalentEntity } from "../skills/talent.entity";
 import { GenshinSpecialSkillEntity } from "../skills/special_skill.entity";
 import { GenshinCountryEntity } from "../country.entity";
-import { GenshinWeaponEntity, GenshinWeaponType } from "../weapon.entity";
-import { TranslationEntity } from "../translation.entity";
+import { GenshinWeaponEntity, GenshinWeaponType, GenshinWeaponTypeSchema } from "../weapon.entity";
+import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity('genshin_character_info')
-export class GenshinCharacterInfoEntity {
+export class GenshinCharacterInfoEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   @ApiProperty()
   id: string;
@@ -29,7 +29,7 @@ export class GenshinCharacterInfoEntity {
   @ApiProperty()
   slug: string;
 
-  @Column({ type: "varchar", enum: GenshinWeaponType, name: "weapon_type" })
+  @Column({ type: "varchar", enum: GenshinWeaponTypeSchema, name: "weapon_type" })
   @ApiProperty()
   weaponType: GenshinWeaponType;
 
@@ -48,14 +48,6 @@ export class GenshinCharacterInfoEntity {
   @Column({ type: "varchar", nullable: true })
   @ApiProperty()
   image?: string | undefined;
-
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
 
   @ManyToOne(() => GenshinElementEntity, (element) => element.id)
   element: GenshinElementEntity;
@@ -83,7 +75,5 @@ export class GenshinCharacterInfoEntity {
 
   @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.id)
   motifWeapon: GenshinWeaponEntity;
-
-  @ManyToOne(() => TranslationEntity, (translation) => translation.id)
-  translation: TranslationEntity;
 };
+

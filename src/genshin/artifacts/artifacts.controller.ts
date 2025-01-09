@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ArtifactsService } from './artifacts.service';
-import { CreateArtifactDto, DeleteArtifactDto, FindArtifactBySlugDto, UpdateArtifactDto } from './artifacts.dto';
-import { ApiExtraModels } from '@nestjs/swagger';
+import { CreateArtifactDto, CreateArtifactDtoSchema, DeleteArtifactDto, DeleteArtifactDtoSchema, FindArtifactBySlugDto, FindArtifactBySlugDtoSchema, UpdateArtifactDto, UpdateArtifactDtoSchema } from './artifacts.dto';
+import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { createZodDto, zodToOpenAPI, ZodValidationPipe } from 'nestjs-zod';
 
 @Controller('genshin/artifacts')
-@ApiExtraModels(CreateArtifactDto, DeleteArtifactDto, UpdateArtifactDto, FindArtifactBySlugDto)
 export class ArtifactsController {
   constructor(
     private readonly artifactsService: ArtifactsService
@@ -15,23 +15,36 @@ export class ArtifactsController {
     return await this.artifactsService.findAll();
   }
 
+  @ApiParam({
+    name: 'slug',
+    schema: zodToOpenAPI(FindArtifactBySlugDtoSchema),
+  })
   @Get(':slug')
-  async findOne(@Param() dto: FindArtifactBySlugDto) {
-    return await this.artifactsService.findOne(dto);
+  async findBySlug(@Param(new ZodValidationPipe(FindArtifactBySlugDtoSchema)) dto: FindArtifactBySlugDto) {
+    return await this.artifactsService.findBySlug(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(CreateArtifactDtoSchema),
+  })
   @Post('create')
-  async create(@Body() dto: CreateArtifactDto) {
+  async create(@Body(new ZodValidationPipe(CreateArtifactDtoSchema)) dto: CreateArtifactDto) {
     return await this.artifactsService.create(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(UpdateArtifactDtoSchema),
+  })
   @Post('update')
-  async update(@Body() dto: UpdateArtifactDto) {
+  async update(@Body(new ZodValidationPipe(UpdateArtifactDtoSchema)) dto: UpdateArtifactDto) {
     return await this.artifactsService.update(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(DeleteArtifactDtoSchema),
+  })
   @Delete('delete')
-  async delete(@Body() dto: DeleteArtifactDto) {
+  async delete(@Body(new ZodValidationPipe(DeleteArtifactDtoSchema)) dto: DeleteArtifactDto) {
     return await this.artifactsService.delete(dto);
   }
 }

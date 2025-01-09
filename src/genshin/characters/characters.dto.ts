@@ -1,134 +1,77 @@
-import { GenshinElementEntity } from "@/entities/genshin/element.entity";
-import { GenshinWeaponType } from "@/entities/genshin/weapon.entity";
-import { ApiProperty } from "@nestjs/swagger";
+import { GenshinWeaponType, GenshinWeaponTypeSchema } from "@/entities/genshin/weapon.entity";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreateCharacterDto {
-  @ApiProperty()
-  name: string;
+export const CreateCharacterDtoSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  description: z.string(),
+  weaponType: GenshinWeaponTypeSchema.default("sword"),
+  element: z.string().default("anemo"),
+  rarity: z.number().default(4),
+  image: z.string().optional(),
+  countryId: z.string(),
+});
 
-  @ApiProperty()
-  slug: string;
+export class CreateCharacterDto extends createZodDto(CreateCharacterDtoSchema) { }
 
-  @ApiProperty()
-  description: string;
+export const UpdateCharacterDtoSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  weaponType: GenshinWeaponTypeSchema.optional(),
+  element: z.string().optional(),
+  rarity: z.number().optional(),
+  image: z.string().optional(),
+  countryId: z.string().optional(),
+});
 
-  @ApiProperty()
-  weaponType: GenshinWeaponType;
+export class UpdateCharacterDto extends createZodDto(UpdateCharacterDtoSchema) { }
 
-  @ApiProperty()
-  element: string;
+export const DeleteCharacterDtoSchema = z.object({
+  id: z.string(),
+});
 
-  @ApiProperty()
-  rarity: number;
+export class DeleteCharacterDto extends createZodDto(DeleteCharacterDtoSchema) { }
 
-  @ApiProperty()
-  image?: string | undefined;
+export const GetCharacterDtoSchema = z.object({
+  id: z.string(),
+});
 
-  @ApiProperty()
-  countryId: string;
-}
+export class GetCharacterDto extends createZodDto(GetCharacterDtoSchema) { }
 
-export class UpdateCharacterDto {
-  @ApiProperty()
-  id: string;
+export const GetCharactersDtoSchema = z.object({
+  id: z.string().optional(),
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  rarity: z.number().optional().default(4),
+  image: z.string().optional(),
+  weaponType: GenshinWeaponTypeSchema.optional().default("sword"),
+  countryId: z.string().optional(),
+});
 
-  @ApiProperty()
-  name?: string | undefined;
+export class GetCharactersDto extends createZodDto(GetCharactersDtoSchema) { }
 
-  @ApiProperty()
-  slug?: string | undefined;
+export const GetCharactersByElementSlugDtoSchema = z.object({
+  element: z.string(),
+  page: z.number().optional().default(1),
+  limit: z.number().optional().default(10),
+});
 
-  @ApiProperty()
-  description?: string | undefined;
+export class GetCharactersByElementSlugDto extends createZodDto(GetCharactersByElementSlugDtoSchema) { }
 
-  @ApiProperty()
-  weaponType?: GenshinWeaponType | undefined;
+export const FindCharacterDtoSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  element: z.string().optional().default("anemo"),
+  rarity: z.string().optional().default("4"),
+  image: z.string().optional(),
+  weaponType: GenshinWeaponTypeSchema.optional().default("sword"),
+  countryId: z.string().optional(),
+});
 
-  @ApiProperty()
-  element?: string | undefined;
-
-  @ApiProperty()
-  rarity?: number | undefined;
-
-  @ApiProperty()
-  image?: string | undefined;
-
-  @ApiProperty()
-  countryId?: string | undefined;
-}
-
-export class DeleteCharacterDto {
-  @ApiProperty()
-  id: string;
-};
-
-export class GetCharacterDto {
-  @ApiProperty()
-  id: string;
-};
-
-export class GetCharactersDto {
-  @ApiProperty()
-  id?: string | undefined;
-
-  @ApiProperty()
-  page?: number = 1;
-
-  @ApiProperty()
-  limit?: number = 10;
-
-  @ApiProperty()
-  name?: string | undefined;
-
-  @ApiProperty()
-  slug?: string | undefined;
-
-  @ApiProperty()
-  rarity?: number | undefined;
-
-  @ApiProperty()
-  image?: string | undefined;
-
-  @ApiProperty()
-  weaponType: GenshinWeaponType | undefined;
-
-  @ApiProperty()
-  countryId?: string | undefined;
-};
-
-export class GetCharactersByElementSlugDto {
-  @ApiProperty()
-  element: string;
-
-  @ApiProperty()
-  page?: number = 1;
-
-  @ApiProperty()
-  limit?: number = 10;
-}
-
-export class FindCharacterDto {
-  @ApiProperty()
-  id?: string | undefined;
-
-  @ApiProperty()
-  name?: string | undefined;
-
-  @ApiProperty()
-  slug?: string | undefined;
-
-  @ApiProperty()
-  element?: string | undefined;
-
-  @ApiProperty()
-  rarity?: number | undefined;
-
-  @ApiProperty()
-  image?: string | undefined;
-
-  @ApiProperty()
-  weaponType: GenshinWeaponType | undefined;
-
-  @ApiProperty()
-  countryId?: string | undefined;
-};
+export class FindCharacterDto extends createZodDto(FindCharacterDtoSchema) { }

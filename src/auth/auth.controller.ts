@@ -16,143 +16,82 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  getSchemaPath,
 } from "@nestjs/swagger";
 import {
   AccessTokenDto,
   PasswordLessSignInDto,
+  PasswordLessSignInDtoSchema,
   SignInDto,
+  SignInDtoSchema,
   SignInOtpDto,
   SignInWithOtpDto,
   SignUpDto,
+  SignUpDtoSchema,
   VerifyOtpDto,
+  VerifyOtpDtoSchema,
 } from "./auth.dto";
-import { MessageDto, MessageWithUserDto } from "../user/user.controller";
 import { AuthGuard } from "./auth.guard";
+import { zodToOpenAPI } from "nestjs-zod";
+import { ZodValidationPipe } from "@/pipe/zod_validation_pipe";
 
-@ApiExtraModels(
-  MessageDto,
-  SignInWithOtpDto,
-  AccessTokenDto,
-  SignUpDto,
-  SignInDto,
-  PasswordLessSignInDto,
-  SignInOtpDto,
-)
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        email: {
-          type: "string",
-          example: "example@example.com",
-          default: "{{email}}",
-        },
-        password: {
-          type: "string",
-          description: "Password must be at least 6 characters long",
-          example: "password",
-          default: "{{password}}",
-        },
-      },
-    },
-  })
-  @ApiOkResponse({
-    description: "User successfully signed up",
-    type: Object,
-  })
-  @ApiResponse({
-    status: 401,
-    description: "Unauthorized",
+    schema: zodToOpenAPI(SignUpDtoSchema),
   })
   @Post("signup")
-  async signUp(@Body() dto: SignUpDto): Promise<object> {
+  async signUp(@Body(new ZodValidationPipe(SignUpDtoSchema)) dto: SignUpDto): Promise<object> {
     const user = await this.authService.signUp(dto);
     return user;
   }
 
   @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        email: {
-          type: "string",
-          example: "example@example.com",
-          default: "{{email}}",
-        },
-        password: {
-          type: "string",
-          example: "password",
-          default: "{{password}}",
-        },
-      },
-    },
-  })
-  @ApiOkResponse({
-    description: "User successfully signed in",
-    type: AccessTokenDto,
-  })
-  @ApiResponse({
-    status: 201,
-    example: {
-      accessToken: "Bearer token",
-    },
-    description: "User successfully signed in",
-  })
-  @ApiResponse({
-    status: 401,
-    description: "Unauthorized",
+    schema: zodToOpenAPI(SignInDtoSchema),
   })
   @Post("signin")
-  async signIn(@Body() dto: SignInDto): Promise<AccessTokenDto> {
+  async signIn(@Body(new ZodValidationPipe(SignInDtoSchema)) dto: SignInDto): Promise<AccessTokenDto> {
     const token = await this.authService.signIn(dto);
     return {
       accessToken: token,
     };
   }
 
-  @ApiOkResponse({
-    description: "User successfully signin with Google",
-    type: AccessTokenDto,
-  })
   @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        email: {
-          type: "string",
-          example: "example@example.com",
-          default: "{{email}}",
-        },
-      },
-    },
-  })
-  @ApiResponse({
-    status: 200,
-    description: "OTP sent",
-    example: {
-      message: "OTP sent to email. Check your email box.",
-    },
+    schema: zodToOpenAPI(PasswordLessSignInDtoSchema),
   })
   @Post("signin/passwordless")
-  async googlePasswordless(@Body() dto: PasswordLessSignInDto): Promise<MessageDto> {
+  async googlePasswordless(@Body(new ZodValidationPipe(PasswordLessSignInDtoSchema)) dto: PasswordLessSignInDto) {
     return this.authService.signInWithOtp(dto, `${process.env.BASE_URL}/auth/callback?`);
   }
 
+  @ApiQuery({
+    name: "token",
+    required: true,
+    type: String,
+  })
   @UseGuards(AuthGuard)
   @Get("verify")
-  async verify(@Req() req): Promise<MessageWithUserDto> {
+  async verify(@Req() req) {
     return {
       message: "Authorized",
       user: req.user,
     };
   }
 
+  @ApiQuery({
+    required: false,
+    name: 'queryParams',
+    explode: true,
+    type: 'object',
+    schema: {
+      $ref: getSchemaPath(VerifyOtpDto),
+    },
+  })
   @Get("confirm")
-  async confirm(@Query() dto: VerifyOtpDto) {
+  async confirm(@Query(new ZodValidationPipe(VerifyOtpDtoSchema)) dto: VerifyOtpDto) {
     return await this.authService.confirm(dto);
   }
 }

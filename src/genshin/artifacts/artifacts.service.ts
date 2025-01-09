@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateArtifactDto, DeleteArtifactDto, FindArtifactBySlugDto, UpdateArtifactDto } from './artifacts.dto';
 import { AdminGuard } from '@/user/admin/admin.guard';
-import { GenshinArtifactMainStat, GenshinArtifactPart } from '@/entities/genshin/artifacts/artifact_type';
+import { GenshinArtifactMainStat, GenshinArtifactPart } from '@/types/genshin/artifact_type';
 
 @Injectable()
 export class ArtifactsService {
@@ -17,7 +17,7 @@ export class ArtifactsService {
     return await this.artifactRepository.find();
   }
 
-  async findOne(dto: FindArtifactBySlugDto): Promise<GenshinArtifactEntity> {
+  async findBySlug(dto: FindArtifactBySlugDto): Promise<GenshinArtifactEntity> {
     return await this.artifactRepository.findOne({
       where: {
         slug: dto.slug

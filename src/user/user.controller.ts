@@ -13,58 +13,38 @@ import {
   CreateUserDto,
   CreateUsersPublicProfileDto,
   GetUserDto,
+  GetUserDtoSchema,
   UpdateUserDto,
+  UpdateUserDtoSchema,
   UpdateUsersPublicProfileDto,
   UserExistsDto,
+  UserExistsDtoSchema,
   UserExistsResponseDto,
 } from "@/user/user.dto";
 import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
 import { UserGuard } from "./user.guard";
-
-export class MessageDto {
-  @ApiProperty()
-  message: string;
-}
-
-export class MessageWithUserDto extends MessageDto {
-  @ApiProperty()
-  user: UsersEntity;
-}
+import { zodToOpenAPI } from "nestjs-zod";
 
 @ApiBearerAuth()
-@ApiExtraModels(UsersEntity, UserExistsDto, UserExistsResponseDto, MessageDto)
 @Controller("users")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiOkResponse({
-    description: "User successfully retrieved",
-    type: Object,
-  })
   @Get()
   @UseGuards(AuthGuard)
   async getUser(@Req() req) {
     return req.user;
   }
 
-  @ApiOkResponse({
-    description: "User created successfully",
-    type: MessageDto,
-  })
   @ApiBody({
-    description: "User profile",
-    type: CreateUserDto,
-  })
-  @ApiResponse({
-    status: 400,
-    description: "The user with display name already exists. Please use a different display name.",
+    schema: zodToOpenAPI(GetUserDtoSchema),
   })
   @UseGuards(AuthGuard)
   @Post("create")
   async createUser(
     @Req() req,
     @Body() { avatarUrl, bio, displayName, email, emailIsPublic, name }: CreateUserDto,
-  ): Promise<MessageDto> {
+  ) {
     return await this.userService.createUser({
       user: req.user,
       avatarUrl,
@@ -76,13 +56,8 @@ export class UserController {
     });
   }
 
-  @ApiOkResponse({
-    description: "User exists",
-    type: UserExistsResponseDto,
-  })
   @ApiBody({
-    description: "User exists",
-    type: UserExistsDto,
+    schema: zodToOpenAPI(UserExistsDtoSchema),
   })
   @UseGuards(AuthGuard)
   @Post("exists")
@@ -92,13 +67,8 @@ export class UserController {
     });
   }
 
-  @ApiOkResponse({
-    description: "User updated successfully",
-    type: MessageDto,
-  })
   @ApiBody({
-    description: "User profile",
-    type: UpdateUserDto,
+    schema: zodToOpenAPI(UpdateUserDtoSchema),
   })
   @UseGuards(UserGuard)
   @Post("update")

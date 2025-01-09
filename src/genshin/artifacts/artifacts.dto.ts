@@ -1,56 +1,39 @@
-import { GenshinArtifactMainStat, GenshinArtifactPart } from "@/entities/genshin/artifacts/artifact_type";
-import { GenshinValueType } from "@/types/genshin/value_type";
-import { ApiProperty } from "@nestjs/swagger";
+import { GenshinArtifactMainStat, GenshinArtifactMainStatSchema, GenshinArtifactPart } from "@/types/genshin/artifact_type";
+import { GenshinValueType, GenshinValueTypeSchema } from "@/types/genshin/value_type";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class FindArtifactBySlugDto {
-  @ApiProperty()
-  slug: string;
-}
+export const FindArtifactBySlugDtoSchema = z.object({
+  slug: z.string(),
+});
 
-export class DeleteArtifactDto {
-  @ApiProperty()
-  id: string;
-}
+export class FindArtifactBySlugDto extends createZodDto(FindArtifactBySlugDtoSchema) { }
 
-export class CreateArtifactDto {
-  @ApiProperty()
-  name: string;
+export const DeleteArtifactDtoSchema = z.object({
+  id: z.string(),
+});
 
-  @ApiProperty()
-  slug: string;
+export class DeleteArtifactDto extends createZodDto(DeleteArtifactDtoSchema) { }
 
-  @ApiProperty()
-  description: string;
+export const CreateArtifactDtoSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  description: z.string(),
+  part: z.string(),
+  mainStat: GenshinArtifactMainStatSchema.optional(),
+  mainStatValueType: GenshinValueTypeSchema.optional(),
+});
 
-  @ApiProperty()
-  part: GenshinArtifactPart;
+export class CreateArtifactDto extends createZodDto(CreateArtifactDtoSchema) { }
 
-  @ApiProperty()
-  mainStat: GenshinArtifactMainStat;
+export const UpdateArtifactDtoSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  part: z.string().optional(),
+  mainStat: GenshinArtifactMainStatSchema.optional(),
+  mainStatValueType: GenshinValueTypeSchema.optional(),
+});
 
-  @ApiProperty()
-  mainStatValueType: GenshinValueType;
-}
-
-export class UpdateArtifactDto {
-  @ApiProperty()
-  id: string;
-
-  @ApiProperty()
-  name?: string | undefined;
-
-  @ApiProperty()
-  slug?: string | undefined;
-
-  @ApiProperty()
-  description?: string | undefined;
-
-  @ApiProperty()
-  part?: string | undefined;
-
-  @ApiProperty()
-  mainStat?: string | undefined;
-
-  @ApiProperty()
-  mainStatValueType: GenshinValueType | undefined;
-}
+export class UpdateArtifactDto extends createZodDto(UpdateArtifactDtoSchema) { }
