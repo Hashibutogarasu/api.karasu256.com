@@ -7,13 +7,16 @@ import {
   DeletePostDto,
   DeletePostDtoSchema,
   GetAllPostsDto,
+  GetAllPostsDtoSchema,
   GetPostDto,
+  GetPostDtoSchema,
   UpdatePostDto,
   UpdatePostDtoSchema,
 } from "./post.dto";
 import { UserGuard } from "@/user/user.guard";
 import { ApiBody, ApiQuery, getSchemaPath } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
+import { ZodValidationPipe } from "@/pipe/zod_validation_pipe";
 
 @Controller("posts")
 export class PostController {
@@ -24,7 +27,7 @@ export class PostController {
   })
   @UseGuards(UserGuard)
   @Post("create")
-  async createPost(@Req() req, @Body() dto: CreatePostDto): Promise<PostsEntity> {
+  async createPost(@Req() req, @Body(new ZodValidationPipe(CreatePostDtoSchema)) dto: CreatePostDto): Promise<PostsEntity> {
     return await this.postService.createPost(req.user, dto);
   }
 
@@ -33,7 +36,7 @@ export class PostController {
   })
   @UseGuards(UserGuard)
   @Post("update")
-  async updatePost(@Req() req, @Body() dto: UpdatePostDto): Promise<PostsEntity> {
+  async updatePost(@Req() req, @Body(new ZodValidationPipe(UpdatePostDtoSchema)) dto: UpdatePostDto): Promise<PostsEntity> {
     return await this.postService.updatePost(req.user, dto);
   }
 
@@ -56,7 +59,7 @@ export class PostController {
     },
   })
   @Get("get")
-  async getPost(@Query() dto: GetPostDto): Promise<PostsEntity> {
+  async getPost(@Query(new ZodValidationPipe(GetPostDtoSchema)) dto: GetPostDto): Promise<PostsEntity> {
     return await this.postService.getPost(dto);
   }
 
@@ -70,7 +73,7 @@ export class PostController {
     },
   })
   @Get("get-all")
-  async getAllPosts(@Query() dto: GetAllPostsDto): Promise<PostsEntity[]> {
+  async getAllPosts(@Query(new ZodValidationPipe(GetAllPostsDtoSchema)) dto: GetAllPostsDto): Promise<PostsEntity[]> {
     return await this.postService.getAllPosts(dto);
   }
 }
