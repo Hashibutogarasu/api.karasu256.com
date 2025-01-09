@@ -1,4 +1,3 @@
-import { GenshinCharacterEntity } from '@/entities/genshin/character.entity';
 import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { CreateCharacterDto, CreateCharacterDtoSchema, DeleteCharacterDto, DeleteCharacterDtoSchema, FindCharacterDto, FindCharacterDtoSchema, UpdateCharacterDto, UpdateCharacterDtoSchema } from './characters.dto';
 import { CharactersService } from './characters.service';

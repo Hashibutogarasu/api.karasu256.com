@@ -1,6 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CountriesService } from './countries.service';
-import { CreateCountryDto, DeleteCountryDto, FindCountryDto, UpdateCountryDto } from './countries.dto';
+import { CreateCountryDto, CreateCountryDtoSchema, DeleteCountryDto, DeleteCountryDtoSchema, FindCountryDto, FindCountryDtoSchema, UpdateCountryDto, UpdateCountryDtoSchema } from './countries.dto';
+import { ApiBody, ApiExtraModels, ApiParam, getSchemaPath } from '@nestjs/swagger';
+import { zodToOpenAPI } from 'nestjs-zod';
+import { ZodValidationPipe } from '@/pipe/zod_validation_pipe';
 
 @Controller('genshin/countries')
 export class CountriesController {
@@ -13,23 +16,37 @@ export class CountriesController {
     return this.countriesService.find();
   }
 
+  @ApiParam({
+    name: 'slug',
+    schema: zodToOpenAPI(FindCountryDtoSchema),
+  })
+  @ApiExtraModels(FindCountryDto)
   @Get('profile/:slug')
-  async getCountryBySlug(@Param() dto: FindCountryDto) {
+  async getCountryBySlug(@Param(new ZodValidationPipe(FindCountryDtoSchema)) dto: FindCountryDto) {
     return this.countriesService.findBySlug(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(CreateCountryDtoSchema),
+  })
   @Post('create')
-  async createCountry(@Body() dto: CreateCountryDto) {
+  async createCountry(@Body(new ZodValidationPipe(CreateCountryDtoSchema)) dto: CreateCountryDto) {
     return this.countriesService.create(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(UpdateCountryDtoSchema),
+  })
   @Post('update')
-  async updateCountry(@Body() dto: UpdateCountryDto) {
+  async updateCountry(@Body(new ZodValidationPipe(UpdateCountryDtoSchema)) dto: UpdateCountryDto) {
     return this.countriesService.update(dto);
   }
 
+  @ApiBody({
+    schema: zodToOpenAPI(DeleteCountryDtoSchema),
+  })
   @Delete('delete')
-  async deleteCountry(@Body() dto: DeleteCountryDto) {
+  async deleteCountry(@Body(new ZodValidationPipe(DeleteCountryDtoSchema)) dto: DeleteCountryDto) {
     return this.countriesService.delete(dto);
   }
 }

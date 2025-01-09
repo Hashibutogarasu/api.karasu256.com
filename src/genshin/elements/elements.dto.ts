@@ -1,30 +1,45 @@
-export class CreateElementDto {
-  name?: string;
-  slug?: string;
-}
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class UpdateElementDto {
-  id: string;
-  name?: string | undefined;
-  slug?: string | undefined;
-}
+export const CreateElementDtoSchema = z.object({
+  name: z.string().optional(),
+  slug: z.string().optional(),
+});
 
-export class DeleteElementDto {
-  id: string;
-}
+export class CreateElementDto extends createZodDto(CreateElementDtoSchema) { }
 
-export class GetElementDto {
-  id: string;
-}
+export const UpdateElementDtoSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+});
 
-export class GetElementsDto {
-  page?: number = 1;
-  limit?: number = 10;
-  name?: string | undefined;
-}
+export class UpdateElementDto extends createZodDto(UpdateElementDtoSchema) { }
 
-export class FindElementDto {
-  id?: string | undefined;
-  slug?: string | undefined;
-  name?: string | undefined;
-}
+export const DeleteElementDtoSchema = z.object({
+  id: z.string(),
+});
+
+export class DeleteElementDto extends createZodDto(DeleteElementDtoSchema) { }
+
+export const GetElementDtoSchema = z.object({
+  id: z.string(),
+});
+
+export class GetElementDto extends createZodDto(GetElementDtoSchema) { }
+
+export const GetElementsDtoSchema = z.object({
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  name: z.string().optional(),
+});
+
+export class GetElementsDto extends createZodDto(GetElementsDtoSchema) { }
+
+export const FindElementDtoSchema = z.object({
+  id: z.string().optional(),
+  slug: z.string().optional(),
+  name: z.string().optional(),
+});
+
+export class FindElementDto extends createZodDto(FindElementDtoSchema) { }

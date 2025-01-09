@@ -1,104 +1,68 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { User } from "@supabase/supabase-js";
-import { IsString, IsNotEmpty, IsOptional } from "class-validator";
-import { Column } from "typeorm";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreateUserDto {
-  user: User;
+export const CreateUserDtoSchema = z.object({
+  user: z.object({
+    id: z.string(),
+  }),
+  displayName: z.string(),
+  email: z.string().optional(),
+  emailIsPublic: z.boolean(),
+  name: z.string(),
+  bio: z.string().optional(),
+  avatarUrl: z.string().optional(),
+});
 
-  @Column({ type: "varchar", name: "display_name" })
-  @IsNotEmpty()
-  @IsString()
-  displayName: string;
+export class CreateUserDto extends createZodDto(CreateUserDtoSchema) { }
 
-  @IsOptional()
-  @IsString()
-  email: string | null;
+export const GetUserDtoSchema = z.object({
+  displayName: z.string(),
+});
 
-  @IsNotEmpty()
-  emailIsPublic: boolean;
+export class GetUserDto extends createZodDto(GetUserDtoSchema) { }
 
-  @IsNotEmpty()
-  name: string;
+export const UpdateUserDtoSchema = z.object({
+  displayName: z.string().optional(),
+  emailIsPublic: z.boolean().optional(),
+  name: z.string().optional(),
+  bio: z.string().optional(),
+  avatarUrl: z.string().optional(),
+});
 
-  @IsOptional()
-  bio: string | null = "";
+export class UpdateUserDto extends createZodDto(UpdateUserDtoSchema) { }
 
-  @IsOptional()
-  avatarUrl: string | null;
-};
+export const CreateUserPublicProfileDtoSchema = z.object({
+  displayName: z.string(),
+  name: z.string().optional(),
+  bio: z.string().optional(),
+  avatarUrl: z.string().optional(),
+});
 
-export class GetUserDto {
-  displayName: string;
-};
+export class CreateUsersPublicProfileDto extends createZodDto(CreateUserPublicProfileDtoSchema) { }
 
-export class UpdateUserDto {
-  @Column({ type: "varchar", name: "display_name" })
-  @IsOptional()
-  @IsString()
-  displayName: string | null;
+export const UpdateUsersPublicProfileDtoSchema = z.object({
+  name: z.string().optional(),
+  displayName: z.string().optional(),
+  bio: z.string().optional(),
+  avatarUrl: z.string().optional(),
+});
 
-  @Column("bool", { default: false, name: "email_is_public" })
-  @IsOptional()
-  emailIsPublic: boolean | null;
+export class UpdateUsersPublicProfileDto extends createZodDto(UpdateUsersPublicProfileDtoSchema) { }
 
-  @IsOptional()
-  @IsString()
-  name: string | null;
+export const UserExistsDtoSchema = z.object({
+  id: z.string(),
+});
 
-  @IsOptional()
-  @IsString()
-  bio: string | null;
+export class UserExistsDto extends createZodDto(UserExistsDtoSchema) { }
 
-  @Column({ type: "varchar", name: "avatar_url" })
-  @IsOptional()
-  @IsString()
-  avatarUrl: string | null;
-};
+export const UserExistsResponseDtoSchema = z.object({
+  exists: z.boolean(),
+});
 
-export class CreateUsersPublicProfileDto {
-  @IsNotEmpty()
-  @IsString()
-  displayName: string;
+export class UserExistsResponseDto extends createZodDto(UserExistsResponseDtoSchema) { }
 
-  @IsOptional()
-  @IsString()
-  name: string | null;
+export const MessageDtoSchema = z.object({
+  message: z.string(),
+});
 
-  @IsOptional()
-  @IsString()
-  bio: string | null;
-
-  @IsOptional()
-  @IsString()
-  avatarUrl: string | null;
-};
-
-export class UpdateUsersPublicProfileDto {
-  @IsOptional()
-  @IsString()
-  name: string | null;
-
-  @IsOptional()
-  @IsString()
-  displayName: string | null;
-
-  @IsOptional()
-  @IsString()
-  bio: string | null;
-
-  @IsOptional()
-  @IsString()
-  avatarUrl: string | null;
-};
-
-export class UserExistsDto {
-  @IsNotEmpty()
-  @IsString()
-  id: string;
-};
-
-export class UserExistsResponseDto {
-  @IsNotEmpty()
-  exists: boolean;
-};
+export class MessageDto extends createZodDto(MessageDtoSchema) { }
