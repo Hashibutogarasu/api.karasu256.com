@@ -1,4 +1,3 @@
-import { GenshinWeaponType, GenshinWeaponTypeSchema } from "@/entities/genshin/weapon.entity";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
@@ -6,11 +5,11 @@ export const CreateCharacterDtoSchema = z.object({
   name: z.string(),
   slug: z.string(),
   description: z.string(),
-  weaponType: GenshinWeaponTypeSchema.default("sword"),
+  weaponType: z.string().default("sword"),
   element: z.string().default("anemo"),
   rarity: z.number().default(4),
   image: z.string().optional(),
-  countryId: z.string(),
+  country: z.string(),
 });
 
 export class CreateCharacterDto extends createZodDto(CreateCharacterDtoSchema) { }
@@ -20,11 +19,11 @@ export const UpdateCharacterDtoSchema = z.object({
   name: z.string().optional(),
   slug: z.string().optional(),
   description: z.string().optional(),
-  weaponType: GenshinWeaponTypeSchema.optional(),
+  weaponType: z.string().optional(),
   element: z.string().optional(),
   rarity: z.number().optional(),
   image: z.string().optional(),
-  countryId: z.string().optional(),
+  country: z.string().optional(),
 });
 
 export class UpdateCharacterDto extends createZodDto(UpdateCharacterDtoSchema) { }
@@ -49,8 +48,8 @@ export const GetCharactersDtoSchema = z.object({
   slug: z.string().optional(),
   rarity: z.number().optional().default(4),
   image: z.string().optional(),
-  weaponType: GenshinWeaponTypeSchema.optional().default("sword"),
-  countryId: z.string().optional(),
+  weaponType: z.string().optional().default("sword"),
+  country: z.string().optional(),
 });
 
 export class GetCharactersDto extends createZodDto(GetCharactersDtoSchema) { }
@@ -68,10 +67,10 @@ export const FindCharacterDtoSchema = z.object({
   name: z.string().optional(),
   slug: z.string().optional(),
   element: z.string().optional().default("anemo"),
-  rarity: z.string().optional().default("4"),
+  rarity: z.number().optional().default(4),
   image: z.string().optional(),
-  weaponType: GenshinWeaponTypeSchema.optional().default("sword"),
-  countryId: z.string().optional(),
+  weaponType: z.string().optional().default("sword"),
+  country: z.string().optional(),
 });
 
 export class FindCharacterDto extends createZodDto(FindCharacterDtoSchema) { }

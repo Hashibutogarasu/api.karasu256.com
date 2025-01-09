@@ -28,13 +28,4 @@ export class GenshinElementEntity extends GenshinEntity {
   @Column({ type: "varchar" })
   @ApiProperty()
   slug: string;
-
-  @ManyToOne(() => GenshinCharacterEntity, (character) => character.id)
-  character: GenshinCharacterEntity;
-
-  @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.id)
-  weapon: GenshinWeaponEntity;
-
-  @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
-  artifactSet: GenshinArtifactSetEntity;
 }

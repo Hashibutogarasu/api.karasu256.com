@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateArtifactDto, DeleteArtifactDto, FindArtifactBySlugDto, UpdateArtifactDto } from './artifacts.dto';
 import { AdminGuard } from '@/user/admin/admin.guard';
-import { GenshinArtifactMainStat, GenshinArtifactPart } from '@/types/genshin/artifact_type';
 
 @Injectable()
 export class ArtifactsService {
@@ -37,13 +36,12 @@ export class ArtifactsService {
       throw new HttpException('Artifact already exists', 400);
     }
 
+    const { part, mainStat, ...createData } = dto;
+
     return await this.artifactRepository.save({
-      name: dto.name,
-      slug: dto.slug,
-      description: dto.description,
-      part: dto.part,
-      mainStat: dto.mainStat,
-      mainStatValueType: dto.mainStatValueType,
+      ...createData,
+      part: part,
+      mainStat: mainStat as any,
     });
   }
 
@@ -70,8 +68,10 @@ export class ArtifactsService {
     return await this.artifactRepository.save({
       id: dto.id,
       ...updateData,
-      part: part as GenshinArtifactPart,
-      mainStat: mainStat as GenshinArtifactMainStat,
+      part: part,
+      mainStat: {
+
+      }
     });
   }
 

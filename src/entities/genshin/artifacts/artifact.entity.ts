@@ -10,9 +10,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { GenshinArtifactMainStat, GenshinArtifactMainStatSchema, GenshinArtifactPart, GenshinArtifactPartSchema } from "../../../types/genshin/artifact_type";
-import { GenshinValueType, GenshinValueTypeSchema } from "@/types/genshin/value_type";
+import { GenshinArtifactMainStatSchema, GenshinArtifactPart, GenshinArtifactPartSchema } from "../../../types/genshin/artifact/artifact_type";
 import { GenshinEntity } from "@/types/genshin/genshin";
+import { GenshinArtifactMainStat } from "./stat.entity";
 
 @Entity("genshin_artifacts")
 export class GenshinArtifactEntity extends GenshinEntity {
@@ -32,16 +32,14 @@ export class GenshinArtifactEntity extends GenshinEntity {
   @ApiProperty()
   description: string;
 
-  @Column({ type: "enum", enum: GenshinArtifactPartSchema })
+  @Column({ type: "varchar" })
   @ApiProperty()
   part: GenshinArtifactPart;
 
-  @Column({ type: "enum", enum: GenshinArtifactMainStatSchema })
-  @ApiProperty()
+  @ManyToOne(() => GenshinArtifactMainStat, (mainStat) => mainStat.slug)
   mainStat: GenshinArtifactMainStat;
 
-  @Column({ type: "enum", enum: GenshinValueTypeSchema })
-  @ApiProperty()
-  mainStatValueType: GenshinValueType;
+  @ManyToMany(() => GenshinArtifactMainStat, (subStat) => subStat.slug)
+  subStats: GenshinArtifactMainStat[];
 };
 

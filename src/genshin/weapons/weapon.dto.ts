@@ -1,17 +1,15 @@
-import { GenshinWeaponType, GenshinWeaponTypeSchema } from "@/entities/genshin/weapon.entity";
-import { GenshinValueType, GenshinValueTypeSchema } from "@/types/genshin/value_type";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 export const CreateWeaponDtoSchema = z.object({
   name: z.string(),
   slug: z.string(),
-  type: GenshinWeaponTypeSchema.default("sword"),
+  type: z.string().default("sword"),
   rarity: z.number(),
   baseAttack: z.number(),
   subStat: z.string(),
   subStatValue: z.number(),
-  subStatType: GenshinValueTypeSchema.default("number"),
+  subStatType: z.string().default("number"),
   specialAbility: z.string(),
   specialAbilityDescription: z.string(),
   description: z.string(),
@@ -23,7 +21,7 @@ export const UpdateWeaponDtoSchema = z.object({
   id: z.string(),
   name: z.string().optional(),
   slug: z.string().optional(),
-  type: GenshinWeaponTypeSchema.optional(),
+  type: z.string().optional(),
   rarity: z.number().optional(),
   baseAttack: z.number().optional(),
   subStat: z.string().optional(),
@@ -58,7 +56,7 @@ export class GetWeaponsDto extends createZodDto(GetWeaponsDtoSchema) { }
 export const FindWeaponDtoSchema = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
-  type: GenshinWeaponTypeSchema.optional(),
+  type: z.string().optional(),
   rarity: z.number().optional(),
   baseAttack: z.number().optional(),
   subStat: z.string().optional(),

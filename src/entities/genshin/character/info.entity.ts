@@ -8,7 +8,7 @@ import { GenshinElementSkillEntity } from "../skills/element_skill.entity";
 import { GenshinTalentEntity } from "../skills/talent.entity";
 import { GenshinSpecialSkillEntity } from "../skills/special_skill.entity";
 import { GenshinCountryEntity } from "../country.entity";
-import { GenshinWeaponEntity, GenshinWeaponType, GenshinWeaponTypeSchema } from "../weapon.entity";
+import { GenshinWeaponEntity } from "../weapon.entity";
 import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity('genshin_character_info')
@@ -29,13 +29,13 @@ export class GenshinCharacterInfoEntity extends GenshinEntity {
   @ApiProperty()
   slug: string;
 
-  @Column({ type: "varchar", enum: GenshinWeaponTypeSchema, name: "weapon_type" })
-  @ApiProperty()
-  weaponType: GenshinWeaponType;
-
   @Column({ type: "varchar" })
   @ApiProperty()
-  description: string;
+  weaponType: string;
+
+  @Column({ type: "varchar", nullable: true })
+  @ApiProperty()
+  description: string | undefined;
 
   @Column({ type: "varchar", array: true, default: "{}" })
   @ApiProperty()
@@ -49,31 +49,31 @@ export class GenshinCharacterInfoEntity extends GenshinEntity {
   @ApiProperty()
   image?: string | undefined;
 
-  @ManyToOne(() => GenshinElementEntity, (element) => element.id)
-  element: GenshinElementEntity;
+  @ManyToOne(() => GenshinElementEntity, (element) => element.slug)
+  element?: GenshinElementEntity | undefined;
 
-  @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.id)
-  artifactSet: GenshinArtifactSetEntity[];
+  @ManyToMany(() => GenshinArtifactSetEntity, (artifactSet) => artifactSet.slug, { nullable: true })
+  artifactSet?: GenshinArtifactSetEntity[] | undefined;
 
-  @ManyToMany(() => GenshinNormalAttackEntity, (normalAttack) => normalAttack.id)
-  normalAttack: GenshinNormalAttackEntity;
+  @ManyToMany(() => GenshinNormalAttackEntity, (normalAttack) => normalAttack.slug, { nullable: true })
+  normalAttack?: GenshinNormalAttackEntity | undefined;
 
-  @ManyToMany(() => GenshinChargedAttackEntity, (chargedAttack) => chargedAttack.id)
-  chargedAttack: GenshinChargedAttackEntity;
+  @ManyToMany(() => GenshinChargedAttackEntity, (chargedAttack) => chargedAttack.slug, { nullable: true })
+  chargedAttack?: GenshinChargedAttackEntity | undefined;
 
-  @ManyToMany(() => GenshinElementSkillEntity, (elementSkill) => elementSkill.id)
-  elementSkill: GenshinElementSkillEntity;
+  @ManyToMany(() => GenshinElementSkillEntity, (elementSkill) => elementSkill.slug, { nullable: true })
+  elementSkill?: GenshinElementSkillEntity | undefined;
 
-  @ManyToMany(() => GenshinTalentEntity, (talent) => talent.id)
-  talent: GenshinTalentEntity;
+  @ManyToMany(() => GenshinTalentEntity, (talent) => talent.slug, { nullable: true })
+  talent?: GenshinTalentEntity | undefined;
 
-  @ManyToMany(() => GenshinSpecialSkillEntity, (specialSkill) => specialSkill.id)
-  specialSkill: GenshinSpecialSkillEntity;
+  @ManyToMany(() => GenshinSpecialSkillEntity, (specialSkill) => specialSkill.slug, { nullable: true })
+  specialSkill?: GenshinSpecialSkillEntity | undefined;
 
-  @ManyToOne(() => GenshinCountryEntity, (country) => country.id, { nullable: true })
+  @ManyToOne(() => GenshinCountryEntity, (country) => country.slug, { nullable: true })
   country?: GenshinCountryEntity | undefined;
 
-  @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.id)
-  motifWeapon: GenshinWeaponEntity;
+  @ManyToOne(() => GenshinWeaponEntity, (weapon) => weapon.slug, { nullable: true })
+  motifWeapon?: GenshinWeaponEntity | undefined;
 };
 

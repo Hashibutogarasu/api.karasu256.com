@@ -1,4 +1,3 @@
-import { GenshinArtifactSubStat, GenshinArtifactSubStatSchema } from "@/types/genshin/artifact_type";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
@@ -15,7 +14,7 @@ export const FindArtifactSetsDtoSchema = z.object({
   description: z.string().optional(),
   artifactIds: z.array(z.string()).optional(),
   recommendedSubStats: z.array(z.string()).optional(),
-  recommendedCharacterIds: z.array(z.string()).optional(),
+  characters: z.array(z.string()).optional(),
 });
 
 export class FindArtifactSetsDto extends createZodDto(FindArtifactSetsDtoSchema) { }
@@ -25,20 +24,15 @@ export const CreateArtifactSetsDtoSchema = z.object({
   slug: z.string(),
   description: z.string(),
   artifactIds: z.array(z.string()),
-  recommendedSubStats: z.array(GenshinArtifactSubStatSchema.optional()).optional(),
-  recommendedCharacterIds: z.array(z.string()).optional(),
+  recommendedSubStats: z.array(z.string().optional()).optional(),
+  characters: z.array(z.string()).optional(),
 });
 
 export class CreateArtifactSetsDto extends createZodDto(CreateArtifactSetsDtoSchema) { }
 
 export const UpdateArtifactSetsDtoSchema = z.object({
   id: z.string(),
-  name: z.string().optional(),
   slug: z.string().optional(),
-  description: z.string().optional(),
-  artifactIds: z.array(z.string()).optional(),
-  recommendedSubStats: z.array(GenshinArtifactSubStatSchema.optional()).optional(),
-  recommendedCharacterIds: z.array(z.string()).optional(),
 });
 
 export class UpdateArtifactSetsDto extends createZodDto(UpdateArtifactSetsDtoSchema) { }

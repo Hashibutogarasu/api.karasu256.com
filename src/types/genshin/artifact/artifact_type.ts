@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ArtifactStat } from "./stat/stat";
 
 export const GenshinArtifactPartSchema = z.nativeEnum({
   flower_of_life: "flower_of_life",
@@ -31,19 +32,3 @@ export const GenshinArtifactMainStatSchema = z.nativeEnum({
   physical_damage_bonus: "physical_damage_bonus",
 });
 
-export type GenshinArtifactMainStat = z.infer<typeof GenshinArtifactMainStatSchema>;
-
-export const GenshinArtifactSubStatSchema = z.nativeEnum({
-  atk: "atk",
-  hp: "hp",
-  def: "def",
-  atk_percent: "atk_percent",
-  hp_percent: "hp_percent",
-  def_percent: "def_percent",
-  elemental_mastery: "elemental_mastery",
-  energy_recharge: "energy_recharge",
-  crit_rate: "crit_rate",
-  crit_damage: "crit_damage",
-});
-
-export type GenshinArtifactSubStat = z.infer<typeof GenshinArtifactSubStatSchema>;

@@ -1,5 +1,4 @@
-import { GenshinArtifactMainStat, GenshinArtifactMainStatSchema, GenshinArtifactPart } from "@/types/genshin/artifact_type";
-import { GenshinValueType, GenshinValueTypeSchema } from "@/types/genshin/value_type";
+import { GenshinArtifactMainStatSchema, GenshinArtifactPart } from "@/types/genshin/artifact/artifact_type";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
@@ -21,7 +20,7 @@ export const CreateArtifactDtoSchema = z.object({
   description: z.string(),
   part: z.string(),
   mainStat: GenshinArtifactMainStatSchema.optional(),
-  mainStatValueType: GenshinValueTypeSchema.optional(),
+  mainStatValueType: z.string().optional(),
 });
 
 export class CreateArtifactDto extends createZodDto(CreateArtifactDtoSchema) { }
@@ -32,8 +31,8 @@ export const UpdateArtifactDtoSchema = z.object({
   slug: z.string().optional(),
   description: z.string().optional(),
   part: z.string().optional(),
-  mainStat: GenshinArtifactMainStatSchema.optional(),
-  mainStatValueType: GenshinValueTypeSchema.optional(),
+  mainStat: GenshinArtifactMainStatSchema.default("atk"),
+  mainStatValueType: z.string().default("number"),
 });
 
 export class UpdateArtifactDto extends createZodDto(UpdateArtifactDtoSchema) { }

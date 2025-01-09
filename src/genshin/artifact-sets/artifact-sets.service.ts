@@ -45,7 +45,12 @@ export class ArtifactSetsService {
       throw new HttpException('Artifact Sets already exists', 400);
     }
 
-    return await this.artifactSetsRepository.save(dto);
+    const { characters, recommendedSubStats, ...createData } = dto;
+
+    return await this.artifactSetsRepository.save({
+      recommendedSubStats: recommendedSubStats.map((subStat) => ({ slug: subStat })),
+      ...createData,
+    });
   }
 
   async update(dto: UpdateArtifactSetsDto) {
@@ -68,7 +73,7 @@ export class ArtifactSetsService {
     }
 
     return await this.artifactSetsRepository.save({
-      id,
+      id: dto.id,
       ...updateData
     });
   }

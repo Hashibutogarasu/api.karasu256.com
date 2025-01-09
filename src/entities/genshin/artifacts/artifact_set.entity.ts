@@ -11,8 +11,9 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { GenshinArtifactEntity } from "./artifact.entity";
-import { GenshinArtifactSubStat, GenshinArtifactSubStatSchema } from "../../../types/genshin/artifact_type";
 import { GenshinEntity } from "@/types/genshin/genshin";
+import { GenshinArtifactMainStat, GenshinArtifactSubStat } from "./stat.entity";
+import { GenshinCharacterEntity } from "../character.entity";
 
 @Entity("genshin_artifact_sets")
 export class GenshinArtifactSetEntity extends GenshinEntity {
@@ -32,18 +33,15 @@ export class GenshinArtifactSetEntity extends GenshinEntity {
   @ApiProperty()
   description: string;
 
-  @Column({ type: "varchar", array: true })
-  @ApiProperty()
-  artifactIds: string[];
+  @OneToMany(() => GenshinCharacterEntity, (character) => character.slug)
+  characters?: GenshinCharacterEntity[] | undefined;
 
-  @Column({ type: "enum", enum: GenshinArtifactSubStatSchema, array: true, default: "{}" })
-  @ApiProperty()
-  recommendedSubStats?: GenshinArtifactSubStat[];
+  @OneToMany(() => GenshinArtifactMainStat, (subStat) => subStat.slug)
+  mainStats?: GenshinArtifactMainStat[] | undefined;
 
-  @Column({ type: "varchar", array: true, default: "{}" })
-  @ApiProperty()
-  recommendedCharacterIds: string[];
+  @OneToMany(() => GenshinArtifactSubStat, (subStat) => subStat.slug)
+  recommendedSubStats?: GenshinArtifactSubStat[] | undefined;
 
-  @ManyToMany(() => GenshinArtifactEntity, (artifact) => artifact.id)
-  artifacts: GenshinArtifactEntity[];
+  @OneToMany(() => GenshinArtifactEntity, (artifact) => artifact.slug)
+  artifacts: GenshinArtifactEntity[] | undefined;
 }

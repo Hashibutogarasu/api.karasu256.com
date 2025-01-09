@@ -30,7 +30,4 @@ export class GenshinCountryEntity extends GenshinEntity {
   @Column({ type: "varchar", nullable: true })
   @ApiProperty()
   description?: string | undefined;
-
-  @ManyToOne(() => GenshinCharacterEntity, (character) => character.id)
-  character: GenshinCharacterEntity;
 }

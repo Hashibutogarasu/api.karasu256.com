@@ -17,39 +17,30 @@ export class CharactersService {
   ) { }
 
   async create(dto: CreateCharacterDto) {
-    const data = await this.characterRepository.findOne({
+    if (await this.characterRepository.findOne({
       where: {
         slug: dto.slug
       }
-    });
-
-    if (data) {
+    })) {
       throw new HttpException('Character already exists', 400);
     }
 
+    const { element, country, weaponType, ...createData } = dto;
+
     return await this.characterRepository.save({
-      name: dto.name,
-      slug: dto.slug,
-      description: dto.description,
-      weaponType: dto.weaponType,
-      image: dto.image,
       element: {
-        slug: dto.element
+        slug: element
       },
-      country: {
-        id: dto.countryId
-      },
+      ...createData
     });
   }
 
   async update(dto: UpdateCharacterDto) {
-    const data = await this.characterRepository.findOne({
+    if (!await this.characterRepository.findOne({
       where: {
         id: dto.id
       }
-    });
-
-    if (!data) {
+    })) {
       throw new HttpException('Character not found', 404);
     }
 
@@ -61,12 +52,18 @@ export class CharactersService {
       }
     }
 
-    const { element, ...rest } = updateData;
+    const { element, country, weaponType, ...rest } = updateData;
 
     return await this.characterRepository.save({
       id: dto.id,
       element: {
         slug: element
+      },
+      country: {
+        slug: country
+      },
+      weaponType: {
+        slug: weaponType
       },
       ...rest,
     });
@@ -79,42 +76,38 @@ export class CharactersService {
   }
 
   async find(dto: FindCharacterDto) {
-    const { id, countryId, element, rarity, slug, ...rest } = dto;
+    const { id, country, weaponType, element, slug, ...rest } = dto;
 
     try {
       if (id) {
         z.string().uuid().parse(id);
-      }
-
-      if (countryId) {
-        z.string().uuid().parse(countryId);
       }
     }
     catch (e) {
       throw new HttpException('Invalid id format', 400);
     }
 
-    if (rarity && !/^\d+$/.test(rarity.toString())) {
-      throw new HttpException('Invalid rarity format', 400);
-    }
-
-    const country = await this.countryRepository.findOne({
+    if (!await this.countryRepository.findOne({
       where: {
-        id: dto.countryId
+        slug: country
       }
-    });
-
-    if (!country) {
+    })) {
       throw new HttpException('Country not found', 404);
     }
 
     return await this.characterRepository.find({
       where: {
         id,
-        rarity: rarity as any,
         element: {
           slug: element
         },
+        country: {
+          slug: country
+        },
+        weaponType: {
+          slug: weaponType
+        },
+        slug,
         ...rest
       }
     });
