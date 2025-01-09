@@ -1,10 +1,10 @@
-import { GenshinCharacterEntity } from '@/entities/genshin/character.entity';
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCharacterDto, DeleteCharacterDto, FindCharacterDto, UpdateCharacterDto } from './characters.dto';
 import { GenshinCountryEntity } from '@/entities/genshin/country.entity';
 import { z } from 'zod';
+import { GenshinCharacterEntity } from '@/entities/genshin/character/character.entity';
 
 @Injectable()
 export class CharactersService {

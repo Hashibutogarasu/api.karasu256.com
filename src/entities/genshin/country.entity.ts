@@ -10,7 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { GenshinCharacterEntity } from "./character.entity";
 import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_countries")

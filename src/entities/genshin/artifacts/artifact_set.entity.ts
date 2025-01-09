@@ -13,7 +13,7 @@ import {
 import { GenshinArtifactEntity } from "./artifact.entity";
 import { GenshinEntity } from "@/types/genshin/genshin";
 import { GenshinArtifactMainStat, GenshinArtifactSubStat } from "./stat.entity";
-import { GenshinCharacterEntity } from "../character.entity";
+import { GenshinCharacterEntity } from "../character/character.entity";
 
 @Entity("genshin_artifact_sets")
 export class GenshinArtifactSetEntity extends GenshinEntity {

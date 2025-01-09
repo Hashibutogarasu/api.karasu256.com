@@ -10,10 +10,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { GenshinElementEntity } from "./element.entity";
 import { GenshinEntity } from "@/types/genshin/genshin";
-import { GenshinCountryEntity } from "./country.entity";
-import { GenshinWeaponTypeEntity } from "./weapons/weapon_type";
+import { GenshinElementEntity } from "../element.entity";
+import { GenshinCountryEntity } from "../country.entity";
+import { GenshinWeaponTypeEntity } from "../weapons/weapon_type";
 
 @Entity("genshin_characters")
 export class GenshinCharacterEntity extends GenshinEntity {

@@ -10,9 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { GenshinCharacterEntity } from "./character.entity";
-import { GenshinWeaponEntity } from "./weapon.entity";
-import { GenshinArtifactSetEntity } from "./artifacts/artifact_set.entity";
 import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_elements")
