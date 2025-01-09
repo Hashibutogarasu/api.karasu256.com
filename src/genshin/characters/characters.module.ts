@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GenshinCharacterEntity } from '@/entities/genshin/character.entity';
 import { UsersEntity } from '@/entities/user.entity';
 import { InfoModule } from './info/info.module';
+import { GenshinCountryEntity } from '@/entities/genshin/country.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([GenshinCharacterEntity, UsersEntity]), InfoModule],
+  imports: [TypeOrmModule.forFeature([GenshinCharacterEntity, GenshinCountryEntity, UsersEntity]), InfoModule],
   controllers: [CharactersController],
   providers: [CharactersService]
 })

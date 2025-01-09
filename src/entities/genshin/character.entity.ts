@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { GenshinElementEntity } from "./element.entity";
-import { GenshinWeaponType } from "./weapon.entity";
+import { GenshinWeaponType, GenshinWeaponTypeSchema } from "./weapon.entity";
 import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity("genshin_characters")
@@ -28,7 +28,7 @@ export class GenshinCharacterEntity extends GenshinEntity {
   @ApiProperty()
   slug: string;
 
-  @Column({ type: "varchar", enum: GenshinWeaponType, name: "weapon_type" })
+  @Column({ type: "varchar", enum: GenshinWeaponTypeSchema, name: "weapon_type" })
   @ApiProperty()
   weaponType: GenshinWeaponType;
 

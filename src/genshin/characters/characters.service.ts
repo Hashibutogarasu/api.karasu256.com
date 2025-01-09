@@ -3,12 +3,17 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCharacterDto, DeleteCharacterDto, FindCharacterDto, UpdateCharacterDto } from './characters.dto';
+import { GenshinCountryEntity } from '@/entities/genshin/country.entity';
+import { z } from 'zod';
 
 @Injectable()
 export class CharactersService {
   constructor(
     @InjectRepository(GenshinCharacterEntity)
     private readonly characterRepository: Repository<GenshinCharacterEntity>,
+
+    @InjectRepository(GenshinCountryEntity)
+    private readonly countryRepository: Repository<GenshinCountryEntity>,
   ) { }
 
   async create(dto: CreateCharacterDto) {
@@ -74,10 +79,39 @@ export class CharactersService {
   }
 
   async find(dto: FindCharacterDto) {
-    const { id, element, slug, ...rest } = dto;
+    const { id, countryId, element, rarity, slug, ...rest } = dto;
+
+    try {
+      if (id) {
+        z.string().uuid().parse(id);
+      }
+
+      if (countryId) {
+        z.string().uuid().parse(countryId);
+      }
+    }
+    catch (e) {
+      throw new HttpException('Invalid id format', 400);
+    }
+
+    if (rarity && !/^\d+$/.test(rarity.toString())) {
+      throw new HttpException('Invalid rarity format', 400);
+    }
+
+    const country = await this.countryRepository.findOne({
+      where: {
+        id: dto.countryId
+      }
+    });
+
+    if (!country) {
+      throw new HttpException('Country not found', 404);
+    }
+
     return await this.characterRepository.find({
       where: {
         id,
+        rarity: rarity as any,
         element: {
           slug: element
         },

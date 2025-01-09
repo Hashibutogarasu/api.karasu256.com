@@ -8,7 +8,7 @@ import { GenshinElementSkillEntity } from "../skills/element_skill.entity";
 import { GenshinTalentEntity } from "../skills/talent.entity";
 import { GenshinSpecialSkillEntity } from "../skills/special_skill.entity";
 import { GenshinCountryEntity } from "../country.entity";
-import { GenshinWeaponEntity, GenshinWeaponType } from "../weapon.entity";
+import { GenshinWeaponEntity, GenshinWeaponType, GenshinWeaponTypeSchema } from "../weapon.entity";
 import { GenshinEntity } from "@/types/genshin/genshin";
 
 @Entity('genshin_character_info')
@@ -29,7 +29,7 @@ export class GenshinCharacterInfoEntity extends GenshinEntity {
   @ApiProperty()
   slug: string;
 
-  @Column({ type: "varchar", enum: GenshinWeaponType, name: "weapon_type" })
+  @Column({ type: "varchar", enum: GenshinWeaponTypeSchema, name: "weapon_type" })
   @ApiProperty()
   weaponType: GenshinWeaponType;
 

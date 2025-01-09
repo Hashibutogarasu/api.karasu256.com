@@ -1,61 +1,77 @@
-import { GenshinWeaponType } from "@/entities/genshin/weapon.entity";
+import { GenshinWeaponType, GenshinWeaponTypeSchema } from "@/entities/genshin/weapon.entity";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreateCharacterDto {
-  name: string;
-  slug: string;
-  description: string;
-  weaponType: GenshinWeaponType;
-  element: string;
-  rarity: number;
-  image?: string | undefined;
-  countryId: string;
-};
+export const CreateCharacterDtoSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  description: z.string(),
+  weaponType: GenshinWeaponTypeSchema.default("sword"),
+  element: z.string().default("anemo"),
+  rarity: z.number().default(4),
+  image: z.string().optional(),
+  countryId: z.string(),
+});
 
-export class UpdateCharacterDto {
-  id: string;
-  name?: string | undefined;
-  slug?: string | undefined;
-  description?: string | undefined;
-  weaponType?: GenshinWeaponType | undefined;
-  element?: string | undefined;
-  rarity?: number | undefined;
-  image?: string | undefined;
-  countryId?: string | undefined;
-};
+export class CreateCharacterDto extends createZodDto(CreateCharacterDtoSchema) { }
 
-export class DeleteCharacterDto {
-  id: string;
-};
+export const UpdateCharacterDtoSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  weaponType: GenshinWeaponTypeSchema.optional(),
+  element: z.string().optional(),
+  rarity: z.number().optional(),
+  image: z.string().optional(),
+  countryId: z.string().optional(),
+});
 
-export class GetCharacterDto {
-  id: string;
-};
+export class UpdateCharacterDto extends createZodDto(UpdateCharacterDtoSchema) { }
 
-export class GetCharactersDto {
-  id?: string | undefined;
-  page?: number = 1;
-  limit?: number = 10;
-  name?: string | undefined;
-  slug?: string | undefined;
-  rarity?: number | undefined;
-  image?: string | undefined;
-  weaponType: GenshinWeaponType | undefined;
-  countryId?: string | undefined;
-};
+export const DeleteCharacterDtoSchema = z.object({
+  id: z.string(),
+});
 
-export class GetCharactersByElementSlugDto {
-  element: string;
-  page?: number = 1;
-  limit?: number = 10;
-};
+export class DeleteCharacterDto extends createZodDto(DeleteCharacterDtoSchema) { }
 
-export class FindCharacterDto {
-  id?: string | undefined;
-  name?: string | undefined;
-  slug?: string | undefined;
-  element?: string | undefined;
-  rarity?: number | undefined;
-  image?: string | undefined;
-  weaponType: GenshinWeaponType | undefined;
-  countryId?: string | undefined;
-};
+export const GetCharacterDtoSchema = z.object({
+  id: z.string(),
+});
+
+export class GetCharacterDto extends createZodDto(GetCharacterDtoSchema) { }
+
+export const GetCharactersDtoSchema = z.object({
+  id: z.string().optional(),
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  rarity: z.number().optional().default(4),
+  image: z.string().optional(),
+  weaponType: GenshinWeaponTypeSchema.optional().default("sword"),
+  countryId: z.string().optional(),
+});
+
+export class GetCharactersDto extends createZodDto(GetCharactersDtoSchema) { }
+
+export const GetCharactersByElementSlugDtoSchema = z.object({
+  element: z.string(),
+  page: z.number().optional().default(1),
+  limit: z.number().optional().default(10),
+});
+
+export class GetCharactersByElementSlugDto extends createZodDto(GetCharactersByElementSlugDtoSchema) { }
+
+export const FindCharacterDtoSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  element: z.string().optional().default("anemo"),
+  rarity: z.string().optional().default("4"),
+  image: z.string().optional(),
+  weaponType: GenshinWeaponTypeSchema.optional().default("sword"),
+  countryId: z.string().optional(),
+});
+
+export class FindCharacterDto extends createZodDto(FindCharacterDtoSchema) { }
