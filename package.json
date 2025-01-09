@@ -20,9 +20,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "generate:migration:local": "cross-env NODE_ENV=local npx typeorm-ts-node-commonjs migration:generate -d src/config/db/ormconfig.ts ./src/config/db/migrations/local/InitialSchema",
-    "generate:migration:development": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:generate -d src/config/db/ormconfig.ts ./src/config/db/migrations/development/InitialSchema",
-    "generate:migration:production": "cross-env NODE_ENV=production npx typeorm-ts-node-commonjs migration:generate -d src/config/db/ormconfig.ts ./src/config/db/migrations/production/InitialSchema",
+    "migration:generate:local": "cross-env NODE_ENV=local npx typeorm-ts-node-commonjs migration:generate -d src/config/db/ormconfig.ts ./src/config/db/migrations/local/InitialSchema",
+    "migration:generate:development": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:generate -d src/config/db/ormconfig.ts ./src/config/db/migrations/development/InitialSchema",
+    "migration:generate:production": "cross-env NODE_ENV=production npx typeorm-ts-node-commonjs migration:generate -d src/config/db/ormconfig.ts ./src/config/db/migrations/production/InitialSchema",
     "migration:run:local": "cross-env NODE_ENV=local npx typeorm-ts-node-commonjs migration:run -d src/config/db/ormconfig.ts",
     "migration:run:development": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:run -d src/config/db/ormconfig.ts",
     "migration:run:production": "cross-env NODE_ENV=production npx typeorm-ts-node-commonjs migration:run -d src/config/db/ormconfig.ts"
