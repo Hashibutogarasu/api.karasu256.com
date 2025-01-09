@@ -4,11 +4,6 @@ import { join } from "path";
 
 loadEnv();
 
-// const DATABASE_HOST = process.env.DATABASE_HOST;
-// const DATABASE_USER = process.env.DATABASE_USER;
-// const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
-// const DATABASE_PORT = process.env.DATABASE_PORT;
-// const DATABASE_DB = process.env.DATABASE_DB;
 const DATABASE_URL = process.env.NODE_ENV === "local" ? process.env.SUPABASE_POSTGRES_URL : process.env.POSTGRES_URL;
 
 if (!DATABASE_URL) {
@@ -23,11 +18,6 @@ console.log("MIGRATION_DIR", MIGRATION_DIR);
 export const typeormConfig: TypeOrmModuleOptions = {
   type: "postgres",
   url: DATABASE_URL,
-  // host: DATABASE_HOST,
-  // port: parseInt(DATABASE_PORT),
-  // database: DATABASE_DB,
-  // username: DATABASE_USER,
-  // password: DATABASE_PASSWORD,
   entities: [ENTITIES_DIR],
   migrations: [MIGRATION_DIR],
   synchronize: false,
