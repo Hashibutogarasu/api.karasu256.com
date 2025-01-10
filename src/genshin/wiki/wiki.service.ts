@@ -156,7 +156,7 @@ export class WikiService {
     });
 
     try {
-      let data: [];
+      const data: any[] = [];
 
       for (const character of characters) {
         const info = await this.getInfo({
@@ -168,11 +168,11 @@ export class WikiService {
             slug: info.slug
           }
         })) {
-          const res = this.characterInfoRepository.update(info.id, info);
+          const res = await this.characterInfoRepository.update(info.id, info);
           data.push(res);
         }
         else {
-          const res = this.characterInfoRepository.save(info);
+          const res = await this.characterInfoRepository.save(info);
           data.push(res);
         }
       }
