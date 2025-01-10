@@ -34,6 +34,7 @@ import {
 import { AuthGuard } from "./auth.guard";
 import { zodToOpenAPI } from "nestjs-zod";
 import { ZodValidationPipe } from "@/pipe/zod_validation_pipe";
+import { Type } from "class-transformer";
 
 @Controller("auth")
 export class AuthController {
@@ -81,6 +82,15 @@ export class AuthController {
     };
   }
 
+  @Type(() => VerifyOtpDto, {
+    discriminator: {
+      property: "type",
+      subTypes: [
+        { value: VerifyOtpDto, name: "email" },
+        { value: VerifyOtpDto, name: "phone" },
+      ],
+    }
+  })
   @ApiQuery({
     required: false,
     name: 'queryParams',
