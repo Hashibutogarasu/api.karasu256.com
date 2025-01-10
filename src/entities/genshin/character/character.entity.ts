@@ -20,14 +20,17 @@ export class GenshinCharacterEntity extends GenshinEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
+  @Column({ type: "varchar", nullable: true })
+  entry_page_id?: string | undefined;
+
   @Column({ type: "varchar" })
   name: string;
 
   @Column({ type: "varchar" })
   slug: string;
 
-  @Column({ type: "varchar" })
-  description: string;
+  @Column({ type: "varchar", nullable: true })
+  description: string | undefined;
 
   @Column({ type: "int", default: 4 })
   rarity: number;
@@ -35,12 +38,12 @@ export class GenshinCharacterEntity extends GenshinEntity {
   @Column({ type: "varchar", nullable: true })
   image?: string | undefined;
 
-  @ManyToOne(() => GenshinElementEntity, (element) => element.slug, { nullable: true })
+  @ManyToOne(() => GenshinElementEntity, (element) => element.id, { nullable: true })
   element?: GenshinElementEntity | undefined;
 
-  @ManyToOne(() => GenshinCountryEntity, (country) => country.slug, { nullable: true })
+  @ManyToOne(() => GenshinCountryEntity, (country) => country.id, { nullable: true })
   country?: GenshinCountryEntity | undefined;
 
-  @ManyToOne(() => GenshinWeaponTypeEntity, (weaponType) => weaponType.slug, { nullable: true })
+  @ManyToOne(() => GenshinWeaponTypeEntity, (weaponType) => weaponType.id, { nullable: true })
   weaponType?: GenshinWeaponTypeEntity | undefined;
 }

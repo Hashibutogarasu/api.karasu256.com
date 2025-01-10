@@ -2,6 +2,7 @@ import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 export const CreateCharacterDtoSchema = z.object({
+  entry_page_id: z.string().optional(),
   name: z.string(),
   slug: z.string(),
   description: z.string(),
@@ -16,6 +17,7 @@ export class CreateCharacterDto extends createZodDto(CreateCharacterDtoSchema) {
 
 export const UpdateCharacterDtoSchema = z.object({
   id: z.string(),
+  entry_page_id: z.string().optional(),
   name: z.string().optional(),
   slug: z.string().optional(),
   description: z.string().optional(),
@@ -42,6 +44,7 @@ export class GetCharacterDto extends createZodDto(GetCharacterDtoSchema) { }
 
 export const GetCharactersDtoSchema = z.object({
   id: z.string().optional(),
+  entry_page_id: z.string().optional(),
   page: z.number().optional(),
   limit: z.number().optional(),
   name: z.string().optional(),
@@ -64,6 +67,7 @@ export class GetCharactersByElementSlugDto extends createZodDto(GetCharactersByE
 
 export const FindCharacterDtoSchema = z.object({
   id: z.string().optional(),
+  entry_page_id: z.string().optional(),
   name: z.string().optional(),
   slug: z.string().optional(),
   element: z.string().optional().default("anemo"),

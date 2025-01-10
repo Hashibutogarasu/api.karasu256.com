@@ -11,6 +11,6 @@ export class GenshinWeaponTypeEntity extends BaseEntity {
   @Column({ type: "varchar" })
   slug: string;
 
-  @Column({ type: "varchar" })
-  description: string;
+  @Column({ type: "varchar", nullable: true })
+  description: string | undefined;
 }
