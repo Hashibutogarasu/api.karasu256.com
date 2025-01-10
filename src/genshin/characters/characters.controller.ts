@@ -5,6 +5,7 @@ import { AdminGuard } from '@/user/admin/admin.guard';
 import { ApiBody, ApiExtraModels, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { ZodValidationPipe } from '@/pipe/zod_validation_pipe';
+import { Type } from 'class-transformer';
 
 @Controller('genshin/characters')
 export class CharactersController {

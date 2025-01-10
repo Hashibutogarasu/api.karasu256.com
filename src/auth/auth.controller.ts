@@ -14,6 +14,7 @@ import {
   ApiExtraModels,
   ApiOkResponse,
   ApiParam,
+  ApiProperty,
   ApiQuery,
   ApiResponse,
   getSchemaPath,
@@ -32,13 +33,13 @@ import {
   VerifyOtpDtoSchema,
 } from "./auth.dto";
 import { AuthGuard } from "./auth.guard";
-import { zodToOpenAPI } from "nestjs-zod";
+import { createZodDto, zodToOpenAPI } from "nestjs-zod";
 import { ZodValidationPipe } from "@/pipe/zod_validation_pipe";
 import { Type } from "class-transformer";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @ApiBody({
     schema: zodToOpenAPI(SignUpDtoSchema),
@@ -92,13 +93,9 @@ export class AuthController {
     }
   })
   @ApiQuery({
-    required: false,
-    name: 'queryParams',
-    explode: true,
-    type: 'object',
-    schema: {
-      $ref: getSchemaPath(VerifyOtpDto),
-    },
+    name: "type",
+    required: true,
+    schema: zodToOpenAPI(VerifyOtpDtoSchema),
   })
   @Get("confirm")
   async confirm(@Query(new ZodValidationPipe(VerifyOtpDtoSchema)) dto: VerifyOtpDto) {
