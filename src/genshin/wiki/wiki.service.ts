@@ -151,14 +151,6 @@ export class WikiService {
     const characters = await this.characterRepository.find();
 
     for (const character of characters) {
-      if (await this.characterRepository.findOne({
-        where: {
-          slug: character.slug
-        }
-      })) {
-        continue;
-      }
-
       const info = await this.getInfo({ entry_page_id: character.entry_page_id });
 
       if (this.characterInfoRepository.findOne({
@@ -174,7 +166,6 @@ export class WikiService {
     }
   }
 }
-
 
 function formatJson(data: any): any {
   if (typeof data === 'string') {
