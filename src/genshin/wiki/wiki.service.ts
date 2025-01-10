@@ -156,6 +156,8 @@ export class WikiService {
     });
 
     try {
+      let data: [];
+
       for (const character of characters) {
         const info = await this.getInfo({
           entry_page_id: character.entry_page_id
@@ -166,12 +168,16 @@ export class WikiService {
             slug: info.slug
           }
         })) {
-          return this.characterInfoRepository.update(info.id, info);
+          const res = this.characterInfoRepository.update(info.id, info);
+          data.push(res);
         }
         else {
-          return this.characterInfoRepository.save(info);
+          const res = this.characterInfoRepository.save(info);
+          data.push(res);
         }
       }
+
+      return data;
     }
     catch (e) {
     }
