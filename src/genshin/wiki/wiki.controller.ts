@@ -36,6 +36,7 @@ export class WikiController {
       $ref: getSchemaPath(SaveCharacterDto),
     },
   })
+  @ApiExtraModels(SaveCharacterDto)
   @UseGuards(AdminGuard)
   @Post('save')
   async save(@Query() dto: SaveCharacterDto) {

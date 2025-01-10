@@ -164,10 +164,10 @@ export class WikiService {
           slug: info.slug
         }
       })) {
-        this.characterInfoRepository.update(info.id, info);
+        return this.characterInfoRepository.update(info.id, info);
       }
       else {
-        this.characterInfoRepository.save(info);
+        return this.characterInfoRepository.save(info);
       }
     }
   }
