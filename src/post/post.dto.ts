@@ -1,5 +1,3 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, IsOptional } from "class-validator";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
