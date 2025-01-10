@@ -14,8 +14,8 @@ export const GetCharacterInfoByNameSchema = z.object({
 export class GetCharacterInfoByNameDto extends createZodDto(GetCharacterInfoByNameSchema) { }
 
 export const SaveCharacterSchema = z.object({
-  limit: z.number(),
-  page: z.number(),
+  limit: z.string(),
+  page: z.string(),
 });
 
 export class SaveCharacterDto extends createZodDto(SaveCharacterSchema) { }

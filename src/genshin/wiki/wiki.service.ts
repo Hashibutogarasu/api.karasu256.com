@@ -9,6 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCharacterInfoByNameDto, GetCharacterInfoDto, SaveCharacterDto } from './wiki.dto';
+import { z } from 'zod';
 
 @Injectable()
 export class WikiService {
@@ -150,25 +151,29 @@ export class WikiService {
   async saveAll(dto: SaveCharacterDto) {
     const { limit, page } = dto;
     const characters = await this.characterRepository.find({
-      take: limit,
-      skip: page
+      take: parseInt(limit),
+      skip: parseInt(page)
     });
 
-    for (const character of characters) {
-      const info = await this.getInfo({
-        entry_page_id: character.entry_page_id
-      });
+    try {
+      for (const character of characters) {
+        const info = await this.getInfo({
+          entry_page_id: character.entry_page_id
+        });
 
-      if (this.characterInfoRepository.findOne({
-        where: {
-          slug: info.slug
+        if (this.characterInfoRepository.findOne({
+          where: {
+            slug: info.slug
+          }
+        })) {
+          return this.characterInfoRepository.update(info.id, info);
         }
-      })) {
-        return this.characterInfoRepository.update(info.id, info);
+        else {
+          return this.characterInfoRepository.save(info);
+        }
       }
-      else {
-        return this.characterInfoRepository.save(info);
-      }
+    }
+    catch (e) {
     }
   }
 }
@@ -180,8 +185,13 @@ function formatJson(data: any): any {
       json = removeAndFormatObject(data);
     }
     else if (data.startsWith('[') || data.startsWith('{')) {
-      const parsed = JSON.parse(data);
-      json = formatJson(parsed);
+      try {
+        const parsed = JSON.parse(data);
+        json = formatJson(parsed);
+      }
+      catch (e) {
+        json = data;
+      }
     }
     else {
       json = data;
