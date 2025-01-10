@@ -12,3 +12,10 @@ export const GetCharacterInfoByNameSchema = z.object({
 });
 
 export class GetCharacterInfoByNameDto extends createZodDto(GetCharacterInfoByNameSchema) { }
+
+export const SaveCharacterSchema = z.object({
+  limit: z.number(),
+  page: z.number(),
+});
+
+export class SaveCharacterDto extends createZodDto(SaveCharacterSchema) { }

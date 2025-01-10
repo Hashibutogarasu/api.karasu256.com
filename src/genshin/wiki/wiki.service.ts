@@ -8,7 +8,7 @@ import { WikiDataSchema } from '@/types/genshin/schema';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetCharacterInfoByNameDto, GetCharacterInfoDto } from './wiki.dto';
+import { GetCharacterInfoByNameDto, GetCharacterInfoDto, SaveCharacterDto } from './wiki.dto';
 
 @Injectable()
 export class WikiService {
@@ -147,11 +147,17 @@ export class WikiService {
     return formatJson(json);
   }
 
-  async saveAll() {
-    const characters = await this.characterRepository.find();
+  async saveAll(dto: SaveCharacterDto) {
+    const { limit, page } = dto;
+    const characters = await this.characterRepository.find({
+      take: limit,
+      skip: page
+    });
 
     for (const character of characters) {
-      const info = await this.getInfo({ entry_page_id: character.entry_page_id });
+      const info = await this.getInfo({
+        entry_page_id: character.entry_page_id
+      });
 
       if (this.characterInfoRepository.findOne({
         where: {

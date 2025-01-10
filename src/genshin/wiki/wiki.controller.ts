@@ -3,7 +3,7 @@ import { WikiService } from './wiki.service';
 import { zodToOpenAPI, ZodValidationPipe } from 'nestjs-zod';
 import { ApiBody, ApiExtraModels, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { GetCharactersDto, GetCharactersSchema } from '@/types/genshin/hoyowiki/data';
-import { GerCharacterInfoSchema, GetCharacterInfoByNameDto, GetCharacterInfoByNameSchema, GetCharacterInfoDto } from './wiki.dto';
+import { GerCharacterInfoSchema, GetCharacterInfoByNameDto, GetCharacterInfoByNameSchema, GetCharacterInfoDto, SaveCharacterDto } from './wiki.dto';
 import { AdminGuard } from '@/user/admin/admin.guard';
 
 @Controller('genshin/wiki')
@@ -27,10 +27,19 @@ export class WikiController {
     return await this.wikiService.getInfo(dto);
   }
 
+  @ApiQuery({
+    required: false,
+    name: 'queryParams',
+    explode: true,
+    type: 'object',
+    schema: {
+      $ref: getSchemaPath(SaveCharacterDto),
+    },
+  })
   @UseGuards(AdminGuard)
-  @Post('saveAll')
-  async saveAll() {
-    return await this.wikiService.saveAll();
+  @Post('save')
+  async save(@Query() dto: SaveCharacterDto) {
+    return await this.wikiService.saveAll(dto);
   }
 
   @Get()
