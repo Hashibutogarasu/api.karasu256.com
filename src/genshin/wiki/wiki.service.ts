@@ -159,22 +159,29 @@ export class WikiService {
       const data: any[] = [];
 
       for (const character of characters) {
-        const info = await this.getInfo({
-          entry_page_id: character.entry_page_id
-        });
-
-        if (this.characterInfoRepository.findOne({
+        const existing = await this.characterInfoRepository.findOne({
           where: {
-            slug: info.slug
+            slug: character.slug
           }
-        })) {
-          const res = await this.characterInfoRepository.update(info.id, info);
-          data.push(res);
-        }
-        else {
-          const res = await this.characterInfoRepository.save(info);
-          data.push(res);
-        }
+        });
+        this.getInfo({
+          entry_page_id: character.entry_page_id
+        }).then(info => {
+          if (existing) {
+            const res = this.characterInfoRepository.update(existing.id, info);
+            data.push({
+              character: character.slug,
+              data: res
+            });
+          }
+          else {
+            const res = this.characterInfoRepository.save(info);
+            data.push({
+              character: character.slug,
+              data: res
+            });
+          }
+        });
       }
 
       return data;
