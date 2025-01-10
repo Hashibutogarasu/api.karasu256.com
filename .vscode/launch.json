@@ -11,7 +11,7 @@
       "sourceMaps": true,
       "envFile": "${workspaceFolder}/.env",
       "cwd": "${workspaceRoot}",
-      "console": "integratedTerminal",
+      "console": "integratedTerminal"
     },
     {
       "type": "node",
@@ -23,7 +23,19 @@
       "sourceMaps": true,
       "envFile": "${workspaceFolder}/.env",
       "cwd": "${workspaceRoot}",
-      "console": "integratedTerminal",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "name": "Launch API Production",
+      "request": "launch",
+      "runtimeArgs": ["run", "start:debug:production"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "envFile": "${workspaceFolder}/.env",
+      "cwd": "${workspaceRoot}",
+      "console": "integratedTerminal"
     }
   ]
 }

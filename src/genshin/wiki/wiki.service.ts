@@ -180,6 +180,7 @@ export class WikiService {
       return data;
     }
     catch (e) {
+
     }
   }
 }
