@@ -1,5 +1,4 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { PostsEntity } from "@/entities/post.entity";
 import {
   BaseEntity,
   Column,
@@ -53,9 +52,6 @@ export class UsersEntity extends BaseEntity {
   @UpdateDateColumn()
   @ApiProperty()
   updatedAt: string;
-
-  @OneToMany(() => PostsEntity, (post) => post.user)
-  posts: PostsEntity[];
 
   @OneToMany(() => ParentNodeEntity, (parentNode) => parentNode.user)
   parentNode: ParentNodeEntity[];
