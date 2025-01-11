@@ -5,6 +5,7 @@ import { ApiBody, ApiExtraModels, ApiParam, ApiQuery, getSchemaPath } from '@nes
 import { GetCharactersDto, GetCharactersSchema } from '@/types/genshin/hoyowiki/data';
 import { GerCharacterInfoSchema, GetCharacterInfoByNameDto, GetCharacterInfoByNameSchema, GetCharacterInfoDto, SaveCharacterDto } from './wiki.dto';
 import { AdminGuard } from '@/user/admin/admin.guard';
+import { z } from 'zod';
 
 @Controller('genshin/wiki')
 export class WikiController {
@@ -50,7 +51,7 @@ export class WikiController {
 
   @ApiParam({
     name: 'name',
-    schema: zodToOpenAPI(GetCharacterInfoByNameSchema),
+    schema: zodToOpenAPI(z.string()),
   })
   @Get(':name/info')
   async getByName(@Param() dto: GetCharacterInfoByNameDto) {
@@ -59,7 +60,7 @@ export class WikiController {
 
   @ApiParam({
     name: 'name',
-    schema: zodToOpenAPI(GetCharacterInfoByNameSchema),
+    schema: zodToOpenAPI(z.string()),
   })
   @Get(':name')
   async get(@Param() dto: GetCharacterInfoByNameDto) {
