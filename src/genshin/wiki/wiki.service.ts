@@ -135,6 +135,11 @@ export class WikiService {
     return await this.characterRepository.findOne({
       where: {
         slug: dto.name
+      },
+      relations: {
+        element: true,
+        country: true,
+        weaponType: true
       }
     })
   }
