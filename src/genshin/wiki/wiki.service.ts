@@ -480,10 +480,31 @@ export class WikiService {
       data: {
         page: {
           modules: true,
-          filter_values: true,
+          filter_values: {
+            character_property: {
+              key: true,
+              value_types: true
+            },
+            character_rarity: {
+              key: true,
+              value_types: true
+            },
+            character_vision: {
+              key: true,
+              value_types: true
+            },
+            character_region: {
+              key: true,
+              value_types: true
+            },
+            character_weapon: {
+              key: true,
+              value_types: true
+            },
+          },
           ext: {
             post_ext: true
-          }
+          },
         },
       }
     });
