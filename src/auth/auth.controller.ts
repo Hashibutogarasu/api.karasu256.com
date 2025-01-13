@@ -7,6 +7,7 @@ import {
   UnauthorizedException,
   UseGuards,
   Req,
+  UsePipes,
 } from "@nestjs/common";
 import { AuthService } from "@/auth/auth.service";
 import {
@@ -44,8 +45,9 @@ export class AuthController {
   @ApiBody({
     schema: zodToOpenAPI(SignUpDtoSchema),
   })
+  @UsePipes(ZodValidationPipe)
   @Post("signup")
-  async signUp(@Body(new ZodValidationPipe(SignUpDtoSchema)) dto: SignUpDto): Promise<object> {
+  async signUp(@Body() dto: SignUpDto): Promise<object> {
     const user = await this.authService.signUp(dto);
     return user;
   }
@@ -53,8 +55,9 @@ export class AuthController {
   @ApiBody({
     schema: zodToOpenAPI(SignInDtoSchema),
   })
+  @UsePipes(ZodValidationPipe)
   @Post("signin")
-  async signIn(@Body(new ZodValidationPipe(SignInDtoSchema)) dto: SignInDto): Promise<AccessTokenDto> {
+  async signIn(@Body() dto: SignInDto): Promise<AccessTokenDto> {
     const token = await this.authService.signIn(dto);
     return {
       accessToken: token,
@@ -64,8 +67,9 @@ export class AuthController {
   @ApiBody({
     schema: zodToOpenAPI(PasswordLessSignInDtoSchema),
   })
+  @UsePipes(ZodValidationPipe)
   @Post("signin/passwordless")
-  async googlePasswordless(@Body(new ZodValidationPipe(PasswordLessSignInDtoSchema)) dto: PasswordLessSignInDto) {
+  async googlePasswordless(@Body() dto: PasswordLessSignInDto) {
     return this.authService.signInWithOtp(dto, `${process.env.BASE_URL}/auth/callback?`);
   }
 
@@ -97,8 +101,9 @@ export class AuthController {
     required: true,
     schema: zodToOpenAPI(VerifyOtpDtoSchema),
   })
+  @UsePipes(ZodValidationPipe)
   @Get("confirm")
-  async confirm(@Query(new ZodValidationPipe(VerifyOtpDtoSchema)) dto: VerifyOtpDto) {
+  async confirm(@Query() dto: VerifyOtpDto) {
     return await this.authService.confirm(dto);
   }
 }

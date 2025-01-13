@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
-import { CreateUsersPublicProfileDto, UpdateUsersPublicProfileDto } from "@/user/user.dto";
+import { CreateUsersPublicProfileDto, UpdateUsersPublicProfileDto } from "../../user/user.dto";
 import { UsersPublicProfileEntity } from "@/entities/user.entity";
-import { UserGuard } from "@/user/user.guard";
-import { ProfileService } from "@/user/profile/profile.service";
+import { UserGuard } from "../../user/user.guard";
+import { ProfileService } from "../../user/profile/profile.service";
 
 @Controller("users/profile")
 export class ProfileController {

@@ -2,8 +2,8 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "@/app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
-import { loadEnv } from "@/utils/dotenv";
 import { patchNestJsSwagger } from "nestjs-zod";
+import { loadEnv } from "@/utils/dotenv";
 
 async function bootstrap() {
   loadEnv();

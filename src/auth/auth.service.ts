@@ -2,7 +2,6 @@ import { Injectable, Inject, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { Repository } from "typeorm";
-import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
 import {
   PasswordLessSignInDto,
   SignInDto,

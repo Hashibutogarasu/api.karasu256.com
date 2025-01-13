@@ -1,5 +1,5 @@
 import { Role, UsersEntity } from "@/entities/user.entity";
-import { CanActivate, ExecutionContext, Inject, Injectable } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Repository } from "typeorm";
@@ -20,6 +20,10 @@ export class AdminGuard implements CanActivate {
     }
 
     const { data: supabaseUser, error } = await this.supabase.auth.getUser(accessToken);
+    if (!supabaseUser.user) {
+      throw new UnauthorizedException();
+    }
+
     const user = await this.userRepository.findOne({
       where: {
         supabaseId: supabaseUser.user.id

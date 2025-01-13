@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { ParentNodeEntity } from "@/entities/node.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CreateParentNodeDto, UpdateParentNodeDto } from "@/node/node.dto";
+import { CreateParentNodeDto, UpdateParentNodeDto } from "../node/node.dto";
 import { UsersEntity } from "@/entities/user.entity";
 
 @Injectable()

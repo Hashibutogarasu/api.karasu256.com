@@ -13,8 +13,6 @@ if (!DATABASE_URL) {
 const MIGRATION_DIR = join(__dirname, `/../../config/db/migrations/${process.env.NODE_ENV}/**/*.{ts,js}`);
 const ENTITIES_DIR = join(__dirname, "/../../entities/**/*.{ts,js}");
 
-console.log("MIGRATION_DIR", MIGRATION_DIR);
-
 export const typeormConfig: TypeOrmModuleOptions = {
   type: "postgres",
   url: DATABASE_URL,

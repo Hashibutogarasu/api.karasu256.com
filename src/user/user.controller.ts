@@ -7,8 +7,8 @@ import {
   ApiProperty,
   ApiResponse,
 } from "@nestjs/swagger";
-import { AuthGuard } from "@/auth/auth.guard";
-import { UserService } from "@/user/user.service";
+import { AuthGuard } from "../auth/auth.guard";
+import { UserService } from "../user/user.service";
 import {
   CreateUserDto,
   CreateUsersPublicProfileDto,
@@ -20,8 +20,8 @@ import {
   UserExistsDto,
   UserExistsDtoSchema,
   UserExistsResponseDto,
-} from "@/user/user.dto";
-import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
+} from "../user/user.dto";
+import { UsersPublicProfileEntity, UsersEntity } from "../entities/user.entity";
 import { UserGuard } from "./user.guard";
 import { zodToOpenAPI } from "nestjs-zod";
 

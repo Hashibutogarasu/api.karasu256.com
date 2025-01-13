@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { UsersEntity } from "@/entities/user.entity";
+import { UsersEntity } from "../entities/user.entity";
 import { Repository } from "typeorm";
 
 @Injectable()

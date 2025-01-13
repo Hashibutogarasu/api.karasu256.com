@@ -1,6 +1,16 @@
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
+export const GetEntryPageListSchema = z.object({
+  filters: z.array(z.any()).default([]),
+  menu_id: z.string().default("2"),
+  page_num: z.number().default(1),
+  page_size: z.number().default(30),
+  use_es: z.boolean().default(true),
+});
+
+export class GetEntryPageListDto extends createZodDto(GetEntryPageListSchema) { }
+
 export const GerCharacterInfoSchema = z.object({
   entry_page_id: z.string(),
 });

@@ -7,7 +7,7 @@ import {
   UpdateUserDto,
   UpdateUsersPublicProfileDto,
   UserExistsDto,
-} from "@/user/user.dto";
+} from "../user/user.dto";
 import { UsersPublicProfileEntity, UsersEntity } from "@/entities/user.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
