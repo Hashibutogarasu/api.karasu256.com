@@ -456,7 +456,7 @@ export class WikiService {
   }
 
   async getCharacters() {
-    return await this.characterInfoRepository.find({
+    return await this.characterListRepository.find({
       order: {
         createdAt: 'ASC'
       }
