@@ -5,6 +5,7 @@ import { ApiBody, ApiExtraModels, ApiParam, ApiQuery, getSchemaPath } from '@nes
 import { GerCharacterInfoSchema, GetCharacterInfoByNameDto, GetCharacterInfoByNameSchema, GetCharacterInfoDto, GetEntryPageListDto, GetEntryPageListSchema, SaveCharacterDto, SaveCharacterSchema } from './wiki.dto';
 import { z } from 'zod';
 import { AdminGuard } from '@/user/admin/admin.guard';
+import { CharacterListEntity } from '@/entities/genshin/wiki/character/character_list.entity';
 
 @Controller('genshin/wiki')
 export class WikiController {
@@ -28,23 +29,8 @@ export class WikiController {
     return data;
   }
 
-  @ApiQuery({
-    required: false,
-    name: 'queryParams',
-    explode: true,
-    type: 'object',
-    schema: zodToOpenAPI(SaveCharacterSchema),
-  })
-  @ApiExtraModels(SaveCharacterDto)
-  @UseGuards(AdminGuard)
-  @Post('save')
-  @UsePipes(ZodValidationPipe)
-  async save(@Query() dto: SaveCharacterDto) {
-    return await this.wikiService.saveAll(dto);
-  }
-
   @Get()
-  async getAll() {
+  async getCharacters(): Promise<CharacterListEntity[]> {
     return await this.wikiService.getCharacters();
   }
 
@@ -66,7 +52,7 @@ export class WikiController {
   @ApiExtraModels(GetCharacterInfoByNameDto)
   @Get(':name')
   @UsePipes(ZodValidationPipe)
-  async get(@Param() dto: GetCharacterInfoByNameDto) {
+  async getCharacterByName(@Param() dto: GetCharacterInfoByNameDto): Promise<CharacterListEntity> {
     return await this.wikiService.getCharacterByName(dto);
   }
 

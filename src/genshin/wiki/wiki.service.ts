@@ -521,38 +521,6 @@ export class WikiService {
     });
     return formatJson(json);
   }
-
-  async saveAll(dto: SaveCharacterDto) {
-    const { limit, page } = dto;
-    const characters = await this.characterInfoRepository.find({
-      take: parseInt(limit),
-      skip: parseInt(page)
-    });
-
-    try {
-      const data: any[] = [];
-
-      for (const character of characters) {
-        const existing = await this.characterInfoRepository.findOne({
-          where: {
-            data: {
-              page: {
-                name: character.data.page.name
-              }
-            }
-          }
-        });
-        this.getInfo({
-          entry_page_id: character.data.id
-        });
-      }
-
-      return data;
-    }
-    catch (e) {
-
-    }
-  }
 }
 
 function formatJson<T>(data: T): T {
