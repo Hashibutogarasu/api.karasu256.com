@@ -1,5 +1,4 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { z } from "zod";
 
 @Entity('character_components')
 export class CharacterComponents extends BaseEntity {
@@ -18,10 +17,3 @@ export class CharacterComponents extends BaseEntity {
   @Column({ type: 'varchar' })
   style: string;
 }
-
-export const CharacterComponentsSchema = z.object({
-  component_id: z.string(),
-  layout: z.string(),
-  data: z.any(),
-  style: z.string(),
-});

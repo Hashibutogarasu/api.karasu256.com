@@ -1,6 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { z } from "zod";
-import { CharacterData, CharacterDataSchema } from "./character_data/character_data.entity";
+import { CharacterData } from "./character_data/character_data.entity";
 
 @Entity("character_info")
 export class CharacterInfo extends BaseEntity {
@@ -23,11 +22,3 @@ export class CharacterInfo extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-
-export const CharacterInfoSchema = z.object({
-  retcode: z.number().int(),
-  message: z.string(),
-  data: CharacterDataSchema.nullable(),
-});
-
-export type CharacterInfoType = z.infer<typeof CharacterInfoSchema>;

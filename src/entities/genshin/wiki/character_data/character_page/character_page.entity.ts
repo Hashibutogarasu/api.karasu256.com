@@ -1,9 +1,7 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm"
-import { z } from "zod";
-
-import { CharacterExt, CharacterExtSchema } from "./character_ext/character_ext.entity";
-import { CharacterFilterValues, CharacterFilterValuesSchema } from "./character_filtervalues/character_filtervalues/character_filtervalues.entity";
-import { CharacterModules, CharacterModulesSchema } from "./character_modules.entity";
+import { CharacterExt } from "./character_ext/character_ext.entity";
+import { CharacterFilterValues } from "./character_filtervalues/character_filtervalues/character_filtervalues.entity";
+import { CharacterModules } from "./character_modules.entity";
 import { CharacterData } from "../character_data.entity";
 import { ArtifactSet } from "../../artifact/artifact_set.entity";
 
@@ -88,28 +86,3 @@ export class CharacterPage extends BaseEntity {
   @ManyToMany(() => ArtifactSet, (artifactSet) => artifactSet.characterPage, { nullable: true })
   artifactSets?: ArtifactSet[] | undefined;
 }
-
-export const CharacterPageSchema = z.object({
-  alias_name: z.string().optional(),
-  beta: z.boolean().default(false),
-  correct_lock_status: z.string(),
-  desc: z.string().default(""),
-  edit_lock_status: z.string().default("Unlock"),
-  ext: CharacterExtSchema.nullable(),
-  filter_values: CharacterFilterValuesSchema.nullable(),
-  header_img_url: z.string().default(""),
-  icon_url: z.string(),
-  id: z.string(),
-  lang: z.string().default(""),
-  langs: z.array(z.any()).default([]),
-  menu_id: z.string().default("2"),
-  menu_name: z.string(),
-  menu_style: z.string().default(""),
-  menus: z.array(z.any()).default([]),
-  modules: z.array(CharacterModulesSchema).nullable(),
-  name: z.string(),
-  page_type: z.string().default("Default"),
-  template_id: z.string(),
-  template_layout: z.any().nullable(),
-  version: z.string(),
-});

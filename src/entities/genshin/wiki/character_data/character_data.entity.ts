@@ -1,6 +1,5 @@
 import { BaseEntity, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { z } from "zod";
-import { CharacterPage, CharacterPageSchema } from "./character_page/character_page.entity";
+import { CharacterPage } from "./character_page/character_page.entity";
 
 @Entity("character_data")
 export class CharacterData extends BaseEntity {
@@ -12,6 +11,3 @@ export class CharacterData extends BaseEntity {
   page: CharacterPage;
 }
 
-export const CharacterDataSchema = z.object({
-  page: CharacterPageSchema.nullable(),
-});

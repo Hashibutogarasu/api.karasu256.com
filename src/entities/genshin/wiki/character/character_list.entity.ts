@@ -1,8 +1,9 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { CharacterFilterValue, CharacterFilterValueSchema } from "../character_data/character_page/character_filter_value"
+import { CharacterFilterValue } from "../character_data/character_page/character_filter_value"
 import { DisplayField, DisplayFieldSchema } from "./character_display_field.entity"
 import { CharacterListDataEntity } from "./character_data.entity"
 import { z } from "zod";
+import { CharacterFilterValueSchema } from "@/types/genshin/schemas/characters/character_filter_value";
 
 @Entity("character_list")
 export class CharacterListEntity extends BaseEntity {

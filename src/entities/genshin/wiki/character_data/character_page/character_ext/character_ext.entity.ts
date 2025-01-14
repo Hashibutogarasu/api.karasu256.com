@@ -1,6 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { z } from "zod";
-import { CharacterPostExt, CharacterPostExtSchema } from "./character_postext.entity";
+import { CharacterPostExt } from "./character_postext.entity";
 import { CharacterPage } from "../character_page.entity";
 
 
@@ -37,12 +36,3 @@ export class CharacterExt extends BaseEntity {
   @OneToOne(() => CharacterPage, (characterPage) => characterPage.ext, { nullable: true, onDelete: 'CASCADE', cascade: ['soft-remove'] })
   character_page?: CharacterPage | undefined;
 }
-
-export const CharacterExtSchema = z.object({
-  corner_mark: z.string(),
-  fe_ext: z.string().nullable(),
-  personalized_color: z.string().nullable(),
-  scrolling_text: z.string(),
-  server_ext: z.string().nullable(),
-  post_ext: CharacterPostExtSchema.nullable(),
-});

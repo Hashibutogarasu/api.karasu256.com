@@ -1,5 +1,4 @@
 import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
-import { z } from "zod";
 import { CharacterFilterValue } from "./character_filter_value";
 
 @Entity("character_key")
@@ -35,14 +34,3 @@ export class CharacterKey extends BaseEntity {
   @JoinColumn()
   filter_value: CharacterFilterValue;
 }
-
-export const CharacterKeySchema = z.object({
-  key: z.string(),
-  text: z.string(),
-  values: z.array(z.any()),
-  mi18n_key: z.string(),
-  is_multi_select: z.boolean(),
-  id: z.string(),
-  is_hidden: z.boolean(),
-  updated_at: z.string(),
-});

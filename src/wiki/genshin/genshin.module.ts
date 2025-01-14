@@ -19,21 +19,7 @@ import { CharactersModule } from './characters/characters.module';
 import { GenshinService } from './genshin.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([
-    UsersEntity,
-    CharacterPostExt,
-    CharacterInfo,
-    CharacterData,
-    CharacterPage,
-    CharacterFilterValues,
-    CharacterFilterValue,
-    CharacterModules,
-    CharacterExt,
-    CharacterValueType,
-    CharacterKey,
-    CharacterEntity,
-    CharacterListEntity,
-  ]), ArtifactModule, CharactersModule],
+  imports: [CharactersModule],
   providers: [GenshinService],
   controllers: [GenshinController]
 })

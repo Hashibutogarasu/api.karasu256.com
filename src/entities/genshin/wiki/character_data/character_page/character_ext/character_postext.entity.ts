@@ -1,5 +1,4 @@
 import { BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
-import { z } from "zod";
 
 @Entity("character_postext")
 export class CharacterPostExt extends BaseEntity {
@@ -21,11 +20,3 @@ export class CharacterPostExt extends BaseEntity {
   @Column({ type: "varchar" })
   url: string;
 }
-
-export const CharacterPostExtSchema = z.object({
-  post_avatar_url: z.string(),
-  post_id: z.string(),
-  post_time: z.string(),
-  post_user_name: z.string(),
-  url: z.string(),
-});

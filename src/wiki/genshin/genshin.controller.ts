@@ -4,6 +4,6 @@ import { GenshinService } from './genshin.service';
 @Controller('wiki/genshin')
 export class GenshinController {
   constructor(
-    private readonly wikiService: GenshinService
+    private readonly genshinService: GenshinService
   ) { }
 }

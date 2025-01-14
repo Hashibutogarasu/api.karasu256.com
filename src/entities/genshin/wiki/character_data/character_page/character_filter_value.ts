@@ -1,7 +1,6 @@
 import { BaseEntity, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
-import { z } from "zod";
-import { CharacterKey, CharacterKeySchema } from "./character_key.entity";
-import { CharacterValueType, CharacterValueTypeSchema } from "./character_value_type.entity";
+import { CharacterKey } from "./character_key.entity";
+import { CharacterValueType } from "./character_value_type.entity";
 import { CharacterListEntity } from "../../character/character_list.entity";
 
 @Entity("character_filter_value")
@@ -23,9 +22,3 @@ export class CharacterFilterValue extends BaseEntity {
   @JoinColumn()
   character_list?: CharacterListEntity | undefined;
 }
-
-export const CharacterFilterValueSchema = z.object({
-  values: z.array(z.string()),
-  value_types: z.array(CharacterValueTypeSchema),
-  key: CharacterKeySchema.nullable(),
-});

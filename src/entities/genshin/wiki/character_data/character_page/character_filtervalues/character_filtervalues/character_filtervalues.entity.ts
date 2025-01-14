@@ -1,6 +1,5 @@
 import { BaseEntity, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
-import { z } from "zod";
-import { CharacterFilterValue, CharacterFilterValueSchema } from "../../character_filter_value";
+import { CharacterFilterValue } from "../../character_filter_value";
 import { CharacterPage } from "../../character_page.entity";
 
 @Entity("character_filtervalues")
@@ -31,11 +30,3 @@ export class CharacterFilterValues extends BaseEntity {
   @OneToOne(() => CharacterPage, (characterPage) => characterPage.filter_values, { nullable: true, onDelete: 'CASCADE', cascade: ['soft-remove'] })
   character_page?: CharacterPage | undefined;
 }
-
-export const CharacterFilterValuesSchema = z.object({
-  character_rarity: CharacterFilterValueSchema.nullable(),
-  character_property: CharacterFilterValueSchema.nullable(),
-  character_vision: CharacterFilterValueSchema.nullable(),
-  character_weapon: CharacterFilterValueSchema.nullable(),
-  character_region: CharacterFilterValueSchema.nullable(),
-});

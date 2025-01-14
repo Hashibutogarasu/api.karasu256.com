@@ -18,8 +18,9 @@ import { CharacterComponents } from '@/entities/genshin/wiki/character_data/char
 import { CharacterListDataEntity } from '@/entities/genshin/wiki/character/character_data.entity';
 import { z } from 'zod';
 import { CharacterListEntity } from '@/entities/genshin/wiki/character/character_list.entity';
-import { CharacterInfo, CharacterInfoSchema } from '@/entities/genshin/wiki/character_info.entity';
+import { CharacterInfo } from '@/entities/genshin/wiki/character_info.entity';
 import { GetCharacterInfoByNameDto, GetCharacterInfoDto, GetEntryPageListDto } from './characters.dto';
+import { CharacterInfoSchema } from '@/types/genshin/schemas/characters/character_info';
 
 @Injectable()
 export class CharactersService {
