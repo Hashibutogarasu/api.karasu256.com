@@ -5,6 +5,7 @@ import { CharacterExt, CharacterExtSchema } from "./character_ext/character_ext.
 import { CharacterFilterValues, CharacterFilterValuesSchema } from "./character_filtervalues/character_filtervalues/character_filtervalues.entity";
 import { CharacterModules, CharacterModulesSchema } from "./character_modules.entity";
 import { CharacterData } from "../character_data.entity";
+import { ArtifactSet } from "../../artifact/artifact_set.entity";
 
 @Entity("character_page")
 export class CharacterPage extends BaseEntity {
@@ -83,6 +84,9 @@ export class CharacterPage extends BaseEntity {
   @JoinColumn({ referencedColumnName: "id", name: "dataId" })
   @OneToOne(() => CharacterData, (characterData) => characterData.page, { onDelete: 'CASCADE' })
   character_data: CharacterData;
+
+  @ManyToMany(() => ArtifactSet, (artifactSet) => artifactSet.characterPage, { nullable: true })
+  artifactSets?: ArtifactSet[] | undefined;
 }
 
 export const CharacterPageSchema = z.object({

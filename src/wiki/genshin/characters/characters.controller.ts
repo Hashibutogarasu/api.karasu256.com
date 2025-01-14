@@ -1,16 +1,17 @@
 import { Body, Controller, Get, Param, Post, Query, UseGuards, UsePipes } from '@nestjs/common';
-import { WikiService } from './wiki.service';
-import { zodToOpenAPI, ZodValidationPipe } from 'nestjs-zod';
-import { ApiBody, ApiExtraModels, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
-import { GerCharacterInfoSchema, GetCharacterInfoByNameDto, GetCharacterInfoByNameSchema, GetCharacterInfoDto, GetEntryPageListDto, GetEntryPageListSchema, SaveCharacterDto, SaveCharacterSchema } from './wiki.dto';
-import { z } from 'zod';
+import { CharactersService } from './characters.service';
+import { ApiBody, ApiExtraModels, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { zodToOpenAPI } from 'nestjs-zod';
+import { GerCharacterInfoSchema, GetCharacterInfoByNameDto, GetCharacterInfoDto, GetEntryPageListDto, GetEntryPageListSchema } from './characters.dto';
 import { AdminGuard } from '@/user/admin/admin.guard';
+import { ZodValidationPipe } from '@/pipe/zod_validation_pipe';
 import { CharacterListEntity } from '@/entities/genshin/wiki/character/character_list.entity';
+import { z } from 'zod';
 
-@Controller('genshin/wiki')
-export class WikiController {
+@Controller('wiki/genshin/characters')
+export class CharactersController {
   constructor(
-    private readonly wikiService: WikiService
+    private readonly wikiService: CharactersService
   ) { }
 
   @ApiQuery({
@@ -22,11 +23,22 @@ export class WikiController {
   })
   @ApiExtraModels(GetCharacterInfoDto)
   @UseGuards(AdminGuard)
-  @Get('info')
+  @Get('admin/info')
   @UsePipes(ZodValidationPipe)
   async getInfo(@Query() dto: GetCharacterInfoDto) {
     const data = await this.wikiService.getInfo(dto);
     return data;
+  }
+
+  @ApiBody({
+    schema: zodToOpenAPI(GetEntryPageListSchema),
+  })
+  @ApiExtraModels(GetEntryPageListDto)
+  @UseGuards(AdminGuard)
+  @UsePipes(ZodValidationPipe)
+  @Post('admin/get_entry_page_list')
+  async getEntryPageList(@Body() dto: GetEntryPageListDto) {
+    return await this.wikiService.getEntryPageList(dto);
   }
 
   @Get()
@@ -39,7 +51,7 @@ export class WikiController {
     schema: zodToOpenAPI(z.string()),
   })
   @ApiExtraModels(GetCharacterInfoByNameDto)
-  @Get(':name/info')
+  @Get('profile/:name/info')
   @UsePipes(ZodValidationPipe)
   async getByName(@Param() dto: GetCharacterInfoByNameDto) {
     return await this.wikiService.getCharacterInfoByName(dto);
@@ -50,20 +62,9 @@ export class WikiController {
     schema: zodToOpenAPI(z.string()),
   })
   @ApiExtraModels(GetCharacterInfoByNameDto)
-  @Get(':name')
+  @Get('profile/:name')
   @UsePipes(ZodValidationPipe)
   async getCharacterByName(@Param() dto: GetCharacterInfoByNameDto): Promise<CharacterListEntity> {
     return await this.wikiService.getCharacterByName(dto);
-  }
-
-  @ApiBody({
-    schema: zodToOpenAPI(GetEntryPageListSchema),
-  })
-  @ApiExtraModels(GetEntryPageListDto)
-  @UseGuards(AdminGuard)
-  @UsePipes(ZodValidationPipe)
-  @Post('get_entry_page_list')
-  async getEntryPageList(@Body() dto: GetEntryPageListDto) {
-    return await this.wikiService.getEntryPageList(dto);
   }
 }

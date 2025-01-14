@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GenshinController } from './genshin.controller';
+import { ArtifactController } from './artifact.controller';
 
-describe('GenshinController', () => {
-  let controller: GenshinController;
+describe('ArtifactController', () => {
+  let controller: ArtifactController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [GenshinController],
+      controllers: [ArtifactController],
     }).compile();
 
-    controller = module.get<GenshinController>(GenshinController);
+    controller = module.get<ArtifactController>(ArtifactController);
   });
 
   it('should be defined', () => {

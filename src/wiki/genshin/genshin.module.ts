@@ -1,6 +1,5 @@
 import { Body, Module, Post } from '@nestjs/common';
-import { WikiService } from './wiki.service';
-import { WikiController } from './wiki.controller';
+import { GenshinController } from './genshin.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersEntity } from '@/entities/user.entity';
 import { CharacterInfo } from '@/entities/genshin/wiki/character_info.entity';
@@ -15,6 +14,9 @@ import { CharacterPostExt } from '@/entities/genshin/wiki/character_data/charact
 import { CharacterFilterValue } from '@/entities/genshin/wiki/character_data/character_page/character_filter_value';
 import { CharacterEntity } from '@/entities/genshin/wiki/character.entity';
 import { CharacterListEntity } from '@/entities/genshin/wiki/character/character_list.entity';
+import { ArtifactModule } from './artifact/artifact.module';
+import { CharactersModule } from './characters/characters.module';
+import { GenshinService } from './genshin.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -31,10 +33,10 @@ import { CharacterListEntity } from '@/entities/genshin/wiki/character/character
     CharacterKey,
     CharacterEntity,
     CharacterListEntity,
-  ])],
-  providers: [WikiService],
-  controllers: [WikiController]
+  ]), ArtifactModule, CharactersModule],
+  providers: [GenshinService],
+  controllers: [GenshinController]
 })
-export class WikiModule {
+export class GenshinModule {
 
 }

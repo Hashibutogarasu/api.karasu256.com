@@ -10,7 +10,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { typeormConfig } from "@/config/db/typeorm.config";
 import { NodeModule } from "@/node/node.module";
 import { UsersEntity } from "@/entities/user.entity";
-import { GenshinModule } from '@/genshin/genshin.module';
+import { WikiModule } from './wiki/wiki.module';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { GenshinModule } from '@/genshin/genshin.module';
     EventsModule,
     UserModule,
     NodeModule,
-    GenshinModule,
+    WikiModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

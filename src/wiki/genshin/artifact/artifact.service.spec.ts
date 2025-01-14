@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WikiService } from './wiki.service';
+import { ArtifactService } from './artifact.service';
 
-describe('WikiService', () => {
-  let service: WikiService;
+describe('ArtifactService', () => {
+  let service: ArtifactService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [WikiService],
+      providers: [ArtifactService],
     }).compile();
 
-    service = module.get<WikiService>(WikiService);
+    service = module.get<ArtifactService>(ArtifactService);
   });
 
   it('should be defined', () => {

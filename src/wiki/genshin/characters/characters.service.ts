@@ -2,8 +2,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetCharacterInfoByNameDto, GetCharacterInfoDto, GetEntryPageListDto, SaveCharacterDto } from './wiki.dto';
-import { CharacterInfo, CharacterInfoSchema } from "../../entities/genshin/wiki/character_info.entity"
 
 import { RelationMap } from 'typeorm-relations';
 import { CharacterEntity, CharacterEntitySchema } from '@/entities/genshin/wiki/character.entity';
@@ -20,9 +18,11 @@ import { CharacterComponents } from '@/entities/genshin/wiki/character_data/char
 import { CharacterListDataEntity } from '@/entities/genshin/wiki/character/character_data.entity';
 import { z } from 'zod';
 import { CharacterListEntity } from '@/entities/genshin/wiki/character/character_list.entity';
+import { CharacterInfo, CharacterInfoSchema } from '@/entities/genshin/wiki/character_info.entity';
+import { GetCharacterInfoByNameDto, GetCharacterInfoDto, GetEntryPageListDto } from './characters.dto';
 
 @Injectable()
-export class WikiService {
+export class CharactersService {
   constructor(
     @InjectRepository(CharacterEntity)
     private readonly characterRepository: Repository<CharacterEntity>,
