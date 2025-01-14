@@ -4,7 +4,7 @@ import { join } from "path";
 
 loadEnv();
 
-const DATABASE_URL = process.env.NODE_ENV === "local" ? process.env.SUPABASE_POSTGRES_URL : process.env.POSTGRES_URL;
+const DATABASE_URL = process.env.NODE_ENV === "local" || process.env.NODE_ENV === "development" ? process.env.SUPABASE_POSTGRES_URL : process.env.POSTGRES_URL;
 
 if (!DATABASE_URL) {
   throw new Error("Enviroment Database Error");

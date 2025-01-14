@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Artifact } from "./artifact.entity";
 import { CharacterPage } from "../character_data/character_page/character_page.entity";
 
@@ -19,8 +19,13 @@ export class ArtifactSet extends BaseEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToMany(() => Artifact, (artifact) => artifact.artifactSets, { nullable: true })
-  artifacts?: Artifact[] | undefined;
+  @JoinColumn({ name: "2_piece_bonus_from_artifact_set" })
+  @ManyToMany(() => Artifact, (artifact) => artifact.twoPieceBonus, { nullable: true })
+  twoPieceBonus?: Artifact[] | undefined;
+
+  @JoinColumn({ name: "4_piece_bonus_from_artifact_set" })
+  @ManyToMany(() => Artifact, (artifact) => artifact.fourPieceBonus, { nullable: true })
+  fourPieceBonus?: Artifact[] | undefined;
 
   @ManyToMany(() => CharacterPage, (characterPage) => characterPage.artifactSets, { nullable: true })
   characterPage?: CharacterPage[] | undefined;
