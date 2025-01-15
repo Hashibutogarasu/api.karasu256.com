@@ -2,8 +2,8 @@ import { ArtifactSet } from '@/entities/genshin/wiki/artifact/artifact_set.entit
 import { BaseController } from '@/interfaces/basecontroller';
 import { UpdateDto, DeleteDto, getUpdateSchema, deleteSchema } from '@/interfaces/basecontroller.dto';
 import { artifactSetSchema } from '@/types/genshin/artifact/artifact_set';
-import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { z } from 'zod';
 import { SetsService } from './sets.service';
@@ -15,12 +15,17 @@ export class SetsController implements BaseController<ArtifactSet> {
     private readonly setsService: SetsService
   ) { }
 
+  @Get('all')
   async getAll(): Promise<ArtifactSet[]> {
     return await this.setsService.getAll();
   }
 
+  @ApiQuery({
+    name: 'slug',
+    schema: zodToOpenAPI(z.string()),
+  })
   @Get()
-  async get(dto: z.infer<typeof artifactSetSchema>): Promise<ArtifactSet> {
+  async get(@Query() dto: z.infer<typeof artifactSetSchema>): Promise<ArtifactSet> {
     return await this.setsService.get(dto);
   }
 

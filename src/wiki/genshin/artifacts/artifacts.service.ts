@@ -30,7 +30,7 @@ export class ArtifactsService implements BaseService<Artifact> {
       artifactSet: true
     });
 
-    return await this.artifactRepository.findOneOrFail({
+    return await this.artifactRepository.findOne({
       where: {
         ...dto
       },

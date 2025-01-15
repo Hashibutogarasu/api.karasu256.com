@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ArtifactsService } from './artifacts.service';
 import { Artifact } from '@/entities/genshin/wiki/artifact/artifact.entity';
 import { BaseController } from '@/interfaces/basecontroller';
 import { DeleteDto, deleteSchema, getUpdateSchema, UpdateDto } from '@/interfaces/basecontroller.dto';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { GetDto } from './artifacts.dto.schema';
 import { z } from 'zod';
@@ -16,16 +16,15 @@ export class ArtifactsController implements BaseController<Artifact> {
     private readonly artifactsService: ArtifactsService,
   ) { }
 
-  @ApiParam({
-    name: 'slug',
+  @ApiQuery({
     schema: zodToOpenAPI(z.string()),
   })
-  @Get(':slug')
-  async get(@Param() dto: GetDto): Promise<Artifact> {
+  @Get()
+  async get(@Query() dto: GetDto): Promise<Artifact> {
     return await this.artifactsService.get(dto);
   }
 
-  @Get()
+  @Get('all')
   async getAll(): Promise<Artifact[]> {
     return await this.artifactsService.getAll();
   }
