@@ -10,6 +10,9 @@ export class Artifact extends BaseEntity {
   name: string;
 
   @Column()
+  slug: string;
+
+  @Column()
   description: string;
 
   @Column()

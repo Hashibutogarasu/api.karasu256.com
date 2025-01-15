@@ -11,6 +11,9 @@ export class ArtifactSet extends BaseEntity {
   name: string;
 
   @Column()
+  slug: string;
+
+  @Column()
   icon_url: string;
 
   @UpdateDateColumn()
