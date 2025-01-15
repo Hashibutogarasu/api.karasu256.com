@@ -18,14 +18,12 @@ async function bootstrap() {
     .setDescription("API documentation for Karasu Lab")
     .setVersion("1.0")
     .addServer(process.env.BASE_URL)
-    .addGlobalParameters({
-      in: "header",
-      name: "Authorization",
-      description: "Bearer token",
-      schema: {
-        type: "string",
-        default: "Bearer {{token}}",
-      },
+    .addBearerAuth({
+      type: 'http',
+      bearerFormat: 'Bearer',
+      in: 'Header',
+      name: 'Authorization',
+      scheme: 'bearer',
     })
     .build();
 
