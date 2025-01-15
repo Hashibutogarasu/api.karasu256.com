@@ -1,5 +1,4 @@
 import { ArtifactSet } from '@/entities/genshin/wiki/artifact/artifact_set.entity';
-import { BaseController } from '@/interfaces/basecontroller';
 import { UpdateDto, DeleteDto, getUpdateSchema, deleteSchema } from '@/interfaces/basecontroller.dto';
 import { artifactSetSchema } from '@/types/genshin/artifact/artifact_set';
 import { Body, Controller, Delete, Get, Post, Query, UseGuards } from '@nestjs/common';
@@ -8,12 +7,15 @@ import { zodToOpenAPI } from 'nestjs-zod';
 import { z } from 'zod';
 import { SetsService } from './sets.service';
 import { AdminGuard } from '@/user/admin/admin.guard';
+import { AbstractBaseController } from '@/interfaces/abstractbasecontroller';
 
 @Controller('wiki/genshin/artifacts/sets')
-export class SetsController implements BaseController<ArtifactSet> {
+export class SetsController extends AbstractBaseController<ArtifactSet> {
   constructor(
     private readonly setsService: SetsService
-  ) { }
+  ) {
+    super();
+  }
 
   @Get('all')
   async getAll(): Promise<ArtifactSet[]> {

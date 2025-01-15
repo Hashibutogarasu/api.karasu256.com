@@ -7,13 +7,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { z } from 'zod';
 import { RelationMap } from 'typeorm-relations';
+import { AbstractBaseService } from '@/interfaces/abstractbaseservice';
 
 @Injectable()
-export class ArtifactsService implements BaseService<Artifact> {
+export class ArtifactsService extends AbstractBaseService<Artifact> {
   constructor(
     @InjectRepository(Artifact)
     private readonly artifactRepository: Repository<Artifact>,
-  ) { }
+  ) {
+    super();
+  }
 
   async getAll(): Promise<Artifact[]> {
     const relation = new RelationMap<Artifact>({

@@ -3,7 +3,7 @@ import { GenshinController } from './genshin.controller';
 import { CharactersModule } from './characters/characters.module';
 import { GenshinService } from './genshin.service';
 import { ArtifactModule } from './artifacts/artifacts.module';
-import { SetsModule } from './artifact/sets/sets.module';
+import { SetsModule } from './artifacts/sets/sets.module';
 
 @Module({
   imports: [CharactersModule, ArtifactModule, SetsModule],
