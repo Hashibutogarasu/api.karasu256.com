@@ -4,7 +4,7 @@ import { Artifact } from '@/entities/genshin/wiki/artifact/artifact.entity';
 import { DeleteDto, deleteSchema, getUpdateSchema, UpdateDto } from '@/interfaces/basecontroller.dto';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { GetDto } from './artifacts.dto.schema';
+import { GetDto, getSchema } from './artifacts.dto.schema';
 import { z } from 'zod';
 import { artifactSchema } from '@/types/genshin/artifact/artifact';
 import { AdminGuard } from '@/user/admin/admin.guard';
@@ -19,7 +19,8 @@ export class ArtifactsController extends AbstractBaseController<Artifact> {
   }
 
   @ApiQuery({
-    schema: zodToOpenAPI(z.string()),
+    name: 'query',
+    schema: zodToOpenAPI(getSchema),
   })
   @Get()
   async get(@Query() dto: GetDto): Promise<Artifact> {

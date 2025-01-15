@@ -23,8 +23,8 @@ export class SetsController extends AbstractBaseController<ArtifactSet> {
   }
 
   @ApiQuery({
-    name: 'slug',
-    schema: zodToOpenAPI(z.string()),
+    name: 'query',
+    schema: zodToOpenAPI(artifactSetSchema),
   })
   @Get()
   async get(@Query() dto: z.infer<typeof artifactSetSchema>): Promise<ArtifactSet> {
