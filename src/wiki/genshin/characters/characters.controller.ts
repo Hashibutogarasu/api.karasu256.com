@@ -7,6 +7,11 @@ import { AdminGuard } from '@/user/admin/admin.guard';
 import { ZodValidationPipe } from '@/pipe/zod_validation_pipe';
 import { CharacterListEntity } from '@/entities/genshin/wiki/character/character_list.entity';
 import { z } from 'zod';
+import { AbstractBaseController } from '@/interfaces/abstractbasecontroller';
+import { UpdateDto, DeleteDto } from '@/interfaces/basecontroller.dto';
+import { WithSlugController } from '@/interfaces/withslugcontroller';
+import { GetBySlugDto } from '@/types/dto/getbyslug';
+import { CharacterEntity } from '@/entities/genshin/wiki/character.entity';
 
 @Controller('wiki/genshin/characters')
 export class CharactersController {

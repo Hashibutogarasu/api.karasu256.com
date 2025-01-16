@@ -1,9 +1,11 @@
-import { ApiProperty } from "@nestjs/swagger";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -11,59 +13,29 @@ import {
 import { UsersEntity } from "@/entities/user.entity";
 
 @Entity("parent_nodes")
-export class ParentNodeEntity extends BaseEntity {
+export class NodeEntity extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
-  @ApiProperty()
   id: string;
 
-  @ApiProperty()
-  userId: string;
-
   @Column({ type: "varchar" })
-  @ApiProperty()
   name: string;
 
+  @Column()
+  description: string;
+
   @CreateDateColumn()
-  @ApiProperty()
   createdAt: string;
 
   @UpdateDateColumn()
-  @ApiProperty()
   updatedAt: string;
 
-  @ManyToOne(() => NodeChildEntity, (nodeChild) => nodeChild.parentId)
-  nodeChild: NodeChildEntity[];
+  @JoinTable()
+  @ManyToMany(() => NodeEntity, (nodeChild) => nodeChild.children, { nullable: true })
+  children?: NodeEntity[] | undefined;
+
+  @ManyToOne(() => NodeEntity, (nodeParent) => nodeParent.id, { nullable: true, cascade: true, onDelete: "CASCADE" })
+  parent?: NodeEntity | undefined;
 
   @ManyToOne(() => UsersEntity, (user) => user.id)
   user: UsersEntity;
-}
-
-@Entity("node_children")
-export class NodeChildEntity extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  @ApiProperty()
-  id: string;
-
-  @Column({ type: "varchar" })
-  @ApiProperty()
-  name: string;
-
-  @Column({ type: "text" })
-  @ApiProperty()
-  content: string;
-
-  @Column({ type: "varchar" })
-  @ApiProperty()
-  parentId: string;
-
-  @CreateDateColumn()
-  @ApiProperty()
-  createdAt: string;
-
-  @UpdateDateColumn()
-  @ApiProperty()
-  updatedAt: string;
-
-  @ManyToOne(() => ParentNodeEntity, (parentNode) => parentNode.id)
-  parentNode: ParentNodeEntity;
 }

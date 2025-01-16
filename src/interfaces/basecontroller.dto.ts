@@ -4,7 +4,7 @@ import { z, ZodRawShape } from "zod";
 export function getUpdateSchema<T extends ZodRawShape>(schema: z.ZodObject<T>) {
   return z.object({
     id: z.string(),
-    entity: schema,
+    entity: schema.optional(),
   });
 }
 

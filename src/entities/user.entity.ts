@@ -11,7 +11,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { ParentNodeEntity } from "@/entities/node.entity";
+import { NodeEntity } from "@/entities/node.entity";
 import { IsOptional } from "class-validator";
 
 export enum Role {
@@ -53,8 +53,8 @@ export class UsersEntity extends BaseEntity {
   @ApiProperty()
   updatedAt: string;
 
-  @OneToMany(() => ParentNodeEntity, (parentNode) => parentNode.user)
-  parentNode: ParentNodeEntity[];
+  @OneToMany(() => NodeEntity, (node) => node.user)
+  parentNode: NodeEntity[];
 
   @OneToMany(() => UsersPublicProfileEntity, (profile) => profile.user)
   userPublicProfile?: UsersPublicProfileEntity[];

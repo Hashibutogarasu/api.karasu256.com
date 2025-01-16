@@ -1,13 +1,14 @@
 import { ArtifactSet } from '@/entities/genshin/wiki/artifact/artifact_set.entity';
 import { UpdateDto, DeleteDto, getUpdateSchema, deleteSchema } from '@/interfaces/basecontroller.dto';
 import { artifactSetSchema } from '@/types/genshin/artifact/artifact_set';
-import { Body, Controller, Delete, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { z } from 'zod';
 import { SetsService } from './sets.service';
 import { AdminGuard } from '@/user/admin/admin.guard';
 import { AbstractBaseController } from '@/interfaces/abstractbasecontroller';
+import { getSchema } from '../artifacts.dto.schema';
 
 @Controller('wiki/genshin/artifacts/sets')
 export class SetsController extends AbstractBaseController<ArtifactSet> {
@@ -15,11 +16,6 @@ export class SetsController extends AbstractBaseController<ArtifactSet> {
     private readonly setsService: SetsService
   ) {
     super();
-  }
-
-  @Get('all')
-  async getAll(): Promise<ArtifactSet[]> {
-    return await this.setsService.getAll();
   }
 
   @ApiQuery({
@@ -31,13 +27,22 @@ export class SetsController extends AbstractBaseController<ArtifactSet> {
     return await this.setsService.get(dto);
   }
 
+  @ApiQuery({
+    name: 'query',
+    schema: zodToOpenAPI(getSchema),
+  })
+  @Get('all')
+  async getAll(dto: z.infer<typeof getSchema>): Promise<ArtifactSet[]> {
+    return await this.setsService.getAll();
+  }
+
   @ApiBody({
     schema: zodToOpenAPI(artifactSetSchema),
   })
   @ApiBearerAuth()
   @UseGuards(AdminGuard)
-  @Post('create')
-  async create(@Body() dto: z.infer<typeof artifactSetSchema>): Promise<void> {
+  @Post()
+  async create(@Req() req, @Body() dto: z.infer<typeof artifactSetSchema>): Promise<void> {
     return await this.setsService.create(dto);
   }
 
@@ -46,18 +51,18 @@ export class SetsController extends AbstractBaseController<ArtifactSet> {
   })
   @ApiBearerAuth()
   @UseGuards(AdminGuard)
-  @Post()
+  @Put()
   async update(@Body() dto: UpdateDto<ArtifactSet>): Promise<void> {
     return await this.setsService.update(dto);
   }
 
-  @ApiBody({
-    schema: zodToOpenAPI(getUpdateSchema(deleteSchema)),
+  @ApiQuery({
+    schema: zodToOpenAPI(deleteSchema),
   })
   @ApiBearerAuth()
   @UseGuards(AdminGuard)
   @Delete()
-  async delete(@Body() params: DeleteDto): Promise<void> {
+  async delete(@Query() params: DeleteDto): Promise<void> {
     return await this.setsService.delete(params);
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { ArtifactsService } from './artifacts.service';
 import { Artifact } from '@/entities/genshin/wiki/artifact/artifact.entity';
 import { DeleteDto, deleteSchema, getUpdateSchema, UpdateDto } from '@/interfaces/basecontroller.dto';
@@ -7,8 +7,8 @@ import { zodToOpenAPI } from 'nestjs-zod';
 import { GetDto, getSchema } from './artifacts.dto.schema';
 import { z } from 'zod';
 import { artifactSchema } from '@/types/genshin/artifact/artifact';
-import { AdminGuard } from '@/user/admin/admin.guard';
 import { AbstractBaseController } from '@/interfaces/abstractbasecontroller';
+import { AdminGuard } from '@/user/admin/admin.guard';
 
 @Controller('wiki/genshin/artifacts')
 export class ArtifactsController extends AbstractBaseController<Artifact> {
@@ -23,12 +23,16 @@ export class ArtifactsController extends AbstractBaseController<Artifact> {
     schema: zodToOpenAPI(getSchema),
   })
   @Get()
-  async get(@Query() dto: GetDto): Promise<Artifact> {
+  override async get(@Query() dto: GetDto): Promise<Artifact> {
     return await this.artifactsService.get(dto);
   }
 
+  @ApiQuery({
+    name: 'query',
+    schema: zodToOpenAPI(getSchema),
+  })
   @Get('all')
-  async getAll(): Promise<Artifact[]> {
+  override async getAll(dto: z.infer<typeof getSchema>): Promise<Artifact[]> {
     return await this.artifactsService.getAll();
   }
 
@@ -38,7 +42,7 @@ export class ArtifactsController extends AbstractBaseController<Artifact> {
   @ApiBearerAuth()
   @UseGuards(AdminGuard)
   @Post()
-  async create(@Body() dto: z.infer<typeof artifactSchema>) {
+  override async create(@Req() req, @Body() dto: z.infer<typeof artifactSchema>) {
     return await this.artifactsService.create(dto);
   }
 
@@ -47,18 +51,19 @@ export class ArtifactsController extends AbstractBaseController<Artifact> {
   })
   @ApiBearerAuth()
   @UseGuards(AdminGuard)
-  @Post('update')
-  async update(@Body() dto: UpdateDto<Artifact>) {
+  @Put()
+  override async update(@Body() dto: UpdateDto<Artifact>) {
     await this.artifactsService.update(dto);
   }
 
-  @ApiBody({
+  @ApiQuery({
+    name: 'query',
     schema: zodToOpenAPI(deleteSchema),
   })
   @ApiBearerAuth()
   @UseGuards(AdminGuard)
   @Delete()
-  async delete(@Body() dto: DeleteDto) {
-    await this.artifactsService.delete(dto);
+  override async delete(@Query() params: DeleteDto) {
+    await this.artifactsService.delete(params);
   }
 }
