@@ -32,7 +32,7 @@ export class SetsController extends AbstractBaseController<ArtifactSet> {
     schema: zodToOpenAPI(getSchema),
   })
   @Get('all')
-  async getAll(dto: z.infer<typeof getSchema>): Promise<ArtifactSet[]> {
+  async getAll(@Query() dto: z.infer<typeof getSchema>): Promise<ArtifactSet[]> {
     return await this.setsService.getAll();
   }
 
@@ -57,6 +57,7 @@ export class SetsController extends AbstractBaseController<ArtifactSet> {
   }
 
   @ApiQuery({
+    name: 'query',
     schema: zodToOpenAPI(deleteSchema),
   })
   @ApiBearerAuth()
