@@ -3,6 +3,8 @@ import { CharactersController } from './characters/characters.controller';
 import { CharactersService } from './characters/characters.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Character } from '@/entities/genshin/wiki/character.entity';
+import { WeaponsController } from './weapons/weapons.controller';
+import { WeaponsService } from './weapons/weapons.service';
 
 @Module({
   imports: [
@@ -10,7 +12,7 @@ import { Character } from '@/entities/genshin/wiki/character.entity';
       Character
     ]),
   ],
-  controllers: [CharactersController],
-  providers: [CharactersService]
+  controllers: [CharactersController, WeaponsController],
+  providers: [CharactersService, WeaponsService]
 })
 export class GenshinModule { }
