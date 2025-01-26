@@ -3,11 +3,8 @@ import { AppModule } from "@/app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
-import { loadEnv } from "@/utils/dotenv";
 
 async function bootstrap() {
-  loadEnv();
-
   const app = await NestFactory.create(AppModule);
   patchNestJsSwagger();
 
@@ -30,7 +27,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   const documentFactory = () => document;
 
-  SwaggerModule.setup("docs", app, documentFactory, {
+  SwaggerModule.setup("api", app, documentFactory, {
     useGlobalPrefix: true,
     customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui.min.css",
     customJs: [

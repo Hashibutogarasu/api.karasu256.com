@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
-import { GenshinController } from './genshin.controller';
 import { CharactersModule } from './characters/characters.module';
-import { GenshinService } from './genshin.service';
-import { ArtifactModule } from './artifacts/artifacts.module';
-import { SetsModule } from './artifacts/sets/sets.module';
+import { WeaponsModule } from './weapons/weapons.module';
+import { ElementsModule } from './elements/elements.module';
+import { ItemsModule } from './items/items.module';
+import { ArtifactsModule } from './artifacts/artifacts.module';
+import { ArtifactSetsModule } from './artifact-sets/artifact-sets.module';
+import { CountriesModule } from './countries/countries.module';
 
 @Module({
-  imports: [CharactersModule, ArtifactModule, SetsModule],
-  providers: [GenshinService],
-  controllers: [GenshinController]
+  imports: [CharactersModule, WeaponsModule, ElementsModule, ItemsModule, ArtifactsModule, ArtifactSetsModule, CountriesModule]
 })
-export class GenshinModule {
-
-}
+export class GenshinModule {}

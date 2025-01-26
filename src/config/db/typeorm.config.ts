@@ -4,9 +4,9 @@ import { join } from "path";
 
 loadEnv();
 
-const DATABASE_URL = process.env.NODE_ENV === "local" || process.env.NODE_ENV === "development" ? process.env.SUPABASE_POSTGRES_URL : process.env.POSTGRES_URL;
+const { POSTGRES_URL } = process.env;
 
-if (!DATABASE_URL) {
+if (!POSTGRES_URL) {
   throw new Error("Enviroment Database Error");
 }
 
@@ -15,7 +15,7 @@ const ENTITIES_DIR = join(__dirname, "/../../entities/**/*.{ts,js}");
 
 export const typeormConfig: TypeOrmModuleOptions = {
   type: "postgres",
-  url: DATABASE_URL,
+  url: POSTGRES_URL,
   entities: [ENTITIES_DIR],
   migrations: [MIGRATION_DIR],
   synchronize: false,
