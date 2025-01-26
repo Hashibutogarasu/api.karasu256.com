@@ -1,11 +1,12 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
-import { Body, Controller, Delete, Get, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CharactersService } from './characters.service';
-import { ApiBearerAuth, ApiBody, ApiQuery } from '@nestjs/swagger';
-import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, getCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, GetCharacterPaginateDto, getCharacterPaginateSchema, GetCharacterParamsDto, getCharacterParamsSchema, getCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { Character } from '@/entities/genshin/wiki/character.entity';
 import { Authorization } from '@nestjs-cognito/auth';
+import { PaginationDto, paginationSchema } from '@/types/zod/pagination.dto';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -26,6 +27,15 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.get(dto);
   }
 
+  @ApiParam({
+    name: 'param',
+    schema: zodToOpenAPI(getCharacterParamsSchema),
+  })
+  @Get(':id')
+  async getOne(@Param() params: GetCharacterParamsDto): Promise<Character> {
+    return this.charactersService.getOne(params);
+  }
+
   @ApiBody({
     schema: zodToOpenAPI(createCharacterSchema),
   })
@@ -42,11 +52,12 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.update(dto);
   }
 
-  @ApiBody({
+  @ApiParam({
+    name: 'param',
     schema: zodToOpenAPI(deleteCharacterSchema),
   })
-  @Delete()
-  async delete(@Body() dto: DeleteCharacterDto): Promise<void> {
+  @Delete(':id')
+  async delete(@Param() dto: DeleteCharacterDto): Promise<void> {
     return this.charactersService.delete(dto);
   }
 }

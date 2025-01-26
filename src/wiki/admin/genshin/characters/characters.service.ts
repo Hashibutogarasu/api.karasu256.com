@@ -1,9 +1,9 @@
 import { Character } from '@/entities/genshin/wiki/character.entity';
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCharacterDto, DeleteCharacterDto, GetCharacterDto, UpdateCharacterDto } from './characters.dto';
+import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, GetCharacterPaginateDto, GetCharacterParamsDto, getCharacterParamsSchema, getCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 
 @Injectable()
 export class CharactersService implements IBaseControllerAndService {
@@ -13,7 +13,13 @@ export class CharactersService implements IBaseControllerAndService {
   ) { }
 
   async get(dto: GetCharacterDto): Promise<Character[]> {
-    const { country, ...ref } = dto;
+    const parsed = getCharacterSchema.safeParse(dto);
+
+    if (!parsed.success) {
+      throw new BadRequestException(parsed.error.errors);
+    }
+
+    const { page, limit, country, ...ref } = dto;
     return await this.charactersService.find({
       where: {
         ...ref,
@@ -21,10 +27,37 @@ export class CharactersService implements IBaseControllerAndService {
           name: country,
         },
       },
+      skip: (page - 1) * limit,
+      relations: {
+        country: true,
+      }
+    });
+  }
+
+  async getOne(params: GetCharacterParamsDto): Promise<Character> {
+    const parsed = getCharacterParamsSchema.safeParse(params);
+
+    if (!parsed.success) {
+      throw new BadRequestException(parsed.error.errors);
+    }
+
+    return await this.charactersService.findOne({
+      where: {
+        id: params.id,
+      },
+      relations: {
+        country: true,
+      }
     });
   }
 
   async create(dto: CreateCharacterDto): Promise<Character> {
+    const parsed = createCharacterSchema.safeParse(dto);
+
+    if (!parsed.success) {
+      throw new BadRequestException(parsed.error.errors);
+    }
+
     const { country, ...ref } = dto;
 
     const countryExists = await this.charactersService.findOne({
@@ -44,6 +77,12 @@ export class CharactersService implements IBaseControllerAndService {
   }
 
   async update(dto: UpdateCharacterDto): Promise<void> {
+    const parsed = updateCharacterSchema.safeParse(dto);
+
+    if (!parsed.success) {
+      throw new BadRequestException(parsed.error.errors);
+    }
+
     const { country, ...ref } = dto;
 
     const countryExists = await this.charactersService.findOne({
@@ -73,6 +112,12 @@ export class CharactersService implements IBaseControllerAndService {
   }
 
   async delete(dto: DeleteCharacterDto): Promise<void> {
+    const parsed = deleteCharacterSchema.safeParse(dto);
+
+    if (!parsed.success) {
+      throw new BadRequestException(parsed.error.errors);
+    }
+
     const character = await this.charactersService.findOne({
       where: {
         id: dto.id,
