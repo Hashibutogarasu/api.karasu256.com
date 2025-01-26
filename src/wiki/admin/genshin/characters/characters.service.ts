@@ -3,7 +3,7 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, GetCharacterPaginateDto, GetCharacterParamsDto, getCharacterParamsSchema, getCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
+import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, GetCharacterParamsDto, getCharacterParamsSchema, getCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 
 @Injectable()
 export class CharactersService implements IBaseControllerAndService {

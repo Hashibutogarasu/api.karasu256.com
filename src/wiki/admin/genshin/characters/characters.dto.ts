@@ -23,13 +23,6 @@ const getCharacterParamsSchema = z.object({
 
 class GetCharacterParamsDto extends createZodDto(getCharacterParamsSchema) { }
 
-const getCharacterPaginateSchema = z.object({
-  page: z.number({ invalid_type_error: "pageの型が不正です" }).default(1),
-  limit: z.number({ invalid_type_error: "limitの型が不正です" }).default(10),
-});
-
-class GetCharacterPaginateDto extends createZodDto(getCharacterPaginateSchema) { }
-
 const createCharacterSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
@@ -67,10 +60,8 @@ export {
   deleteCharacterSchema,
   getCharacterSchema,
   getCharacterParamsSchema,
-  getCharacterPaginateSchema,
   GetCharacterDto,
   GetCharacterParamsDto,
-  GetCharacterPaginateDto,
   CreateCharacterDto,
   UpdateCharacterDto,
   DeleteCharacterDto
