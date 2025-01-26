@@ -1,7 +1,8 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Character } from "./character.entity";
 
-@Entity()
-export class Weapons extends BaseEntity {
+@Entity('weapons')
+export class Weapon extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -25,4 +26,7 @@ export class Weapons extends BaseEntity {
 
   @Column()
   version: string;
+
+  @OneToMany(() => Character, character => character.weapon)
+  characters: Character[];
 }

@@ -15,6 +15,30 @@
     },
     {
       "type": "node",
+      "name": "Generate Migration Local",
+      "request": "launch",
+      "runtimeArgs": ["run", "migration:generate"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "envFile": "${workspaceFolder}/.env.local",
+      "cwd": "${workspaceRoot}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "name": "Run Migration Local",
+      "request": "launch",
+      "runtimeArgs": ["run", "migration:run"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "envFile": "${workspaceFolder}/.env.local",
+      "cwd": "${workspaceRoot}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
       "name": "Launch API Development",
       "request": "launch",
       "runtimeArgs": ["run", "start:debug"],

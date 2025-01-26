@@ -13,18 +13,47 @@ export class CharactersService implements IBaseControllerAndService {
   ) { }
 
   async get(dto: GetCharacterDto): Promise<Character[]> {
+    const { country, ...ref } = dto;
     return await this.charactersService.find({
-      where: dto,
+      where: {
+        ...ref,
+        country: {
+          name: country,
+        },
+      },
     });
   }
 
   async create(dto: CreateCharacterDto): Promise<Character> {
-    return await this.charactersService.save(dto);
+    const { country, ...ref } = dto;
+
+    const countryExists = await this.charactersService.findOne({
+      where: {
+        name: country,
+      },
+    });
+
+    if (!countryExists) {
+      throw new NotFoundException('Country not found');
+    }
+
+    return await this.charactersService.save({
+      ...ref,
+      country: countryExists,
+    });
   }
 
   async update(dto: UpdateCharacterDto): Promise<void> {
-    if (!dto.id) {
-      throw new Error('id is required');
+    const { country, ...ref } = dto;
+
+    const countryExists = await this.charactersService.findOne({
+      where: {
+        name: country,
+      },
+    });
+
+    if (!countryExists) {
+      throw new NotFoundException('Country not found');
     }
 
     const character = await this.charactersService.findOne({
@@ -37,14 +66,13 @@ export class CharactersService implements IBaseControllerAndService {
       throw new NotFoundException('Character not found');
     }
 
-    await this.charactersService.update(dto.id, dto);
+    await this.charactersService.update(dto.id, {
+      ...ref,
+      country: countryExists,
+    });
   }
 
   async delete(dto: DeleteCharacterDto): Promise<void> {
-    if (!dto.id) {
-      throw new Error('id is required');
-    }
-
     const character = await this.charactersService.findOne({
       where: {
         id: dto.id,

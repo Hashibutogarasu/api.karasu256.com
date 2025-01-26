@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ArtifactSets } from "./artifact-sets.entity";
 
-@Entity()
+@Entity('artifacts')
 export class Artifacts extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -25,4 +26,7 @@ export class Artifacts extends BaseEntity {
 
   @Column()
   version: string;
+
+  @ManyToMany(() => ArtifactSets, artifactSet => artifactSet.artifacts)
+  artifact_sets: ArtifactSets[];
 }

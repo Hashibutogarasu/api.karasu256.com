@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Character } from "./character.entity";
 
-@Entity()
+@Entity('countries')
 export class Country extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -16,4 +17,7 @@ export class Country extends BaseEntity {
 
   @Column()
   version: string;
+
+  @OneToMany(() => Character, character => character.country)
+  characters: Character[];
 }

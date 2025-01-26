@@ -1,12 +1,17 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, Get, Post, Put, Query } from '@nestjs/common';
 import { CharactersService } from './characters.service';
-import { ApiBody, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, getCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { Character } from '@/entities/genshin/wiki/character.entity';
+import { Authorization } from '@nestjs-cognito/auth';
 
-@Controller('characters')
+@Authorization({
+  allowedGroups: ["admin"],
+})
+@ApiBearerAuth()
+@Controller('wiki/genshin/admin/characters')
 export class CharactersController implements IBaseControllerAndService {
   constructor(
     private readonly charactersService: CharactersService
