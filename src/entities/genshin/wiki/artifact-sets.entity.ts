@@ -1,5 +1,5 @@
 import { IBaseEntity } from "@/types/baseentity";
-import { BaseEntity, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Character } from "./character.entity";
 import { Artifacts } from "./artifacts.entity";
 
@@ -7,6 +7,24 @@ import { Artifacts } from "./artifacts.entity";
 export class ArtifactSets extends BaseEntity implements IBaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  description: string;
+
+  @Column()
+  icon_url: string;
+
+  @Column()
+  one_set_effect: string;
+
+  @Column()
+  two_set_effect: string;
+
+  @Column()
+  four_set_effect: string;
 
   @CreateDateColumn()
   createdAt: string;

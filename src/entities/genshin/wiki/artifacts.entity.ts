@@ -10,19 +10,7 @@ export class Artifacts extends BaseEntity {
   name: string;
 
   @Column()
-  description: string;
-
-  @Column()
   icon_url: string;
-
-  @Column()
-  one_set_effect: string;
-
-  @Column()
-  two_set_effect: string;
-
-  @Column()
-  four_set_effect: string;
 
   @Column()
   version: string;

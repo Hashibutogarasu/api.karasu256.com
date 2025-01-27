@@ -13,13 +13,17 @@ import { CountriesController } from './countries/countries.controller';
 import { CountriesService } from './countries/countries.service';
 import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller';
 import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
+import { Country } from '@/entities/genshin/wiki/countries.entity';
+import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Character,
       Weapon,
-      Artifacts
+      Artifacts,
+      Country,
+      ArtifactSets
     ]),
   ],
   controllers: [CharactersController, WeaponsController, ArtifactsController, CountriesController, ArtifactSetsController],
