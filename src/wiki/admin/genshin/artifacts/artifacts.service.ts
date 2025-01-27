@@ -19,7 +19,7 @@ export class ArtifactsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, createdAt, updatedAt, ...ref } = dto;
+    const { page, limit, ...ref } = dto;
 
     return await this.artifactsRepository.find({
       where: {

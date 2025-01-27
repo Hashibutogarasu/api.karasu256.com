@@ -9,6 +9,8 @@ import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
 import { ArtifactsService } from './artifacts/artifacts.service';
 import { ArtifactsController } from './artifacts/artifacts.controller';
 import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
+import { CountriesController } from './countries/countries.controller';
+import { CountriesService } from './countries/countries.service';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
       Artifacts
     ]),
   ],
-  controllers: [CharactersController, WeaponsController, ArtifactsController],
-  providers: [CharactersService, WeaponsService, ArtifactsService]
+  controllers: [CharactersController, WeaponsController, ArtifactsController, CountriesController],
+  providers: [CharactersService, WeaponsService, ArtifactsService, CountriesService]
 })
 export class GenshinModule { }

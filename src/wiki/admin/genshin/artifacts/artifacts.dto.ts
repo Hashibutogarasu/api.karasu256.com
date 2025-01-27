@@ -11,8 +11,6 @@ const getArtifactSchema = paginationSchema.extend({
   two_set_effect: z.string().optional(),
   four_set_effect: z.string().optional(),
   version: z.string().optional().default('1.0'),
-  createdAt: z.string().datetime().optional().default(new Date().toISOString()),
-  updatedAt: z.string().datetime().optional().default(new Date().toISOString()),
 });
 
 class GetArtifactDto extends createZodDto(getArtifactSchema) { }
