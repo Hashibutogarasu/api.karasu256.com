@@ -22,6 +22,7 @@ const createCountrySchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
+  sumbnail_url: z.string().url({ message: 'sumbnail_urlはurlである必要があります' }).optional(),
   version: z.string().default('1.0'),
 });
 
