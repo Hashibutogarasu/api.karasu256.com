@@ -1,7 +1,7 @@
 export interface IBaseControllerAndService {
-  get(...args: any[]): Promise<any>;
-  getOne(...args: any[]): Promise<any>;
-  create(...args: any[]): Promise<any>;
-  update(...args: any[]): Promise<any>;
-  delete(...args: any[]): Promise<any>;
+  get(params: any): Promise<any[]>;
+  getOne(params: any): Promise<any>;
+  create(dto: any): Promise<any>;
+  update(dto: any): Promise<void>;
+  delete(dto: any): Promise<void>;
 }

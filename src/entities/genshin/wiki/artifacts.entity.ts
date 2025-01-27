@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ArtifactSets } from "./artifact-sets.entity";
 
 @Entity('artifacts')
@@ -29,4 +29,10 @@ export class Artifacts extends BaseEntity {
 
   @ManyToMany(() => ArtifactSets, artifactSet => artifactSet.artifacts)
   artifact_sets: ArtifactSets[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

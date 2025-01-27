@@ -23,8 +23,8 @@ export class WeaponsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getWeaponSchema),
   })
   @Get()
-  async get(@Query() dto: GetWeaponDto): Promise<Weapon[]> {
-    return this.weaponsService.get(dto);
+  async get(@Query() params: GetWeaponDto): Promise<Weapon[]> {
+    return this.weaponsService.get(params);
   }
 
   @ApiParam({

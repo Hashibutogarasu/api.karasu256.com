@@ -6,15 +6,19 @@ import { Character } from '@/entities/genshin/wiki/character.entity';
 import { WeaponsController } from './weapons/weapons.controller';
 import { WeaponsService } from './weapons/weapons.service';
 import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
+import { ArtifactsService } from './artifacts/artifacts.service';
+import { ArtifactsController } from './artifacts/artifacts.controller';
+import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Character,
-      Weapon
+      Weapon,
+      Artifacts
     ]),
   ],
-  controllers: [CharactersController, WeaponsController],
-  providers: [CharactersService, WeaponsService]
+  controllers: [CharactersController, WeaponsController, ArtifactsController],
+  providers: [CharactersService, WeaponsService, ArtifactsService]
 })
 export class GenshinModule { }

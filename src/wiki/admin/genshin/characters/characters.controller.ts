@@ -22,8 +22,8 @@ export class CharactersController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getCharacterSchema),
   })
   @Get()
-  async get(@Query() dto: GetCharacterDto): Promise<Character[]> {
-    return this.charactersService.get(dto);
+  async get(@Query() params: GetCharacterDto): Promise<Character[]> {
+    return this.charactersService.get(params);
   }
 
   @ApiParam({
