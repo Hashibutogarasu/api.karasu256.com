@@ -11,7 +11,7 @@ import { zodToOpenAPI } from 'nestjs-zod';
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-@Controller('artifacts')
+  @Controller('wiki/genshin/admin/artifacts')
 export class ArtifactsController implements IBaseControllerAndService {
   constructor(
     private readonly artifactsService: ArtifactsService

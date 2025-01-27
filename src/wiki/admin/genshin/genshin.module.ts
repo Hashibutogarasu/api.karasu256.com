@@ -23,7 +23,7 @@ import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
       Weapon,
       Artifacts,
       Country,
-      ArtifactSets
+      ArtifactSets,
     ]),
   ],
   controllers: [CharactersController, WeaponsController, ArtifactsController, CountriesController, ArtifactSetsController],

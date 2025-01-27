@@ -5,7 +5,7 @@ import { zodToOpenAPI } from 'nestjs-zod';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { CountriesService } from './countries.service';
 
-@Controller('countries')
+@Controller('wiki/genshin/admin/countries')
 export class CountriesController implements IBaseControllerAndService {
   constructor(
     private readonly service: CountriesService,

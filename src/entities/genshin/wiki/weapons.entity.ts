@@ -9,8 +9,8 @@ export class Weapon extends BaseEntity {
   @Column()
   name: string;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description?: string | undefined;
 
   @Column()
   icon_url: string;

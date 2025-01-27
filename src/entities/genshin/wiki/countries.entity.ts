@@ -9,14 +9,14 @@ export class Country extends BaseEntity {
   @Column()
   name: string;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description?: string | undefined;
 
-  @Column()
-  sumbnail_url: string;
+  @Column({ nullable: true })
+  sumbnail_url?: string | undefined;
 
-  @Column()
-  version: string;
+  @Column({ nullable: true })
+  version: string | undefined;
 
   @OneToMany(() => Character, character => character.country)
   characters: Character[];

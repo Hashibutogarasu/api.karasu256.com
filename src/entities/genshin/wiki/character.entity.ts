@@ -18,14 +18,20 @@ export class Character extends BaseEntity implements IBaseEntity {
   @Column()
   icon_url: string;
 
-  @Column()
-  element: string;
+  @Column({ nullable: true })
+  element?: string | undefined;
 
-  @Column()
-  rarity: number;
+  @Column({ nullable: true })
+  rarity?: number | undefined;
 
   @Column()
   version: string;
+
+  @Column()
+  header_img_url: string;
+
+  @Column({ nullable: true })
+  weapon_type?: string | undefined;
 
   @CreateDateColumn()
   createdAt: string;
