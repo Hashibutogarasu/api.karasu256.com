@@ -13,9 +13,9 @@ const getCharacterSchema = paginationSchema.extend({
   weapon: z.string().optional(),
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   rarity: rarityType,
-  version: z.string().optional().default('1.0'),
-  createdAt: z.string().datetime().optional().default(new Date().toISOString()),
-  updatedAt: z.string().datetime().optional().default(new Date().toISOString()),
+  version: z.string().optional(),
+  createdAt: z.string().datetime().optional(),
+  updatedAt: z.string().datetime().optional(),
 });
 
 class GetCharacterDto extends createZodDto(getCharacterSchema) { }
