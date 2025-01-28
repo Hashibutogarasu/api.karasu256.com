@@ -3,7 +3,7 @@ import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 const getWeaponSchema = paginationSchema.extend({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).optional(),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -36,7 +36,7 @@ const createWeaponSchema = z.object({
 class CreateWeaponDto extends createZodDto(createWeaponSchema) { }
 
 const updateWeaponSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -49,7 +49,7 @@ const updateWeaponSchema = z.object({
 class UpdateWeaponDto extends createZodDto(updateWeaponSchema) { }
 
 const deleteWeaponSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).default(0),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).default("0"),
 });
 
 class DeleteWeaponDto extends createZodDto(deleteWeaponSchema) { }

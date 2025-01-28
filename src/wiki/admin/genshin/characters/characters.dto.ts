@@ -3,7 +3,7 @@ import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 const getCharacterSchema = paginationSchema.extend({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).optional(),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -42,7 +42,7 @@ const createCharacterSchema = z.object({
 class CreateCharacterDto extends createZodDto(createCharacterSchema) { }
 
 const updateCharacterSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -57,7 +57,7 @@ const updateCharacterSchema = z.object({
 class UpdateCharacterDto extends createZodDto(updateCharacterSchema) { }
 
 const deleteCharacterSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).default(0),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).default("0"),
 });
 
 class DeleteCharacterDto extends createZodDto(deleteCharacterSchema) { }
