@@ -13,7 +13,7 @@ const getArtifactSetSchema = paginationSchema.extend({
 class GetArtifactSetDto extends createZodDto(getArtifactSetSchema) { }
 
 const getArtifactSetParamsSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).optional(),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
 });
 
 class GetArtifactSetParamsDto extends createZodDto(getArtifactSetParamsSchema) { }

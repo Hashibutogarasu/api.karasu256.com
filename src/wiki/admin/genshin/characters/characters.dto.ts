@@ -7,8 +7,8 @@ const getCharacterSchema = paginationSchema.extend({
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  element: z.string().optional().default('Anemo'),
-  country: z.string().optional().default('Mondstadt'),
+  element: z.string().optional(),
+  country: z.string().optional(),
   weapon: z.string().optional(),
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   rarity: z.number().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).optional().default(4),
@@ -20,7 +20,7 @@ const getCharacterSchema = paginationSchema.extend({
 class GetCharacterDto extends createZodDto(getCharacterSchema) { }
 
 const getCharacterParamsSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).optional(),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
 });
 
 class GetCharacterParamsDto extends createZodDto(getCharacterParamsSchema) { }
@@ -29,8 +29,8 @@ const createCharacterSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  element: z.string().default('Anemo'),
-  country: z.string().default('Mondstadt'),
+  element: z.string(),
+  country: z.string(),
   weapon: z.string().optional(),
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   artifact_set: z.array(z.string()).optional(),
@@ -47,8 +47,8 @@ const updateCharacterSchema = z.object({
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  element: z.string().optional().default('Anemo'),
-  country: z.string().optional().default('Mondstadt'),
+  element: z.string().optional(),
+  country: z.string().optional(),
   weapon_type: z.string().optional(),
   rarity: z.number().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).optional().default(4),
   version: z.string().optional().default('1.0'),

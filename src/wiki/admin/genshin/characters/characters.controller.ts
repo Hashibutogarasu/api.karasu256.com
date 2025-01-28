@@ -64,7 +64,7 @@ export class CharactersController implements IBaseControllerAndService {
     name: 'query',
     schema: zodToOpenAPI(importFromHoyoLabSchema),
   })
-  @Post('import')
+  @Post('importFromHoyoLab')
   async importFromHoyoLab(@Query() dto: ImportFromHoyoLabDto): Promise<Character> {
     const data = await fetch(`https://sg-wiki-api-static.hoyolab.com/hoyowiki/genshin/wapi/entry_page?entry_page_id=${dto.entry_page_id}`, {
       "credentials": "omit",

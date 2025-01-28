@@ -33,6 +33,9 @@ export class Character extends BaseEntity implements IBaseEntity {
   @Column({ nullable: true })
   weapon_type?: string | undefined;
 
+  @Column({ nullable: true })
+  property?: string | undefined;
+
   @CreateDateColumn()
   createdAt: string;
 

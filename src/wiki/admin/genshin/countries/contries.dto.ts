@@ -13,7 +13,7 @@ const getCountriesSchema = paginationSchema.extend({
 class GetCountriesDto extends createZodDto(getCountriesSchema) { }
 
 const getCountriesParamsSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).optional(),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
 });
 
 class GetCountriesParamsDto extends createZodDto(getCountriesParamsSchema) { }

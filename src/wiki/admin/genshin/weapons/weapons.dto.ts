@@ -18,7 +18,7 @@ const getWeaponSchema = paginationSchema.extend({
 class GetWeaponDto extends createZodDto(getWeaponSchema) { }
 
 const getWeaponParamsSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).optional(),
+  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
 });
 
 class GetWeaponParamsDto extends createZodDto(getWeaponParamsSchema) { }

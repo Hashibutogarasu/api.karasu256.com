@@ -31,18 +31,18 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, country, weapon, ...ref } = dto;
+    const { page, limit, country, weapon, ...ref } = parsed.data;
     return await this.charactersService.find({
       where: {
         ...ref,
-        country: {
+        country: country && {
           name: country,
         },
-        weapon: {
+        weapon: weapon && {
           name: weapon,
         },
       },
-      skip: page && limit ? (page - 1) * limit : undefined,
+      skip: page > 0 ? (page - 1) * limit : 0,
       relations: {
         country: true,
         weapon: true,
@@ -57,9 +57,11 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
+    const { ...ref } = parsed.data;
+
     return await this.charactersService.findOne({
       where: {
-        id: params.id,
+        ...ref,
       },
       relations: {
         country: true,
@@ -74,7 +76,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { country, weapon, artifact_set, ...ref } = dto;
+    const { country, weapon, artifact_set, ...ref } = parsed.data;
 
     const character = Character.create({
       ...ref,
@@ -143,7 +145,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { country, ...ref } = dto;
+    const { country, ...ref } = parsed.data;
 
     const countryExists = await this.charactersService.findOne({
       where: {
@@ -178,9 +180,11 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
+    const { ...ref } = parsed.data;
+
     const character = await this.charactersService.findOne({
       where: {
-        id: dto.id,
+        ...ref,
       },
     });
 
@@ -219,6 +223,10 @@ export class CharactersService implements IBaseControllerAndService {
 
       if (character_rarity) {
         character.rarity = parseInt(character_rarity.replace('★', ''));
+      }
+
+      if (character_property) {
+        character.property = character_property;
       }
 
       if (character_region) {
