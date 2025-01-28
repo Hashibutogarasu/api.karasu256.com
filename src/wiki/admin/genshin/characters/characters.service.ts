@@ -42,7 +42,7 @@ export class CharactersService implements IBaseControllerAndService {
           name: weapon,
         },
       },
-      skip: page > 0 ? (page - 1) * limit : 0,
+      skip: page > 0 ? (page - 1) * limit : undefined,
       relations: {
         country: true,
         weapon: true,
