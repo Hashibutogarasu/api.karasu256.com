@@ -1,8 +1,16 @@
-import { z } from "zod";
+import { z, ZodTypeAny } from "zod";
 
-const rarityType = z.preprocess((a) => parseInt(z.string().parse(a), 4),
-  z.number().gte(4, { message: 'レアリティは4以上でなければいけません' }).lte(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default(4));
+export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
+  if (typeof a === 'string') {
+    return parseInt(a, 10)
+  } else if (typeof a === 'number') {
+    return a;
+  } else {
+    return undefined;
+  }
+}, schema);
 
+const rarityType = numericString(z.number({ message: "レアリティは数値である必要があります" }).min(4).max(5))
 
 const idType = z.string({ invalid_type_error: "idの型が不正です" }).transform(Number);
 
