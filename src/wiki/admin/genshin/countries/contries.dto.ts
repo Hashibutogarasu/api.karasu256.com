@@ -1,9 +1,10 @@
 import { paginationSchema } from "@/types/zod/pagination.dto";
+import { idType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 const getCountriesSchema = paginationSchema.extend({
-  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
+  id: idType.optional(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -13,7 +14,7 @@ const getCountriesSchema = paginationSchema.extend({
 class GetCountriesDto extends createZodDto(getCountriesSchema) { }
 
 const getCountriesParamsSchema = z.object({
-  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
+  id: idType.optional(),
 });
 
 class GetCountriesParamsDto extends createZodDto(getCountriesParamsSchema) { }
@@ -29,7 +30,7 @@ const createCountrySchema = z.object({
 class CreateCountryDto extends createZodDto(createCountrySchema) { }
 
 const updateCountrySchema = z.object({
-  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number),
+  id: idType,
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -39,7 +40,7 @@ const updateCountrySchema = z.object({
 class UpdateCountryDto extends createZodDto(updateCountrySchema) { }
 
 const deleteCountrySchema = z.object({
-  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).default("0"),
+  id: idType,
 });
 
 class DeleteCountryDto extends createZodDto(deleteCountrySchema) { }

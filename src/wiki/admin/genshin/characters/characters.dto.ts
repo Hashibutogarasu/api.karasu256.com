@@ -1,9 +1,10 @@
 import { paginationSchema } from "@/types/zod/pagination.dto";
+import { idType, rarityType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 const getCharacterSchema = paginationSchema.extend({
-  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
+  id: idType.optional(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -11,7 +12,7 @@ const getCharacterSchema = paginationSchema.extend({
   country: z.string().optional(),
   weapon: z.string().optional(),
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
+  rarity: rarityType,
   version: z.string().optional().default('1.0'),
   createdAt: z.string().datetime().optional().default(new Date().toISOString()),
   updatedAt: z.string().datetime().optional().default(new Date().toISOString()),
@@ -20,7 +21,7 @@ const getCharacterSchema = paginationSchema.extend({
 class GetCharacterDto extends createZodDto(getCharacterSchema) { }
 
 const getCharacterParamsSchema = z.object({
-  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).optional(),
+  id: idType.optional(),
 });
 
 class GetCharacterParamsDto extends createZodDto(getCharacterParamsSchema) { }
@@ -35,14 +36,14 @@ const createCharacterSchema = z.object({
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   artifact_set: z.array(z.string()).optional(),
   weapon_type: z.string().optional(),
-  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
+  rarity: rarityType,
   version: z.string().default('1.0'),
 });
 
 class CreateCharacterDto extends createZodDto(createCharacterSchema) { }
 
 const updateCharacterSchema = z.object({
-  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number),
+  id: idType,
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -50,14 +51,14 @@ const updateCharacterSchema = z.object({
   element: z.string().optional(),
   country: z.string().optional(),
   weapon_type: z.string().optional(),
-  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
+  rarity: rarityType,
   version: z.string().optional().default('1.0'),
 });
 
 class UpdateCharacterDto extends createZodDto(updateCharacterSchema) { }
 
 const deleteCharacterSchema = z.object({
-  id: z.string({ invalid_type_error: "idの型が不正です" }).transform(Number).default("0"),
+  id: idType,
 });
 
 class DeleteCharacterDto extends createZodDto(deleteCharacterSchema) { }
