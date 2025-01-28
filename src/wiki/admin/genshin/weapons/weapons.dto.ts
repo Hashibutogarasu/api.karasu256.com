@@ -8,7 +8,7 @@ const getWeaponSchema = paginationSchema.extend({
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
   type: z.string().optional(),
-  rarity: z.number().min(3, { message: 'レアリティは3以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).optional().default(3),
+  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
   effect: z.string().optional(),
   version: z.string().optional().default('1.0'),
   createdAt: z.string().datetime().optional().default(new Date().toISOString()),
@@ -28,7 +28,7 @@ const createWeaponSchema = z.object({
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
   type: z.string(),
-  rarity: z.number().min(3, { message: 'レアリティは3以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).default(3),
+  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
   effect: z.string().optional(),
   version: z.string().default('1.0'),
 });
@@ -41,7 +41,7 @@ const updateWeaponSchema = z.object({
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
   type: z.string().optional(),
-  rarity: z.number().min(3, { message: 'レアリティは3以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).optional().default(3),
+  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
   effect: z.string().optional(),
   version: z.string().optional().default('1.0'),
 });

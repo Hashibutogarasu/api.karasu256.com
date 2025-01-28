@@ -11,7 +11,7 @@ const getCharacterSchema = paginationSchema.extend({
   country: z.string().optional(),
   weapon: z.string().optional(),
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  rarity: z.number().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).optional().default(4),
+  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
   version: z.string().optional().default('1.0'),
   createdAt: z.string().datetime().optional().default(new Date().toISOString()),
   updatedAt: z.string().datetime().optional().default(new Date().toISOString()),
@@ -35,7 +35,7 @@ const createCharacterSchema = z.object({
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   artifact_set: z.array(z.string()).optional(),
   weapon_type: z.string().optional(),
-  rarity: z.number().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).default(4),
+  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
   version: z.string().default('1.0'),
 });
 
@@ -50,7 +50,7 @@ const updateCharacterSchema = z.object({
   element: z.string().optional(),
   country: z.string().optional(),
   weapon_type: z.string().optional(),
-  rarity: z.number().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).optional().default(4),
+  rarity: z.string().min(4, { message: 'レアリティは4以上でなければいけません' }).max(5, { message: 'レアリティは5以下でなければいけません' }).transform(Number).optional().default("4"),
   version: z.string().optional().default('1.0'),
 });
 
