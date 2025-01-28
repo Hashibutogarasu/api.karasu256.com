@@ -1,30 +1,25 @@
 import { Module } from "@nestjs/common";
 import { AppController } from "@/app.controller";
 import { AppService } from "@/app.service";
-import { SupabaseModule } from "@/supabase/supabase.module";
-import { AuthModule } from "@/auth/auth.module";
-import { EventsModule } from "@/events/events.module";
-import { UserModule } from "@/user/user.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { typeormConfig } from "@/config/db/typeorm.config";
-import { NodeModule } from "@/node/node.module";
-import { UsersEntity } from "@/entities/user.entity";
 import { WikiModule } from './wiki/wiki.module';
+import { validate } from "./env-validator";
+import { AuthModule } from './auth/auth.module';
+import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
+import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(typeormConfig),
-    TypeOrmModule.forFeature([UsersEntity]),
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+      validate,
     }),
-    SupabaseModule,
-    AuthModule,
-    EventsModule,
-    UserModule,
-    NodeModule,
     WikiModule,
+    CognitoAuthModule,
+    AuthModule,
+    CognitoAuthModule,
+    TypeormConnectionModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

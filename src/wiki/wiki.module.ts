@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { GenshinModule } from './genshin/genshin.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
-    GenshinModule,
+    AdminModule,
   ],
   providers: [],
   controllers: [],

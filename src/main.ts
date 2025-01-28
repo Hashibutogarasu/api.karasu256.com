@@ -3,15 +3,15 @@ import { AppModule } from "@/app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
-import { loadEnv } from "@/utils/dotenv";
-
+import * as bodyParser from 'body-parser';
 async function bootstrap() {
-  loadEnv();
-
   const app = await NestFactory.create(AppModule);
   patchNestJsSwagger();
 
   app.enableCors();
+
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   const config = new DocumentBuilder()
     .setTitle(`Karasu Lab API ${process.env.NODE_ENV}`)
@@ -25,12 +25,13 @@ async function bootstrap() {
       name: 'Authorization',
       scheme: 'bearer',
     })
+    .setOpenAPIVersion("3.1.0")
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   const documentFactory = () => document;
 
-  SwaggerModule.setup("docs", app, documentFactory, {
+  SwaggerModule.setup("api", app, documentFactory, {
     useGlobalPrefix: true,
     customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui.min.css",
     customJs: [

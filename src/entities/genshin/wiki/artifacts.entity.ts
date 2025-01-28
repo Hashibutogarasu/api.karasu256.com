@@ -1,0 +1,26 @@
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ArtifactSets } from "./artifact-sets.entity";
+
+@Entity('artifacts')
+export class Artifacts extends BaseEntity {
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  icon_url: string;
+
+  @Column()
+  version: string;
+
+  @ManyToMany(() => ArtifactSets, artifactSet => artifactSet.artifacts)
+  artifact_sets: ArtifactSets[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+}

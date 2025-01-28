@@ -1,30 +1,53 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { CharacterDataSchema, CharacterListDataEntity } from "./character/character_data.entity"
-import { z } from "zod";
+import { IBaseEntity } from "@/types/baseentity";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Country } from "./countries.entity";
+import { Weapon } from "./weapons.entity";
+import { ArtifactSets } from "./artifact-sets.entity";
 
-@Entity()
-export class CharacterEntity extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+@Entity('characters')
+export class Character extends BaseEntity implements IBaseEntity {
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
-  retcode: number;
+  name: string;
 
   @Column()
-  message: string;
+  description: string;
 
-  @OneToMany(() => CharacterListDataEntity, data => data.character)
-  data: CharacterListDataEntity;
+  @Column()
+  icon_url: string;
+
+  @Column({ nullable: true })
+  element?: string | undefined;
+
+  @Column({ nullable: true })
+  rarity?: number | undefined;
+
+  @Column()
+  version: string;
+
+  @Column()
+  header_img_url: string;
+
+  @Column({ nullable: true })
+  weapon_type?: string | undefined;
+
+  @Column({ nullable: true })
+  property?: string | undefined;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: string;
 
   @UpdateDateColumn()
-  updatedAt: Date;
-}
+  updatedAt: string;
 
-export const CharacterEntitySchema = z.object({
-  retcode: z.number(),
-  message: z.string(),
-  data: CharacterDataSchema,
-});
+  @ManyToOne(() => Country, country => country.id, { nullable: true })
+  country?: Country | null;
+
+  @ManyToOne(() => Weapon, weapon => weapon.id, { nullable: true })
+  weapon?: Weapon | null;
+
+  @ManyToMany(() => ArtifactSets, artifactSet => artifactSet.characters)
+  artifact_set: ArtifactSets[];
+}
