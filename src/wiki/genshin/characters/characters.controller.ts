@@ -5,13 +5,13 @@ import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, GetCharacterParamsDto, getCharacterParamsSchema, getCharacterSchema, ImportCharacterDto, importCharacterSchema, ImportFromHoyoLabDto, importFromHoyoLabSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { Character } from '@/entities/genshin/wiki/character.entity';
-import { Authorization } from '@nestjs-cognito/auth';
+import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 
 @Authorization({
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-@Controller('wiki/genshin/admin/characters')
+@Controller('wiki/genshin/characters')
 export class CharactersController implements IBaseControllerAndService {
   constructor(
     private readonly charactersService: CharactersService
@@ -21,6 +21,7 @@ export class CharactersController implements IBaseControllerAndService {
     name: 'query',
     schema: zodToOpenAPI(getCharacterSchema),
   })
+  @PublicRoute()
   @Get()
   async get(@Query() params: GetCharacterDto): Promise<Character[]> {
     return this.charactersService.get(params);
@@ -30,6 +31,7 @@ export class CharactersController implements IBaseControllerAndService {
     name: 'param',
     schema: zodToOpenAPI(getCharacterParamsSchema),
   })
+  @PublicRoute()
   @Get(':id')
   async getOne(@Param() params: GetCharacterParamsDto): Promise<Character> {
     return this.charactersService.getOne(params);

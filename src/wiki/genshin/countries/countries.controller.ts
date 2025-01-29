@@ -4,8 +4,9 @@ import { CreateCountryDto, createCountrySchema, DeleteCountryDto, deleteCountryS
 import { zodToOpenAPI } from 'nestjs-zod';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { CountriesService } from './countries.service';
+import { PublicRoute } from '@nestjs-cognito/auth';
 
-@Controller('wiki/genshin/admin/countries')
+@Controller('wiki/genshin/countries')
 export class CountriesController implements IBaseControllerAndService {
   constructor(
     private readonly service: CountriesService,
@@ -15,6 +16,7 @@ export class CountriesController implements IBaseControllerAndService {
     name: 'query',
     schema: zodToOpenAPI(getCountriesSchema),
   })
+  @PublicRoute()
   @Get()
   async get(@Param() params: GetCountriesDto): Promise<any[]> {
     return this.service.get(params);
@@ -24,6 +26,7 @@ export class CountriesController implements IBaseControllerAndService {
     name: 'param',
     schema: zodToOpenAPI(getCountriesParamsSchema),
   })
+  @PublicRoute()
   @Get(':id')
   async getOne(@Param() params: GetCountriesParamsDto): Promise<any> {
     return this.service.getOne(params);

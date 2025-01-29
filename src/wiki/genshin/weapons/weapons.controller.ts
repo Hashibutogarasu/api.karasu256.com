@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { WeaponsService } from './weapons.service';
 import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { Authorization } from '@nestjs-cognito/auth';
+import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { CreateWeaponDto, createWeaponSchema, DeleteWeaponDto, deleteWeaponSchema, GetWeaponDto, GetWeaponParamsDto, getWeaponParamsSchema, getWeaponSchema, UpdateWeaponDto } from './weapons.dto';
 import { updateCharacterSchema } from '../characters/characters.dto';
@@ -12,7 +12,7 @@ import { updateCharacterSchema } from '../characters/characters.dto';
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-@Controller('wiki/genshin/admin/weapons')
+@Controller('wiki/genshin/weapons')
 export class WeaponsController implements IBaseControllerAndService {
   constructor(
     private readonly weaponsService: WeaponsService,
@@ -22,6 +22,7 @@ export class WeaponsController implements IBaseControllerAndService {
     name: 'query',
     schema: zodToOpenAPI(getWeaponSchema),
   })
+  @PublicRoute()
   @Get()
   async get(@Query() params: GetWeaponDto): Promise<Weapon[]> {
     return this.weaponsService.get(params);
@@ -31,6 +32,7 @@ export class WeaponsController implements IBaseControllerAndService {
     name: 'param',
     schema: zodToOpenAPI(getWeaponParamsSchema),
   })
+  @PublicRoute()
   @Get(':id')
   async getOne(@Param() params: GetWeaponParamsDto): Promise<Weapon> {
     return this.weaponsService.getOne(params);

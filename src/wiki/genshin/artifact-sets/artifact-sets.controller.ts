@@ -4,14 +4,14 @@ import { CreateArtifactSetDto, createArtifactSetSchema, DeleteArtifactSetDto, de
 import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
-import { Authorization } from '@nestjs-cognito/auth';
+import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
 
 @Authorization({
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-  @Controller('wiki/genshin/admin/artifact-sets')
+@Controller('wiki/genshin/artifact-sets')
 export class ArtifactSetsController implements IBaseControllerAndService {
   constructor(
     private readonly service: ArtifactSetsService,
@@ -21,6 +21,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     name: 'query',
     schema: zodToOpenAPI(getArtifactSetSchema),
   })
+  @PublicRoute()
   @Get()
   async get(params: GetArtifactSetDto): Promise<ArtifactSets[]> {
     return this.service.get(params);
@@ -30,6 +31,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     name: 'param',
     schema: zodToOpenAPI(getArtifactSetParamsSchema),
   })
+  @PublicRoute()
   @Get(':id')
   async getOne(params: GetArtifactSetParamsDto): Promise<ArtifactSets> {
     return this.service.getOne(params);
