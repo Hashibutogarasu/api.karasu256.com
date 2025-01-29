@@ -12,7 +12,7 @@ const getCharacterSchema = paginationSchema.extend({
   country: z.string().optional(),
   weapon: z.string().optional(),
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  rarity: rarityType,
+  rarity: rarityType.optional(),
   version: z.string().optional(),
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
@@ -36,7 +36,7 @@ const createCharacterSchema = z.object({
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   artifact_set: z.array(z.string()).optional(),
   weapon_type: z.string().optional(),
-  rarity: rarityType,
+  rarity: rarityType.optional(),
   version: z.string().default('1.0'),
 });
 
@@ -51,7 +51,7 @@ const updateCharacterSchema = z.object({
   element: z.string().optional(),
   country: z.string().optional(),
   weapon_type: z.string().optional(),
-  rarity: rarityType,
+  rarity: rarityType.optional(),
   version: z.string().optional().default('1.0'),
 });
 
