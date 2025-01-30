@@ -60,11 +60,10 @@ export class CharactersService implements IBaseControllerAndService {
     const { ...ref } = parsed.data;
 
     return await this.charactersService.findOne({
-      where: {
-        ...ref,
-      },
+      ...ref,
       relations: {
         country: true,
+        weapon: true,
       }
     });
   }
