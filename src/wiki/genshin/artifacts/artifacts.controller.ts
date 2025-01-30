@@ -1,7 +1,7 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ArtifactsService } from './artifacts.service';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { CreateArtifactDto, createArtifactSchema, DeleteArtifactDto, deleteArtifactSchema, GetArtifactDto, GetArtifactParamsDto, getArtifactParamsSchema, getArtifactSchema, UpdateArtifactDto, updateArtifactSchema } from './artifacts.dto';
 import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
@@ -17,19 +17,20 @@ export class ArtifactsController implements IBaseControllerAndService {
     private readonly artifactsService: ArtifactsService
   ) { }
 
-  @ApiParam({
+  @ApiQuery({
     name: 'query',
+    type: getSchemaPath(GetArtifactDto),
     schema: zodToOpenAPI(getArtifactSchema),
   })
   @PublicRoute()
   @Get()
-  async get(@Param() params: GetArtifactDto): Promise<Artifacts[]> {
+  async get(@Query() params: GetArtifactDto): Promise<Artifacts[]> {
     return this.artifactsService.get(params);
   }
 
   @ApiParam({
-    name: 'param',
-    schema: zodToOpenAPI(getArtifactParamsSchema),
+    name: 'id',
+    type: 'string',
   })
   @PublicRoute()
   @Get(':id')
@@ -54,8 +55,8 @@ export class ArtifactsController implements IBaseControllerAndService {
   }
 
   @ApiParam({
-    name: 'param',
-    schema: zodToOpenAPI(deleteArtifactSchema),
+    name: 'id',
+    type: 'string',
   })
   @Delete(':id')
   async delete(@Param() dto: DeleteArtifactDto): Promise<void> {

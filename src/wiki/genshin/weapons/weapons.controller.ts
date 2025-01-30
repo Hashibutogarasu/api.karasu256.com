@@ -2,7 +2,7 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { WeaponsService } from './weapons.service';
 import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { CreateWeaponDto, createWeaponSchema, DeleteWeaponDto, deleteWeaponSchema, GetWeaponDto, GetWeaponParamsDto, getWeaponParamsSchema, getWeaponSchema, UpdateWeaponDto } from './weapons.dto';
@@ -29,8 +29,8 @@ export class WeaponsController implements IBaseControllerAndService {
   }
 
   @ApiParam({
-    name: 'param',
-    schema: zodToOpenAPI(getWeaponParamsSchema),
+    name: 'id',
+    type: 'string',
   })
   @PublicRoute()
   @Get(':id')
@@ -55,8 +55,8 @@ export class WeaponsController implements IBaseControllerAndService {
   }
 
   @ApiParam({
-    name: 'param',
-    schema: zodToOpenAPI(deleteWeaponSchema),
+    name: 'id',
+    type: 'string',
   })
   @Delete(':id')
   async delete(@Param() dto: DeleteWeaponDto): Promise<void> {

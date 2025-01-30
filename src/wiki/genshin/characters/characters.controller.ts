@@ -1,7 +1,7 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { CharactersService } from './characters.service';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, GetCharacterParamsDto, getCharacterParamsSchema, getCharacterSchema, ImportCharacterDto, importCharacterSchema, ImportFromHoyoLabDto, importFromHoyoLabSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { Character } from '@/entities/genshin/wiki/character.entity';
@@ -28,8 +28,8 @@ export class CharactersController implements IBaseControllerAndService {
   }
 
   @ApiParam({
-    name: 'param',
-    schema: zodToOpenAPI(getCharacterParamsSchema),
+    name: 'id',
+    type: 'string',
   })
   @PublicRoute()
   @Get(':id')
@@ -54,8 +54,8 @@ export class CharactersController implements IBaseControllerAndService {
   }
 
   @ApiParam({
-    name: 'param',
-    schema: zodToOpenAPI(deleteCharacterSchema),
+    name: 'id',
+    type: 'string',
   })
   @Delete(':id')
   async delete(@Param() dto: DeleteCharacterDto): Promise<void> {
