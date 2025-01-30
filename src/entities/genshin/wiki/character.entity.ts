@@ -36,6 +36,9 @@ export class Character extends BaseEntity implements IBaseEntity {
   @Column({ nullable: true })
   property?: string | undefined;
 
+  @Column({ default: false })
+  uninplemented: boolean;
+
   @CreateDateColumn()
   createdAt: string;
 

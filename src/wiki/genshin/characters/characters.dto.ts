@@ -14,6 +14,7 @@ const getCharacterSchema = paginationSchema.extend({
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   rarity: rarityType.optional(),
   version: z.string().optional(),
+  unimplemented: z.string().transform((value) => value === 'true').optional(),
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
 });
@@ -38,6 +39,7 @@ const createCharacterSchema = z.object({
   weapon_type: z.string().optional(),
   rarity: rarityType.optional(),
   version: z.string().default('1.0'),
+  unimplemented: z.boolean().default(false),
 });
 
 class CreateCharacterDto extends createZodDto(createCharacterSchema) { }
@@ -53,6 +55,7 @@ const updateCharacterSchema = z.object({
   weapon_type: z.string().optional(),
   rarity: rarityType.optional(),
   version: z.string().optional().default('1.0'),
+  unimplemented: z.boolean().optional(),
 });
 
 class UpdateCharacterDto extends createZodDto(updateCharacterSchema) { }
