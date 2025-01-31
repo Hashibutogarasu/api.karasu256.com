@@ -15,6 +15,10 @@ const envSchema = z.object({
   COGNITO_USER_POOL_ID: z.string(),
   COGNITO_CLIENT_ID: z.string(),
   COGNITO_REGION: z.string(),
+  CLOUDFLARE_ACCESS_KEY_ID: z.string(),
+  CLOUDFLARE_SECRET_ACCESS_KEY: z.string(),
+  CLOUDFLARE_REGION: z.string(),
+  S3_ENDPOINT: z.string(),
 });
 
 export function validate(
