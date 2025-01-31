@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "@/api/app.controller";
-import { AppService } from "@/api/app.service";
+import { AppController } from "@/app.controller";
+import { AppService } from "@/app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { WikiModule } from './wiki/wiki.module';
-import { validate } from "./env-validator";
+import { validate } from "./api/env-validator";
 import { AuthModule } from './auth/auth.module';
 import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
 import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
