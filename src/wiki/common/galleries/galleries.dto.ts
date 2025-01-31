@@ -6,6 +6,7 @@ import { z } from "zod";
 const getGallerySchema = paginationSchema.extend({
   id: idType.optional(),
   alt: z.string().optional(),
+  key: z.string().optional(),
   url: z.string().url({ message: 'urlはurlである必要があります' }).optional(),
   character: idType.optional(),
 });
@@ -20,6 +21,7 @@ class GetGalleryParamsDto extends createZodDto(getGalleryParamsSchema) { }
 
 const createGallerySchema = z.object({
   alt: z.string(),
+  key: z.string().optional(),
   url: z.string().url({ message: 'urlはurlである必要があります' }),
   character: idType.optional(),
 });
@@ -29,6 +31,7 @@ class CreateGalleryDto extends createZodDto(createGallerySchema) { }
 const updateGallerySchema = z.object({
   id: idType,
   alt: z.string().optional(),
+  key: z.string().optional(),
   url: z.string().url({ message: 'urlはurlである必要があります' }).optional(),
   character: idType.optional(),
 });

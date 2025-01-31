@@ -13,6 +13,9 @@ export class Gallery extends BaseEntity implements IBaseEntity {
   @Column()
   url: string;
 
+  @Column()
+  key: string;
+
   @CreateDateColumn()
   createdAt: string;
 
