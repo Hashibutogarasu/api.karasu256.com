@@ -7,7 +7,7 @@ import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGalleryS
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { S3Service } from '@/s3/s3.service';
+import { S3Service } from '@/api/s3/s3.service';
 
 @Injectable()
 export class GalleriesService implements IBaseControllerAndService {
