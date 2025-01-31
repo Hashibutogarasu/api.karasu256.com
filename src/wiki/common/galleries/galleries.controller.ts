@@ -39,7 +39,6 @@ export class GalleriesController implements IBaseControllerAndService {
     return this.galleriesService.getOne(params);
   }
 
-
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<{ url: string }> {
