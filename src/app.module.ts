@@ -8,7 +8,6 @@ import { AuthModule } from './auth/auth.module';
 import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
 import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
 import { S3Module } from 'nestjs-s3';
-import { CloudflareR2Module } from './cloudflare-r2/cloudflare-r2.module';
 
 @Module({
   imports: [
@@ -22,7 +21,6 @@ import { CloudflareR2Module } from './cloudflare-r2/cloudflare-r2.module';
     AuthModule,
     CognitoAuthModule,
     TypeormConnectionModule,
-    CloudflareR2Module,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

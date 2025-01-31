@@ -1,11 +1,12 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { GalleriesService } from './galleries.service';
 import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { Gallery } from '@/entities/genshin/wiki/galleries.entity';
+import { Gallery } from '@/entities/common/galleries.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -36,6 +37,13 @@ export class GalleriesController implements IBaseControllerAndService {
   @Get(':id')
   async getOne(@Param() params: GetGalleryParamsDto): Promise<Gallery> {
     return this.galleriesService.getOne(params);
+  }
+
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<{ url: string }> {
+    return this.galleriesService.uploadFile(file);
   }
 
   @ApiBody({

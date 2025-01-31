@@ -1,6 +1,6 @@
 import { IBaseEntity } from "@/types/baseentity";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Character } from "./character.entity";
+import { Character } from "../genshin/wiki/character.entity";
 
 @Entity('galleries')
 export class Gallery extends BaseEntity implements IBaseEntity {
