@@ -5,6 +5,7 @@ import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGalleryS
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
+import { Gallery } from '@/entities/genshin/wiki/galleries.entity';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -23,7 +24,7 @@ export class GalleriesController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetGalleryDto): Promise<any[]> {
+  async get(@Query() params: GetGalleryDto): Promise<Gallery[]> {
     return this.galleriesService.get(params);
   }
 
@@ -33,7 +34,7 @@ export class GalleriesController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get(':id')
-  async getOne(@Param() params: GetGalleryParamsDto): Promise<any> {
+  async getOne(@Param() params: GetGalleryParamsDto): Promise<Gallery> {
     return this.galleriesService.getOne(params);
   }
 
@@ -41,7 +42,7 @@ export class GalleriesController implements IBaseControllerAndService {
     schema: zodToOpenAPI(createGallerySchema),
   })
   @Post()
-  async create(@Body() dto: CreateGalleryDto): Promise<any> {
+  async create(@Body() dto: CreateGalleryDto): Promise<Gallery> {
     return this.galleriesService.create(dto);
   }
 
