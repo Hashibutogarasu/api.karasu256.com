@@ -1,5 +1,5 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { GalleriesService } from './galleries.service';
 import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
@@ -41,7 +41,7 @@ export class GalleriesController implements IBaseControllerAndService {
     schema: zodToOpenAPI(createGallerySchema),
   })
   @Post()
-  async create(dto: CreateGalleryDto): Promise<any> {
+  async create(@Body() dto: CreateGalleryDto): Promise<any> {
     return this.galleriesService.create(dto);
   }
 
@@ -49,7 +49,7 @@ export class GalleriesController implements IBaseControllerAndService {
     schema: zodToOpenAPI(updateGallerySchema),
   })
   @Post()
-  async update(dto: UpdateGalleryDto): Promise<void> {
+  async update(@Body() dto: UpdateGalleryDto): Promise<void> {
     return this.galleriesService.update(dto);
   }
 
@@ -57,7 +57,7 @@ export class GalleriesController implements IBaseControllerAndService {
     schema: zodToOpenAPI(deleteGallerySchema),
   })
   @Post()
-  async delete(dto: DeleteGalleryDto): Promise<void> {
+  async delete(@Body() dto: DeleteGalleryDto): Promise<void> {
     return this.galleriesService.delete(dto);
   }
 }
