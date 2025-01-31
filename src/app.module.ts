@@ -7,6 +7,7 @@ import { validate } from "./env-validator";
 import { AuthModule } from './auth/auth.module';
 import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
 import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
+import { S3Service } from './s3/s3.service';
 
 @Module({
   imports: [
@@ -22,6 +23,6 @@ import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection
     TypeormConnectionModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ConfigService],
+  providers: [AppService, ConfigService, S3Service],
 })
 export class AppModule { }

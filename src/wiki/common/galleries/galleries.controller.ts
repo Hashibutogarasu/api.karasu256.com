@@ -75,11 +75,12 @@ export class GalleriesController implements IBaseControllerAndService {
     return this.galleriesService.update(dto);
   }
 
-  @ApiBody({
-    schema: zodToOpenAPI(deleteGallerySchema),
+  @ApiParam({
+    name: 'id',
+    type: 'string',
   })
-  @Delete()
-  async delete(@Body() dto: DeleteGalleryDto): Promise<void> {
+  @Delete(':id')
+  async delete(@Param() dto: DeleteGalleryDto): Promise<void> {
     return this.galleriesService.delete(dto);
   }
 }

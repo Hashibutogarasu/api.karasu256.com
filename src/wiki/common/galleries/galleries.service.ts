@@ -4,9 +4,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGalleryParamsSchema, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { S3Service } from '@/s3/s3.service';
 
 @Injectable()
 export class GalleriesService implements IBaseControllerAndService {
@@ -15,6 +16,8 @@ export class GalleriesService implements IBaseControllerAndService {
     private readonly galleryRepository: Repository<Gallery>,
 
     private readonly configService: ConfigService,
+
+    private readonly s3Service: S3Service,
   ) { }
 
   async get(params: GetGalleryDto): Promise<Gallery[]> {
@@ -56,29 +59,12 @@ export class GalleriesService implements IBaseControllerAndService {
       throw new BadRequestException('ファイルがアップロードされていません');
     }
 
-    const s3Client = new S3Client({
-      region: 'auto',
-      endpoint: `https://${this.configService.get('CLOUDFLARE_ACCOUNT_ID')}.r2.cloudflarestorage.com`,
-      credentials: {
-        accessKeyId: this.configService.get('CLOUDFLARE_ACCESS_KEY_ID'),
-        secretAccessKey: this.configService.get('CLOUDFLARE_SECRET_ACCESS_KEY'),
-      },
-    });
-
-    const today = new Date();
-    const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-
-    await s3Client.send(new PutObjectCommand({
-      Bucket: this.configService.get('CLOUDFLARE_BUCKET'),
-      Key: `galleries/${formattedDate}/${file.originalname}`,
-      Body: file.buffer,
-    }));
-
-    const uploadedFileUrl = `${this.configService.get('CLOUDFLARE_PUBLIC_URL')}/${file.originalname}`;
+    const { url, key } = await this.s3Service.uploadFile(file);
 
     const gallery = await this.galleryRepository.save({
-      url: uploadedFileUrl,
+      url,
       alt: file.originalname,
+      key,
     });
 
     return gallery;
@@ -150,6 +136,8 @@ export class GalleriesService implements IBaseControllerAndService {
     if (!gallery) {
       throw new BadRequestException('画像が見つかりません');
     }
+
+    await this.s3Service.deleteFile(gallery.key);
 
     await this.galleryRepository.delete({ id: dto.id });
   }
