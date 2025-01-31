@@ -8,10 +8,7 @@ import { zodToOpenAPI } from 'nestjs-zod';
 import { Gallery } from '@/entities/common/galleries.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Authorization({
-  allowedGroups: ["admin"],
-})
-@ApiBearerAuth()
+
 @Controller('galleries')
 export class GalleriesController implements IBaseControllerAndService {
   constructor(
@@ -39,6 +36,10 @@ export class GalleriesController implements IBaseControllerAndService {
     return this.galleriesService.getOne(params);
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @Post('upload')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -59,6 +60,10 @@ export class GalleriesController implements IBaseControllerAndService {
     return this.galleriesService.uploadFile(file);
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(createGallerySchema),
   })
@@ -67,6 +72,10 @@ export class GalleriesController implements IBaseControllerAndService {
     return this.galleriesService.create(dto);
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(updateGallerySchema),
   })
@@ -75,6 +84,10 @@ export class GalleriesController implements IBaseControllerAndService {
     return this.galleriesService.update(dto);
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     type: 'string',
