@@ -51,6 +51,10 @@ export class GalleriesService implements IBaseControllerAndService {
   }
 
   async uploadFile(file: Express.Multer.File): Promise<{ url: string }> {
+    if (!file) {
+      throw new BadRequestException('ファイルがアップロードされていません');
+    }
+
     const s3Client = new S3Client({
       region: 'ap-northeast-1',
       credentials: {
