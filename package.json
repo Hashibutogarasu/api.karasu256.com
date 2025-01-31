@@ -47,7 +47,6 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "jwks-rsa": "^3.1.0",
-    "nestjs-s3": "^2.0.1",
     "nestjs-zod": "^4.2.0",
     "node-fetch": "^3.3.2",
     "passport": "^0.7.0",

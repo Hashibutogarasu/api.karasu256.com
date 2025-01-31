@@ -7,7 +7,6 @@ import { validate } from "./env-validator";
 import { AuthModule } from './auth/auth.module';
 import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
 import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
-import { S3Module } from 'nestjs-s3';
 
 @Module({
   imports: [
