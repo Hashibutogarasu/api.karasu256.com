@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGalleryParamsSchema, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 @Injectable()
 export class GalleriesService implements IBaseControllerAndService {
@@ -50,31 +51,37 @@ export class GalleriesService implements IBaseControllerAndService {
     });
   }
 
-  async uploadFile(file: Express.Multer.File): Promise<{ url: string }> {
+  async uploadFile(file: Express.Multer.File): Promise<Gallery> {
     if (!file) {
       throw new BadRequestException('ファイルがアップロードされていません');
     }
 
     const s3Client = new S3Client({
-      region: 'ap-northeast-1',
+      region: 'auto',
+      endpoint: `https://${this.configService.get('CLOUDFLARE_ACCOUNT_ID')}.r2.cloudflarestorage.com`,
       credentials: {
-        accountId: this.configService.get('CLOUDFLARE_ACCOUNT_ID'),
         accessKeyId: this.configService.get('CLOUDFLARE_ACCESS_KEY_ID'),
         secretAccessKey: this.configService.get('CLOUDFLARE_SECRET_ACCESS_KEY'),
       },
     });
 
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+
     await s3Client.send(new PutObjectCommand({
       Bucket: this.configService.get('CLOUDFLARE_BUCKET'),
-      Key: file.originalname,
+      Key: `galleries/${formattedDate}/${file.originalname}`,
       Body: file.buffer,
     }));
 
-    const uploadedFileUrl = `https://${this.configService.get('CLOUDFLARE_BUCKET')}.s3.${this.configService.get('CLOUDFLARE_REGION')}.amazonaws.com/${file.originalname}`;
+    const uploadedFileUrl = `${this.configService.get('CLOUDFLARE_PUBLIC_URL')}/${file.originalname}`;
 
-    return {
+    const gallery = await this.galleryRepository.save({
       url: uploadedFileUrl,
-    };
+      alt: file.originalname,
+    });
+
+    return gallery;
   }
 
   async create(dto: CreateGalleryDto): Promise<Gallery> {
