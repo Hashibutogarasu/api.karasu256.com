@@ -3,7 +3,7 @@
   "version": 2,
   "outputDirectory": "dist",
   "functions": {
-    "src/main.ts": {
+    "api/**/*.js": {
       "memory": 1024,
       "maxDuration": 30
     }
