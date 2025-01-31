@@ -2,18 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "outputDirectory": "dist",
-  "functions": {
-    "dist/src/api/auth/**/*.js": {
-      "includeFiles": "dist/src/api/auth/**/*.js",
-      "memory": 1024,
-      "maxDuration": 30
-    },
-    "dist/src/api/wiki/**/*.js": {
-      "includeFiles": "dist/src/api/wiki/**/*.js",
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
