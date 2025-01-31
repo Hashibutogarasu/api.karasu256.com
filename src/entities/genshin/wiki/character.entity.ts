@@ -3,7 +3,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, On
 import { Country } from "./countries.entity";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
-import { Gallery } from "./galleries";
+import { Gallery } from "./galleries.entity";
 
 @Entity('characters')
 export class Character extends BaseEntity implements IBaseEntity {
