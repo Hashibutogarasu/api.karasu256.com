@@ -137,10 +137,7 @@ export class GalleriesService implements IBaseControllerAndService {
       throw new BadRequestException('画像が見つかりません');
     }
 
-    await this.s3Service.S3.send(new DeleteObjectCommand({
-      Bucket: this.configService.get('CLOUDFLARE_BUCKET'),
-      Key: gallery.key,
-    }));
+    await this.s3Service.deleteFile(gallery.key);
 
     await this.galleryRepository.delete({ id: dto.id });
   }
