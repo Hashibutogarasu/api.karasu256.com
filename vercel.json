@@ -3,7 +3,11 @@
   "version": 2,
   "outputDirectory": "dist",
   "functions": {
-    "api/**/*.js": {
+    "api/auth/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    },
+    "api/wiki/**/*.js": {
       "memory": 1024,
       "maxDuration": 30
     }
