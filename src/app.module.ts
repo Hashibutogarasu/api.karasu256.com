@@ -24,4 +24,4 @@ import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection
   controllers: [AppController],
   providers: [AppService, ConfigService],
 })
-export class AppModule {}
+export class AppModule { }
