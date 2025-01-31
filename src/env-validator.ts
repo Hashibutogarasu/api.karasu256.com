@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const NODE_ENVS = z.enum(['development', 'production', 'local', 'test']);
+const NODE_ENVS = z.enum(['development', 'production', 'local', 'preview']);
 
 const envSchema = z.object({
   NODE_ENV: NODE_ENVS,
