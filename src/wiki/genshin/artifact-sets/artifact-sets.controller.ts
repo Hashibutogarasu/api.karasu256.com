@@ -2,34 +2,36 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { ArtifactSetsService } from './artifact-sets.service';
 import { CreateArtifactSetDto, createArtifactSetSchema, DeleteArtifactSetDto, deleteArtifactSetSchema, GetArtifactSetDto, GetArtifactSetParamsDto, getArtifactSetParamsSchema, getArtifactSetSchema, UpdateArtifactSetDto, updateArtifactSetSchema } from './artifact-sets.dto';
 import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
-import { Authorization } from '@nestjs-cognito/auth';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
+import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
 
 @Authorization({
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-  @Controller('wiki/genshin/admin/artifact-sets')
+@Controller('wiki/genshin/artifact-sets')
 export class ArtifactSetsController implements IBaseControllerAndService {
   constructor(
     private readonly service: ArtifactSetsService,
   ) { }
 
-  @ApiParam({
+  @ApiQuery({
     name: 'query',
     schema: zodToOpenAPI(getArtifactSetSchema),
   })
+  @PublicRoute()
   @Get()
-  async get(params: GetArtifactSetDto): Promise<ArtifactSets[]> {
+  async get(@Query() params: GetArtifactSetDto): Promise<ArtifactSets[]> {
     return this.service.get(params);
   }
 
   @ApiParam({
-    name: 'param',
-    schema: zodToOpenAPI(getArtifactSetParamsSchema),
+    name: 'id',
+    type: 'string',
   })
+  @PublicRoute()
   @Get(':id')
   async getOne(params: GetArtifactSetParamsDto): Promise<ArtifactSets> {
     return this.service.getOne(params);
@@ -52,8 +54,8 @@ export class ArtifactSetsController implements IBaseControllerAndService {
   }
 
   @ApiParam({
-    name: 'param',
-    schema: zodToOpenAPI(deleteArtifactSetSchema),
+    name: 'id',
+    type: 'string',
   })
   @Delete(':id')
   async delete(dto: DeleteArtifactSetDto): Promise<void> {

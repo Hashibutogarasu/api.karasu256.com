@@ -26,7 +26,7 @@ export class ArtifactSetsService implements IBaseControllerAndService {
       where: {
         ...ref,
       },
-      skip: (page - 1) * limit,
+      skip: page > 0 ? (page - 1) * limit : undefined,
     });
   }
 

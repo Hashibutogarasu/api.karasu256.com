@@ -1,9 +1,10 @@
 import { paginationSchema } from "@/types/zod/pagination.dto";
+import { idType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 const getArtifactSchema = paginationSchema.extend({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).optional(),
+  id: idType.optional(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -16,7 +17,7 @@ const getArtifactSchema = paginationSchema.extend({
 class GetArtifactDto extends createZodDto(getArtifactSchema) { }
 
 const getArtifactParamsSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).optional(),
+  id: idType.optional(),
 });
 
 class GetArtifactParamsDto extends createZodDto(getArtifactParamsSchema) { }
@@ -34,7 +35,7 @@ const createArtifactSchema = z.object({
 class CreateArtifactDto extends createZodDto(createArtifactSchema) { }
 
 const updateArtifactSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }),
+  id: idType,
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -47,7 +48,7 @@ const updateArtifactSchema = z.object({
 class UpdateArtifactDto extends createZodDto(updateArtifactSchema) { }
 
 const deleteArtifactSchema = z.object({
-  id: z.number({ invalid_type_error: "idの型が不正です" }).default(0),
+  id: idType
 });
 
 class DeleteArtifactDto extends createZodDto(deleteArtifactSchema) { }

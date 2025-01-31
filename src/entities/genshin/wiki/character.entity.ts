@@ -1,8 +1,9 @@
 import { IBaseEntity } from "@/types/baseentity";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Country } from "./countries.entity";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
+import { Gallery } from "./galleries.entity";
 
 @Entity('characters')
 export class Character extends BaseEntity implements IBaseEntity {
@@ -36,6 +37,9 @@ export class Character extends BaseEntity implements IBaseEntity {
   @Column({ nullable: true })
   property?: string | undefined;
 
+  @Column({ default: false })
+  uninplemented: boolean;
+
   @CreateDateColumn()
   createdAt: string;
 
@@ -50,4 +54,7 @@ export class Character extends BaseEntity implements IBaseEntity {
 
   @ManyToMany(() => ArtifactSets, artifactSet => artifactSet.characters)
   artifact_set: ArtifactSets[];
+
+  @OneToMany(() => Gallery, gallery => gallery.id, { nullable: true })
+  galleries?: Gallery[] | null;
 }

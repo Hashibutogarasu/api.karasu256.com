@@ -42,7 +42,7 @@ export class CharactersService implements IBaseControllerAndService {
           name: weapon,
         },
       },
-      skip: page > 0 ? (page - 1) * limit : 0,
+      skip: page > 0 && (page - 1) * limit,
       relations: {
         country: true,
         weapon: true,
@@ -57,14 +57,15 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { ...ref } = parsed.data;
+    const { id } = parsed.data;
 
     return await this.charactersService.findOne({
       where: {
-        ...ref,
+        id
       },
       relations: {
         country: true,
+        weapon: true,
       }
     });
   }
