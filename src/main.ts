@@ -25,7 +25,7 @@ async function bootstrap() {
       name: 'Authorization',
       scheme: 'bearer',
     })
-    .setOpenAPIVersion("3.1.0")
+    .setOpenAPIVersion("2.0")
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
