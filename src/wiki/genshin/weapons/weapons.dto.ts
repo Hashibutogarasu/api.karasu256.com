@@ -9,7 +9,7 @@ const getWeaponSchema = paginationSchema.extend({
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
   type: z.string().optional(),
-  rarity: rarityType,
+  rarity: rarityType.optional(),
   effect: z.string().optional(),
   version: z.string().optional().default('1.0'),
   createdAt: z.string().datetime().optional().default(new Date().toISOString()),
