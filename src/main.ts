@@ -25,7 +25,7 @@ async function bootstrap() {
       name: 'Authorization',
       scheme: 'bearer',
     })
-    .setOpenAPIVersion("2.0")
+    .setOpenAPIVersion("3.1.0")
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -38,6 +38,7 @@ async function bootstrap() {
       "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-bundle.js",
       "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-standalone-preset.js",
     ],
+    jsonDocumentUrl: "/api/json",
   });
 
   app.useGlobalPipes(
