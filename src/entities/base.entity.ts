@@ -1,9 +1,8 @@
 import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
-import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { VersionEntity } from "./genshin/wiki/versions.entity";
+import { CreateDateColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity as TBaseEntity } from "typeorm";
 
-@Entity()
-export class BaseEntity extends KBaseEntity {
+export class BaseEntity extends TBaseEntity implements KBaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
@@ -12,7 +11,4 @@ export class BaseEntity extends KBaseEntity {
 
   @UpdateDateColumn()
   updatedAt: string;
-
-  @ManyToOne(() => VersionEntity, version => version.entities)
-  version?: VersionEntity;
 }

@@ -3,8 +3,12 @@ import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, U
 
 @Entity('items')
 export class Items extends BaseEntity implements VersionEntity {
+  released: boolean;
   @PrimaryGeneratedColumn('increment')
   id: string;
+
+  @Column()
+  name: string;
 
   @Column()
   version: string;
