@@ -1,11 +1,11 @@
-import { IBaseEntity } from "@/types/baseentity";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Character } from "../genshin/wiki/character.entity";
+import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('galleries')
-export class Gallery extends BaseEntity implements IBaseEntity {
+export class Gallery extends BaseEntity implements KBaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   alt: string;
