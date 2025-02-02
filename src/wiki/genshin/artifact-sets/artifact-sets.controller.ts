@@ -1,11 +1,12 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { ArtifactSetsService } from './artifact-sets.service';
-import { CreateArtifactSetDto, createArtifactSetSchema, DeleteArtifactSetDto, deleteArtifactSetSchema, GetArtifactSetDto, GetArtifactSetParamsDto, getArtifactSetParamsSchema, getArtifactSetSchema, UpdateArtifactSetDto, updateArtifactSetSchema } from './artifact-sets.dto';
+import { CreateArtifactSetDto, createArtifactSetSchema, GetArtifactSetDto, getArtifactSetSchema, UpdateArtifactSetDto, updateArtifactSetSchema } from './artifact-sets.dto';
 import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
+import { DeleteDto, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -33,7 +34,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get(':id')
-  async getOne(params: GetArtifactSetParamsDto): Promise<ArtifactSets> {
+  async getOne(params: GetParamsDto): Promise<ArtifactSets> {
     return this.service.getOne(params);
   }
 
@@ -58,7 +59,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(dto: DeleteArtifactSetDto): Promise<void> {
+  async delete(dto: DeleteDto): Promise<void> {
     return this.service.delete(dto);
   }
 }

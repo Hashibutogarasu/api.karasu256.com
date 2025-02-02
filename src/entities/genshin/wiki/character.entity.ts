@@ -4,6 +4,7 @@ import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
 import { Gallery } from "../../common/galleries.entity";
 import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
+import { VersionsEntity } from "./versions.entity";
 
 @Entity('characters')
 export class Character extends BaseEntity implements KBaseEntity {
@@ -24,9 +25,6 @@ export class Character extends BaseEntity implements KBaseEntity {
 
   @Column({ nullable: true })
   rarity?: number | undefined;
-
-  @Column()
-  version: string;
 
   @Column()
   header_img_url: string;
@@ -57,4 +55,7 @@ export class Character extends BaseEntity implements KBaseEntity {
 
   @OneToMany(() => Gallery, gallery => gallery.id, { nullable: true })
   galleries?: Gallery[] | null;
+
+  @OneToMany(() => VersionsEntity, version => version.entities)
+  version: VersionsEntity;
 }

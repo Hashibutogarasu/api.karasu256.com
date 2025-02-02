@@ -3,10 +3,12 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, fileterValues, GetCharacterDto, GetCharacterParamsDto, getCharacterParamsSchema, getCharacterSchema, ImportCharacterDto, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
+import { CreateCharacterDto, createCharacterSchema, fileterValues, GetCharacterDto, getCharacterSchema, ImportCharacterDto, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
 import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
+import { DeleteDto, deleteSchema, GetParamsDto, getParamsSchema } from '@karasu-lab/karasu-lab-sdk';
+import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Injectable()
 export class CharactersService implements IBaseControllerAndService {
@@ -21,7 +23,10 @@ export class CharactersService implements IBaseControllerAndService {
     private readonly artifactSetsService: Repository<ArtifactSets>,
 
     @InjectRepository(Weapon)
-    private readonly weaponsService: Repository<Weapon>
+    private readonly weaponsService: Repository<Weapon>,
+
+    @InjectRepository(VersionsEntity)
+    private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
   async get(dto: GetCharacterDto): Promise<Character[]> {
@@ -31,10 +36,14 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, country, weapon, ...ref } = parsed.data;
+    const { page, limit, country, weapon, version, ...ref } = dto;
+
     return await this.charactersService.find({
       where: {
         ...ref,
+        version: {
+          version_string: version,
+        },
         country: country && {
           name: country,
         },
@@ -50,18 +59,16 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetCharacterParamsDto): Promise<Character> {
-    const parsed = getCharacterParamsSchema.safeParse(params);
+  async getOne(params: GetParamsDto): Promise<Character> {
+    const parsed = getParamsSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { id } = parsed.data;
-
     return await this.charactersService.findOne({
       where: {
-        id
+        id: params,
       },
       relations: {
         country: true,
@@ -77,10 +84,21 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { country, weapon, artifact_set, ...ref } = parsed.data;
+    const { country, weapon, artifact_set, version, ...ref } = parsed.data;
+
+    const versionExists = await this.versionRepository.findOne({
+      where: {
+        version_string: version,
+      },
+    });
+
+    if (!versionExists) {
+      throw new NotFoundException('このバージョンは存在しません');
+    }
 
     const character = Character.create({
       ...ref,
+      version: versionExists,
     });
 
     const countryExists = await this.countriesService.findOne({
@@ -146,7 +164,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { country, ...ref } = parsed.data;
+    const { country, version, ...ref } = parsed.data;
 
     const countryExists = await this.charactersService.findOne({
       where: {
@@ -168,14 +186,25 @@ export class CharactersService implements IBaseControllerAndService {
       throw new NotFoundException('Character not found');
     }
 
+    const versionExists = await this.versionRepository.findOne({
+      where: {
+        version_string: version,
+      },
+    });
+
+    if (!versionExists) {
+      throw new NotFoundException('このバージョンは存在しません');
+    }
+
     await this.charactersService.update(dto.id, {
       ...ref,
       country: countryExists,
+      version: versionExists,
     });
   }
 
-  async delete(dto: DeleteCharacterDto): Promise<void> {
-    const parsed = deleteCharacterSchema.safeParse(dto);
+  async delete(dto: DeleteDto): Promise<void> {
+    const parsed = deleteSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -197,12 +226,21 @@ export class CharactersService implements IBaseControllerAndService {
   }
 
   async import(dto: ImportCharacterDto): Promise<Character> {
+    const version = await this.versionRepository.findOne({
+      where: {
+        version_string: dto.version,
+      },
+    }) || await this.versionRepository.save({
+      version_string: dto.version,
+      released: true,
+    });
+
     const character = Character.create({
       name: dto.name,
       description: dto.desc,
       icon_url: dto.icon_url,
       header_img_url: dto.header_img_url,
-      version: '1.0',
+      version,
     });
 
     const success = fileterValues.safeParse(dto.filter_values).success;

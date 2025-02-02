@@ -1,12 +1,13 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, FileTypeValidator, Get, HttpStatus, Param, ParseFilePipe, ParseFilePipeBuilder, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { GalleriesService } from './galleries.service';
-import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
+import { CreateGalleryDto, createGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { Gallery } from '@/entities/common/galleries.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { DeleteDto, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
 
 
 @Controller('galleries')
@@ -32,7 +33,7 @@ export class GalleriesController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get(':id')
-  async getOne(@Param() params: GetGalleryParamsDto): Promise<Gallery> {
+  async getOne(@Param() params: GetParamsDto): Promise<Gallery> {
     return this.galleriesService.getOne(params);
   }
 
@@ -93,7 +94,7 @@ export class GalleriesController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(@Param() dto: DeleteGalleryDto): Promise<void> {
+  async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.galleriesService.delete(dto);
   }
 }

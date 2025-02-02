@@ -3,9 +3,10 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { ArtifactsService } from './artifacts.service';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
-import { CreateArtifactDto, createArtifactSchema, DeleteArtifactDto, deleteArtifactSchema, GetArtifactDto, GetArtifactParamsDto, getArtifactParamsSchema, getArtifactSchema, UpdateArtifactDto, updateArtifactSchema } from './artifacts.dto';
+import { CreateArtifactDto, createArtifactSchema, GetArtifactDto, getArtifactSchema, UpdateArtifactDto, updateArtifactSchema } from './artifacts.dto';
 import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
 import { zodToOpenAPI } from 'nestjs-zod';
+import { DeleteDto, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -34,7 +35,7 @@ export class ArtifactsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get(':id')
-  async getOne(@Param() params: GetArtifactParamsDto): Promise<Artifacts> {
+  async getOne(@Param() params: GetParamsDto): Promise<Artifacts> {
     return this.artifactsService.getOne(params);
   }
 
@@ -59,7 +60,7 @@ export class ArtifactsController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(@Param() dto: DeleteArtifactDto): Promise<void> {
+  async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.artifactsService.delete(dto);
   }
 }

@@ -5,8 +5,9 @@ import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { CreateWeaponDto, createWeaponSchema, DeleteWeaponDto, deleteWeaponSchema, GetWeaponDto, GetWeaponParamsDto, getWeaponParamsSchema, getWeaponSchema, UpdateWeaponDto } from './weapons.dto';
+import { CreateWeaponDto, createWeaponSchema, GetWeaponDto, getWeaponSchema, UpdateWeaponDto } from './weapons.dto';
 import { updateCharacterSchema } from '../characters/characters.dto';
+import { DeleteDto, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -34,7 +35,7 @@ export class WeaponsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get(':id')
-  async getOne(@Param() params: GetWeaponParamsDto): Promise<Weapon> {
+  async getOne(@Param() params: GetParamsDto): Promise<Weapon> {
     return this.weaponsService.getOne(params);
   }
 
@@ -59,7 +60,7 @@ export class WeaponsController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(@Param() dto: DeleteWeaponDto): Promise<void> {
+  async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.weaponsService.delete(dto);
   }
 }

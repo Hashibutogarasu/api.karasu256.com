@@ -1,16 +1,21 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateArtifactSetDto, createArtifactSetSchema, DeleteArtifactSetDto, deleteArtifactSetSchema, GetArtifactSetDto, GetArtifactSetParamsDto, getArtifactSetParamsSchema, UpdateArtifactSetDto, updateArtifactSetSchema } from './artifact-sets.dto';
+import { CreateArtifactSetDto, createArtifactSetSchema, GetArtifactSetDto, UpdateArtifactSetDto, updateArtifactSetSchema } from './artifact-sets.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
 import { Repository } from 'typeorm';
 import { getCountriesSchema } from '../countries/contries.dto';
+import { DeleteDto, deleteSchema, GetParamsDto, getParamsSchema } from '@karasu-lab/karasu-lab-sdk';
+import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Injectable()
 export class ArtifactSetsService implements IBaseControllerAndService {
   constructor(
     @InjectRepository(ArtifactSets)
     private readonly repository: Repository<ArtifactSets>,
+
+    @InjectRepository(VersionsEntity)
+    private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
   async get(params: GetArtifactSetDto): Promise<ArtifactSets[]> {
@@ -20,18 +25,21 @@ export class ArtifactSetsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, ...ref } = params;
+    const { page, limit, version, ...ref } = params;
 
     return await this.repository.find({
       where: {
         ...ref,
+        version: {
+          version_string: version,
+        },
       },
       skip: page > 0 ? (page - 1) * limit : undefined,
     });
   }
 
-  async getOne(params: GetArtifactSetParamsDto): Promise<ArtifactSets> {
-    const parsed = getArtifactSetParamsSchema.safeParse(params);
+  async getOne(params: GetParamsDto): Promise<ArtifactSets> {
+    const parsed = getParamsSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
@@ -39,7 +47,7 @@ export class ArtifactSetsService implements IBaseControllerAndService {
 
     return await this.repository.findOne({
       where: {
-        id: params.id,
+        id: params,
       },
     });
   }
@@ -61,7 +69,22 @@ export class ArtifactSetsService implements IBaseControllerAndService {
       throw new BadRequestException('この聖遺物セットは既に存在しています');
     }
 
-    return await this.repository.save(dto);
+    const { version, ...ref } = dto;
+
+    const versionExists = await this.versionRepository.findOne({
+      where: {
+        version_string: version,
+      },
+    });
+
+    if (!versionExists) {
+      throw new BadRequestException('このバージョンは存在しません');
+    }
+
+    return await this.repository.save({
+      ...ref,
+      version: versionExists,
+    });
   }
 
   async update(dto: UpdateArtifactSetDto): Promise<void> {
@@ -71,11 +94,26 @@ export class ArtifactSetsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    await this.repository.update(dto.id, dto);
+    const { version, ...ref } = dto;
+
+    const versionExists = await this.versionRepository.findOne({
+      where: {
+        version_string: version,
+      },
+    });
+
+    if (!versionExists) {
+      throw new BadRequestException('このバージョンは存在しません');
+    }
+
+    await this.repository.update(dto.id, {
+      ...ref,
+      version: versionExists,
+    });
   }
 
-  async delete(dto: DeleteArtifactSetDto): Promise<void> {
-    const parsed = deleteArtifactSetSchema.safeParse(dto);
+  async delete(dto: DeleteDto): Promise<void> {
+    const parsed = deleteSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);

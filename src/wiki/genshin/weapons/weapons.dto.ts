@@ -1,10 +1,9 @@
-import { paginationSchema } from "@/types/zod/pagination.dto";
-import { idType, rarityType } from "@/utils/zod_types";
+import { rarityType } from "@/utils/zod_types";
+import { queryDtoSchema } from "@karasu-lab/karasu-lab-sdk";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getWeaponSchema = paginationSchema.extend({
-  id: idType.optional(),
+const getWeaponSchema = queryDtoSchema.extend({
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -12,17 +11,9 @@ const getWeaponSchema = paginationSchema.extend({
   rarity: rarityType.optional(),
   effect: z.string().optional(),
   version: z.string().optional().default('1.0'),
-  createdAt: z.string().datetime().optional().default(new Date().toISOString()),
-  updatedAt: z.string().datetime().optional().default(new Date().toISOString()),
 });
 
 class GetWeaponDto extends createZodDto(getWeaponSchema) { }
-
-const getWeaponParamsSchema = z.object({
-  id: idType,
-});
-
-class GetWeaponParamsDto extends createZodDto(getWeaponParamsSchema) { }
 
 const createWeaponSchema = z.object({
   name: z.string(),
@@ -37,7 +28,7 @@ const createWeaponSchema = z.object({
 class CreateWeaponDto extends createZodDto(createWeaponSchema) { }
 
 const updateWeaponSchema = z.object({
-  id: idType,
+  id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -49,21 +40,11 @@ const updateWeaponSchema = z.object({
 
 class UpdateWeaponDto extends createZodDto(updateWeaponSchema) { }
 
-const deleteWeaponSchema = z.object({
-  id: idType,
-});
-
-class DeleteWeaponDto extends createZodDto(deleteWeaponSchema) { }
-
 export {
   createWeaponSchema,
   updateWeaponSchema,
-  deleteWeaponSchema,
   getWeaponSchema,
-  getWeaponParamsSchema,
   GetWeaponDto,
   CreateWeaponDto,
   UpdateWeaponDto,
-  DeleteWeaponDto,
-  GetWeaponParamsDto,
 };

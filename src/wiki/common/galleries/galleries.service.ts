@@ -3,11 +3,12 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGalleryParamsSchema, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
+import { CreateGalleryDto, createGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGalleryParamsSchema, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { S3Service } from '@/s3/s3.service';
+import { DeleteDto, deleteSchema, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
 
 @Injectable()
 export class GalleriesService implements IBaseControllerAndService {
@@ -40,7 +41,7 @@ export class GalleriesService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetGalleryParamsDto): Promise<Gallery> {
+  async getOne(params: GetParamsDto): Promise<Gallery> {
     const parsed = getGalleryParamsSchema.safeParse(params);
 
     if (!parsed.success) {
@@ -49,7 +50,7 @@ export class GalleriesService implements IBaseControllerAndService {
 
     return await this.galleryRepository.findOne({
       where: {
-        id: params.id,
+        id: params
       },
     });
   }
@@ -120,8 +121,8 @@ export class GalleriesService implements IBaseControllerAndService {
     });
   }
 
-  async delete(dto: DeleteGalleryDto): Promise<void> {
-    const parsed = deleteGallerySchema.safeParse(dto);
+  async delete(dto: DeleteDto): Promise<void> {
+    const parsed = deleteSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);

@@ -4,7 +4,7 @@ import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 const getCharacterSchema = paginationSchema.extend({
-  id: idType.optional(),
+  id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -20,12 +20,6 @@ const getCharacterSchema = paginationSchema.extend({
 });
 
 class GetCharacterDto extends createZodDto(getCharacterSchema) { }
-
-const getCharacterParamsSchema = z.object({
-  id: idType.optional(),
-});
-
-class GetCharacterParamsDto extends createZodDto(getCharacterParamsSchema) { }
 
 const createCharacterSchema = z.object({
   name: z.string(),
@@ -45,7 +39,7 @@ const createCharacterSchema = z.object({
 class CreateCharacterDto extends createZodDto(createCharacterSchema) { }
 
 const updateCharacterSchema = z.object({
-  id: idType,
+  id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -59,12 +53,6 @@ const updateCharacterSchema = z.object({
 });
 
 class UpdateCharacterDto extends createZodDto(updateCharacterSchema) { }
-
-const deleteCharacterSchema = z.object({
-  id: idType,
-});
-
-class DeleteCharacterDto extends createZodDto(deleteCharacterSchema) { }
 
 const property = z.object({
   values: z.array(z.string()).default([]),
@@ -166,17 +154,13 @@ class ImportCharacterDto extends createZodDto(importCharacterSchema) { }
 export {
   createCharacterSchema,
   updateCharacterSchema,
-  deleteCharacterSchema,
   getCharacterSchema,
-  getCharacterParamsSchema,
   importCharacterSchema,
   importFromHoyoLabSchema,
   fileterValues,
   GetCharacterDto,
-  GetCharacterParamsDto,
   CreateCharacterDto,
   UpdateCharacterDto,
-  DeleteCharacterDto,
   ImportCharacterDto,
   ImportFromHoyoLabDto
 };

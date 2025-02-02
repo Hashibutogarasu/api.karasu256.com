@@ -1,10 +1,9 @@
-import { paginationSchema } from "@/types/zod/pagination.dto";
 import { idType } from "@/utils/zod_types";
+import { queryDtoSchema } from "@karasu-lab/karasu-lab-sdk";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getArtifactSetSchema = paginationSchema.extend({
-  id: idType.optional(),
+const getArtifactSetSchema = queryDtoSchema.extend({
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -12,12 +11,6 @@ const getArtifactSetSchema = paginationSchema.extend({
 });
 
 class GetArtifactSetDto extends createZodDto(getArtifactSetSchema) { }
-
-const getArtifactSetParamsSchema = z.object({
-  id: idType.optional(),
-});
-
-class GetArtifactSetParamsDto extends createZodDto(getArtifactSetParamsSchema) { }
 
 const createArtifactSetSchema = z.object({
   name: z.string(),
@@ -32,7 +25,7 @@ const createArtifactSetSchema = z.object({
 class CreateArtifactSetDto extends createZodDto(createArtifactSetSchema) { }
 
 const updateArtifactSetSchema = z.object({
-  id: idType,
+  id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -44,21 +37,11 @@ const updateArtifactSetSchema = z.object({
 
 class UpdateArtifactSetDto extends createZodDto(updateArtifactSetSchema) { }
 
-const deleteArtifactSetSchema = z.object({
-  id: idType,
-});
-
-class DeleteArtifactSetDto extends createZodDto(deleteArtifactSetSchema) { }
-
 export {
   getArtifactSetSchema,
-  getArtifactSetParamsSchema,
   createArtifactSetSchema,
   updateArtifactSetSchema,
-  deleteArtifactSetSchema,
   GetArtifactSetDto,
-  GetArtifactSetParamsDto,
   CreateArtifactSetDto,
   UpdateArtifactSetDto,
-  DeleteArtifactSetDto,
 }

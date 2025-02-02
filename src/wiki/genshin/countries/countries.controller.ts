@@ -1,10 +1,11 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { CreateCountryDto, createCountrySchema, DeleteCountryDto, deleteCountrySchema, GetCountriesDto, GetCountriesParamsDto, getCountriesParamsSchema, getCountriesSchema, UpdateCountryDto, updateCountrySchema } from './contries.dto';
+import { CreateCountryDto, createCountrySchema, GetCountriesDto, getCountriesSchema, UpdateCountryDto, updateCountrySchema } from './contries.dto';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { CountriesService } from './countries.service';
 import { PublicRoute } from '@nestjs-cognito/auth';
+import { DeleteDto, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
 
 @Controller('wiki/genshin/countries')
 export class CountriesController implements IBaseControllerAndService {
@@ -29,7 +30,7 @@ export class CountriesController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get(':id')
-  async getOne(@Param() params: GetCountriesParamsDto): Promise<any> {
+  async getOne(@Param() params: GetParamsDto): Promise<any> {
     return this.service.getOne(params);
   }
 
@@ -54,7 +55,7 @@ export class CountriesController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(@Param() dto: DeleteCountryDto): Promise<void> {
+  async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.service.delete(dto);
   }
 }

@@ -3,7 +3,8 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateArtifactDto, createArtifactSchema, DeleteArtifactDto, deleteArtifactSchema, GetArtifactDto, GetArtifactParamsDto, getArtifactParamsSchema, getArtifactSchema, UpdateArtifactDto, updateArtifactSchema } from './artifacts.dto';
+import { CreateArtifactDto, createArtifactSchema, GetArtifactDto, getArtifactSchema, UpdateArtifactDto, updateArtifactSchema } from './artifacts.dto';
+import { DeleteDto, deleteSchema, GetParamsDto, getParamsSchema } from '@karasu-lab/karasu-lab-sdk';
 
 @Injectable()
 export class ArtifactsService implements IBaseControllerAndService {
@@ -19,18 +20,21 @@ export class ArtifactsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, ...ref } = dto;
+    const { page, limit, version, ...ref } = dto;
 
     return await this.artifactsRepository.find({
       where: {
         ...ref,
+        version: {
+          version_string: version,
+        }
       },
       skip: page > 0 ? (page - 1) * limit : undefined,
     });
   }
 
-  async getOne(params: GetArtifactParamsDto): Promise<Artifacts> {
-    const parsed = getArtifactParamsSchema.safeParse(params);
+  async getOne(params: GetParamsDto): Promise<Artifacts> {
+    const parsed = getParamsSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -38,7 +42,7 @@ export class ArtifactsService implements IBaseControllerAndService {
 
     return await this.artifactsRepository.findOne({
       where: {
-        id: params.id,
+        id: params,
       },
     });
   }
@@ -60,7 +64,24 @@ export class ArtifactsService implements IBaseControllerAndService {
       throw new BadRequestException('この聖遺物は既に存在しています');
     }
 
-    return await this.artifactsRepository.save(dto);
+    const { version, ...ref } = dto;
+
+    const versionExists = await this.artifactsRepository.findOne({
+      where: {
+        version: {
+          version_string: version,
+        },
+      },
+    });
+
+    if (!versionExists) {
+      throw new BadRequestException('このバージョンは存在しません');
+    }
+
+    return await this.artifactsRepository.save({
+      ...ref,
+      version: versionExists,
+    });
   }
 
   async update(dto: UpdateArtifactDto): Promise<void> {
@@ -80,11 +101,28 @@ export class ArtifactsService implements IBaseControllerAndService {
       throw new BadRequestException('聖遺物が見つかりません');
     }
 
-    await this.artifactsRepository.update({ id: dto.id }, dto);
+    const { version, ...ref } = dto;
+
+    const versionExists = await this.artifactsRepository.findOne({
+      where: {
+        version: {
+          version_string: version,
+        },
+      },
+    });
+
+    if (!versionExists) {
+      throw new BadRequestException('このバージョンは存在しません');
+    }
+
+    await this.artifactsRepository.update({ id: dto.id }, {
+      ...ref,
+      version: versionExists,
+    });
   }
 
-  async delete(dto: DeleteArtifactDto): Promise<void> {
-    const parsed = deleteArtifactSchema.safeParse(dto);
+  async delete(dto: DeleteDto): Promise<void> {
+    const parsed = deleteSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);

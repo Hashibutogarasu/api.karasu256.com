@@ -1,7 +1,8 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Character } from "./character.entity";
 import { Artifacts } from "./artifacts.entity";
 import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
+import { VersionsEntity } from "./versions.entity";
 
 @Entity('artifact_sets')
 export class ArtifactSets extends BaseEntity implements KBaseEntity {
@@ -37,4 +38,7 @@ export class ArtifactSets extends BaseEntity implements KBaseEntity {
 
   @ManyToMany(() => Character, character => character.artifact_set)
   characters: Character[];
+
+  @OneToMany(() => VersionsEntity, version => version.artifact_sets)
+  version: VersionsEntity;
 }
