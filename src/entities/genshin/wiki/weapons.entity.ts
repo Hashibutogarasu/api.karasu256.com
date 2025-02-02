@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Character } from "./character.entity";
-import { BaseEntity, Version } from "@karasu-lab/karasu-lab-sdk";
+import { BaseEntity, } from "@karasu-lab/karasu-lab-sdk";
+import { VersionEntity } from "./versions.entity";
 
 @Entity('weapons')
 export class Weapon extends BaseEntity {
@@ -9,9 +10,6 @@ export class Weapon extends BaseEntity {
 
   @Column()
   name: string;
-
-  @Column()
-  version: Version;
 
   @CreateDateColumn()
   createdAt: string;
@@ -36,4 +34,7 @@ export class Weapon extends BaseEntity {
 
   @OneToMany(() => Character, character => character.weapon)
   characters: Character[];
+
+  @OneToMany(() => VersionEntity, version => version.entities)
+  version: VersionEntity;
 }

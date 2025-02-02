@@ -1,8 +1,9 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { VersionEntity } from "@karasu-lab/karasu-lab-sdk";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { VersionEntity as KVersionEntity } from "@karasu-lab/karasu-lab-sdk";
+import { BaseEntity } from "@/entities/base.entity";
 
 @Entity('versions')
-export class Version extends VersionEntity {
+export class VersionEntity extends KVersionEntity {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
@@ -17,4 +18,7 @@ export class Version extends VersionEntity {
 
   @UpdateDateColumn()
   updatedAt: string;
+
+  @ManyToOne(() => BaseEntity, (baseEntity) => baseEntity.version, { nullable: true })
+  entities: BaseEntity[];
 }
