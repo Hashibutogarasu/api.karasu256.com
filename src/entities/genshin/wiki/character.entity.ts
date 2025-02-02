@@ -1,14 +1,14 @@
-import { IBaseEntity } from "@/types/baseentity";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Country } from "./countries.entity";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
 import { Gallery } from "../../common/galleries.entity";
+import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('characters')
-export class Character extends BaseEntity implements IBaseEntity {
+export class Character extends BaseEntity implements KBaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   name: string;

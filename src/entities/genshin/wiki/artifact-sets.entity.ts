@@ -1,12 +1,12 @@
-import { IBaseEntity } from "@/types/baseentity";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Character } from "./character.entity";
 import { Artifacts } from "./artifacts.entity";
+import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('artifact_sets')
-export class ArtifactSets extends BaseEntity implements IBaseEntity {
+export class ArtifactSets extends BaseEntity implements KBaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   name: string;
