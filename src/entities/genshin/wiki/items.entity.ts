@@ -1,8 +1,8 @@
-import { VersionEntity } from "@karasu-lab/karasu-lab-sdk";
+import { VersionsEntity } from "@karasu-lab/karasu-lab-sdk";
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('items')
-export class Items extends BaseEntity implements VersionEntity {
+export class Items extends BaseEntity implements VersionsEntity {
   released: boolean;
   @PrimaryGeneratedColumn('increment')
   id: string;
