@@ -14,7 +14,7 @@
         "output": "#{cwd}/client/latest/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
-          "ngVersion": "6.1.7",
+          "ngVersion": "6.1.8",
           "npmName": "@karasu-lab/karasu256-api-client",
           "withSeparateModelsAndApi": true,
           "useSingleRequestParameter": true,
