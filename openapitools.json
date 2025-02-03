@@ -18,7 +18,7 @@
           "npmName": "@karasu-lab/karasu256-api-client",
           "withSeparateModelsAndApi": true,
           "supportsES6": true,
-          "npmVersion": "0.7.0",
+          "npmVersion": "0.7.1",
           "withInterfaces": true,
           "apiPackage": "api",
           "modelPackage": "models",
