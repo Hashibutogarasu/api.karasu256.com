@@ -1,9 +1,8 @@
-import { paginationSchema } from "@/types/zod/pagination.dto";
-import { idType, rarityType } from "@/utils/zod_types";
+import { rarityType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getCharacterSchema = paginationSchema.extend({
+const getSchema = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -19,9 +18,7 @@ const getCharacterSchema = paginationSchema.extend({
   updatedAt: z.string().datetime().optional(),
 });
 
-class GetCharacterDto extends createZodDto(getCharacterSchema) { }
-
-const createCharacterSchema = z.object({
+const createSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -36,9 +33,7 @@ const createCharacterSchema = z.object({
   unimplemented: z.boolean().default(false),
 });
 
-class CreateCharacterDto extends createZodDto(createCharacterSchema) { }
-
-const updateCharacterSchema = z.object({
+const updateSchema = z.object({
   id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -51,8 +46,6 @@ const updateCharacterSchema = z.object({
   version: z.string().optional().default('1.0'),
   unimplemented: z.boolean().optional(),
 });
-
-class UpdateCharacterDto extends createZodDto(updateCharacterSchema) { }
 
 const property = z.object({
   values: z.array(z.string()).default([]),
@@ -152,15 +145,12 @@ const importCharacterSchema = z.object({
 class ImportCharacterDto extends createZodDto(importCharacterSchema) { }
 
 export {
-  createCharacterSchema,
-  updateCharacterSchema,
-  getCharacterSchema,
+  getSchema,
+  createSchema,
+  updateSchema,
+  fileterValues,
   importCharacterSchema,
   importFromHoyoLabSchema,
-  fileterValues,
-  GetCharacterDto,
-  CreateCharacterDto,
-  UpdateCharacterDto,
+  ImportFromHoyoLabDto,
   ImportCharacterDto,
-  ImportFromHoyoLabDto
-};
+}

@@ -1,8 +1,7 @@
-import { queryDtoSchema } from "@karasu-lab/karasu-lab-sdk";
-import { createZodDto } from "nestjs-zod";
+import { baseSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const getArtifactSchema = queryDtoSchema.extend({
+const getSchema = baseSchema.extend({
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -12,9 +11,7 @@ const getArtifactSchema = queryDtoSchema.extend({
   version: z.string().optional().default('1.0'),
 });
 
-class GetArtifactDto extends createZodDto(getArtifactSchema) { }
-
-const createArtifactSchema = z.object({
+const createSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -24,9 +21,7 @@ const createArtifactSchema = z.object({
   version: z.string().default('1.0'),
 });
 
-class CreateArtifactDto extends createZodDto(createArtifactSchema) { }
-
-const updateArtifactSchema = z.object({
+const updateSchema = z.object({
   id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -37,13 +32,8 @@ const updateArtifactSchema = z.object({
   version: z.string().optional().default('1.0'),
 });
 
-class UpdateArtifactDto extends createZodDto(updateArtifactSchema) { }
-
 export {
-  createArtifactSchema,
-  updateArtifactSchema,
-  getArtifactSchema,
-  GetArtifactDto,
-  CreateArtifactDto,
-  UpdateArtifactDto,
-};
+  getSchema,
+  createSchema,
+  updateSchema,
+}

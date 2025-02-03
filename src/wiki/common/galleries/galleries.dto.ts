@@ -1,48 +1,27 @@
-import { createZodDto } from "nestjs-zod";
+import { baseSchema } from "@/utils/dto";
 import { z } from "zod";
-import { queryDtoSchema } from "@karasu-lab/karasu-lab-sdk";
 
-const getGallerySchema = queryDtoSchema.extend({
-  alt: z.string().optional(),
-  key: z.string().optional(),
-  url: z.string().url({ message: 'urlはurlである必要があります' }).optional(),
-  character: z.string().optional(),
+const getSchema = baseSchema.extend({
+  id: z.string().nonempty(),
 });
 
-class GetGalleryDto extends createZodDto(getGallerySchema) { }
-
-const getGalleryParamsSchema = z.object({
-  id: z.string().optional(),
+const createSchema = z.object({
+  url: z.string().url(),
+  alt: z.string(),
+  key: z.string(),
+  character: z.string(),
 });
 
-class GetGalleryParamsDto extends createZodDto(getGalleryParamsSchema) { }
-
-const createGallerySchema = z.object({
-  alt: z.string().optional(),
-  key: z.string().optional(),
-  url: z.string().url({ message: 'urlはurlである必要があります' }).optional(),
-  character: z.string().optional(),
-})
-
-class CreateGalleryDto extends createZodDto(createGallerySchema) { }
-
-const updateGallerySchema = z.object({
-  id: z.string().optional(),
-  alt: z.string().optional(),
-  key: z.string().optional(),
-  url: z.string().url({ message: 'urlはurlである必要があります' }).optional(),
-  character: z.string().optional(),
+const updateSchema = z.object({
+  id: z.string().nonempty(),
+  url: z.string().url(),
+  alt: z.string(),
+  key: z.string(),
+  character: z.string(),
 });
-
-class UpdateGalleryDto extends createZodDto(updateGallerySchema) { }
 
 export {
-  getGallerySchema,
-  getGalleryParamsSchema,
-  createGallerySchema,
-  updateGallerySchema,
-  GetGalleryDto,
-  GetGalleryParamsDto,
-  CreateGalleryDto,
-  UpdateGalleryDto,
-};
+  getSchema,
+  createSchema,
+  updateSchema,
+}

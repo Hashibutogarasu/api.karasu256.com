@@ -1,10 +1,10 @@
 import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { CreateDto, GetParamsDto, GetOneDto, UpdateDto, DeleteDto, deleteSchema } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateArtifactDto, createArtifactSchema, GetArtifactDto, getArtifactSchema, UpdateArtifactDto, updateArtifactSchema } from './artifacts.dto';
-import { DeleteDto, deleteSchema, GetParamsDto, getParamsSchema } from '@karasu-lab/karasu-lab-sdk';
+import { createSchema, getSchema, updateSchema } from './artifacts.dto';
 
 @Injectable()
 export class ArtifactsService implements IBaseControllerAndService {
@@ -13,42 +13,44 @@ export class ArtifactsService implements IBaseControllerAndService {
     private readonly artifactsRepository: Repository<Artifacts>
   ) { }
 
-  async get(dto: GetArtifactDto): Promise<Artifacts[]> {
-    const parsed = getArtifactSchema.safeParse(dto);
+  async get(dto: GetParamsDto<Artifacts>): Promise<Artifacts[]> {
+    const parsed = getSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, version, ...ref } = dto;
+    const { page, limit, version, artifact_sets, ...ref } = dto;
 
     return await this.artifactsRepository.find({
       where: {
         ...ref,
         version: {
-          version_string: version,
+          version_string: version.version_string,
         }
       },
       skip: page > 0 ? (page - 1) * limit : undefined,
     });
   }
 
-  async getOne(params: GetParamsDto): Promise<Artifacts> {
-    const parsed = getParamsSchema.safeParse(params);
+  async getOne(params: GetOneDto<Artifacts>): Promise<Artifacts> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
+    const { artifact_sets, ...ref } = params;
+
     return await this.artifactsRepository.findOne({
       where: {
-        id: params,
+        ...ref,
       },
     });
   }
 
-  async create(dto: CreateArtifactDto): Promise<Artifacts> {
-    const parsed = createArtifactSchema.safeParse(dto);
+  async create(dto: CreateDto<Artifacts>): Promise<Artifacts> {
+    const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -64,13 +66,13 @@ export class ArtifactsService implements IBaseControllerAndService {
       throw new BadRequestException('この聖遺物は既に存在しています');
     }
 
-    const { version, ...ref } = dto;
+    const { version, artifact_sets, ...ref } = dto;
 
     const versionExists = await this.artifactsRepository.findOne({
       where: {
         version: {
-          version_string: version,
-        },
+          version_string: version.version_string,
+        }
       },
     });
 
@@ -84,8 +86,8 @@ export class ArtifactsService implements IBaseControllerAndService {
     });
   }
 
-  async update(dto: UpdateArtifactDto): Promise<void> {
-    const parsed = updateArtifactSchema.safeParse(dto);
+  async update(dto: UpdateDto<Artifacts>): Promise<void> {
+    const parsed = updateSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -101,12 +103,13 @@ export class ArtifactsService implements IBaseControllerAndService {
       throw new BadRequestException('聖遺物が見つかりません');
     }
 
-    const { version, ...ref } = dto;
+    const { version, artifact_sets, ...ref } = dto;
 
     const versionExists = await this.artifactsRepository.findOne({
       where: {
+        ...ref,
         version: {
-          version_string: version,
+          version_string: version.version_string,
         },
       },
     });

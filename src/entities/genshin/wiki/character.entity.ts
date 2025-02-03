@@ -3,11 +3,11 @@ import { Country } from "./countries.entity";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
 import { Gallery } from "../../common/galleries.entity";
-import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
 import { VersionsEntity } from "./versions.entity";
+import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('characters')
-export class Character extends BaseEntity implements KBaseEntity {
+export class Character extends BaseEntity implements IBase {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
@@ -39,10 +39,10 @@ export class Character extends BaseEntity implements KBaseEntity {
   uninplemented: boolean;
 
   @CreateDateColumn()
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: string;
+  updatedAt: Date;
 
   @ManyToOne(() => Country, country => country.id, { nullable: true })
   country?: Country | null;

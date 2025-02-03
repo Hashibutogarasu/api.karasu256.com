@@ -1,11 +1,12 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { CreateCountryDto, createCountrySchema, GetCountriesDto, getCountriesSchema, UpdateCountryDto, updateCountrySchema } from './contries.dto';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { CountriesService } from './countries.service';
 import { PublicRoute } from '@nestjs-cognito/auth';
-import { DeleteDto, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
+import { createSchema, getSchema, updateSchema } from './contries.dto';
+import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from '@/utils/dto';
+import { Country } from '@/entities/genshin/wiki/countries.entity';
 
 @Controller('wiki/genshin/countries')
 export class CountriesController implements IBaseControllerAndService {
@@ -15,38 +16,37 @@ export class CountriesController implements IBaseControllerAndService {
 
   @ApiQuery({
     name: 'query',
-    type: getSchemaPath(GetCountriesDto),
-    schema: zodToOpenAPI(getCountriesSchema),
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetCountriesDto): Promise<any[]> {
+  async get(@Query() params: GetParamsDto<Country>): Promise<Country[]> {
     return this.service.get(params);
   }
 
-  @ApiParam({
-    name: 'id',
-    type: 'string',
+  @ApiQuery({
+    name: 'query',
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get(':id')
-  async getOne(@Param() params: GetParamsDto): Promise<any> {
+  @Get('getOne')
+  async getOne(@Param() params: GetParamsDto<Country>): Promise<Country> {
     return this.service.getOne(params);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(createCountrySchema),
+    schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(@Body() dto: CreateCountryDto): Promise<any> {
+  async create(@Body() dto: CreateDto<Country>): Promise<Country> {
     return this.service.create(dto);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(updateCountrySchema),
+    schema: zodToOpenAPI(updateSchema),
   })
   @Put()
-  async update(@Body() dto: UpdateCountryDto): Promise<void> {
+  async update(@Body() dto: UpdateDto<Country>): Promise<void> {
     return this.service.update(dto);
   }
 

@@ -3,12 +3,12 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCharacterDto, createCharacterSchema, fileterValues, GetCharacterDto, getCharacterSchema, ImportCharacterDto, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
 import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
-import { DeleteDto, deleteSchema, GetParamsDto, getParamsSchema } from '@karasu-lab/karasu-lab-sdk';
 import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
+import { createSchema, fileterValues, getSchema, ImportCharacterDto, updateSchema } from './characters.dto';
 
 @Injectable()
 export class CharactersService implements IBaseControllerAndService {
@@ -29,27 +29,18 @@ export class CharactersService implements IBaseControllerAndService {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(dto: GetCharacterDto): Promise<Character[]> {
-    const parsed = getCharacterSchema.safeParse(dto);
+  async get(dto: GetParamsDto<Character>): Promise<Character[]> {
+    const parsed = getSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, country, weapon, version, ...ref } = dto;
+    const { page, limit, artifact_set, galleries, ...ref } = dto;
 
     return await this.charactersService.find({
       where: {
         ...ref,
-        version: {
-          version_string: version,
-        },
-        country: country && {
-          name: country,
-        },
-        weapon: weapon && {
-          name: weapon,
-        },
       },
       skip: page > 0 && (page - 1) * limit,
       relations: {
@@ -59,16 +50,18 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetParamsDto): Promise<Character> {
-    const parsed = getParamsSchema.safeParse(params);
+  async getOne(params: GetOneDto<Character>): Promise<Character> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
+    const { artifact_set, galleries, ...ref } = params;
+
     return await this.charactersService.findOne({
       where: {
-        id: params,
+        ...ref,
       },
       relations: {
         country: true,
@@ -77,8 +70,8 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async create(dto: CreateCharacterDto): Promise<Character> {
-    const parsed = createCharacterSchema.safeParse(dto);
+  async create(dto: CreateDto<Character>): Promise<Character> {
+    const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -157,8 +150,8 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async update(dto: UpdateCharacterDto): Promise<void> {
-    const parsed = updateCharacterSchema.safeParse(dto);
+  async update(dto: UpdateDto<Character>): Promise<void> {
+    const parsed = updateSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);

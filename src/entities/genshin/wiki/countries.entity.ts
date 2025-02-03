@@ -1,10 +1,10 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Character } from "./character.entity";
-import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
 import { VersionsEntity } from "./versions.entity";
+import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('countries')
-export class Country extends BaseEntity implements KBaseEntity {
+export class Country extends BaseEntity implements IBase {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
@@ -21,10 +21,10 @@ export class Country extends BaseEntity implements KBaseEntity {
   characters: Character[];
 
   @CreateDateColumn()
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: string;
+  updatedAt: Date;
 
   @OneToMany(() => VersionsEntity, version => version.countries)
   version: VersionsEntity;

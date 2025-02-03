@@ -1,8 +1,8 @@
-import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
+import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('items')
-export class Items extends BaseEntity implements KBaseEntity {
+export class Items extends BaseEntity implements IBase {
   released: boolean;
   @PrimaryGeneratedColumn('increment')
   id: string;
@@ -14,8 +14,8 @@ export class Items extends BaseEntity implements KBaseEntity {
   version: string;
 
   @CreateDateColumn()
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: string;
+  updatedAt: Date;
 }

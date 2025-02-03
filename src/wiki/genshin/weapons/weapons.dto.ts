@@ -1,9 +1,8 @@
 import { rarityType } from "@/utils/zod_types";
-import { queryDtoSchema } from "@karasu-lab/karasu-lab-sdk";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getWeaponSchema = queryDtoSchema.extend({
+const getSchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -13,9 +12,7 @@ const getWeaponSchema = queryDtoSchema.extend({
   version: z.string().optional().default('1.0'),
 });
 
-class GetWeaponDto extends createZodDto(getWeaponSchema) { }
-
-const createWeaponSchema = z.object({
+const createSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -25,9 +22,7 @@ const createWeaponSchema = z.object({
   version: z.string().default('1.0'),
 });
 
-class CreateWeaponDto extends createZodDto(createWeaponSchema) { }
-
-const updateWeaponSchema = z.object({
+const updateSchema = z.object({
   id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -38,13 +33,8 @@ const updateWeaponSchema = z.object({
   version: z.string().optional().default('1.0'),
 });
 
-class UpdateWeaponDto extends createZodDto(updateWeaponSchema) { }
-
 export {
-  createWeaponSchema,
-  updateWeaponSchema,
-  getWeaponSchema,
-  GetWeaponDto,
-  CreateWeaponDto,
-  UpdateWeaponDto,
+  getSchema,
+  createSchema,
+  updateSchema,
 };

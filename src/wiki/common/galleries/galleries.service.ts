@@ -3,12 +3,14 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateGalleryDto, createGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGalleryParamsSchema, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { S3Service } from '@/s3/s3.service';
-import { DeleteDto, deleteSchema, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
+import { z } from 'zod';
+import { ToZodSchema } from '@/utils/zod';
+import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
+import { createSchema, getSchema, updateSchema } from './galleries.dto';
 
 @Injectable()
 export class GalleriesService implements IBaseControllerAndService {
@@ -21,8 +23,8 @@ export class GalleriesService implements IBaseControllerAndService {
     private readonly s3Service: S3Service,
   ) { }
 
-  async get(params: GetGalleryDto): Promise<Gallery[]> {
-    const parsed = getGallerySchema.safeParse(params);
+  async get(params: GetParamsDto<Gallery>): Promise<Gallery[]> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -33,16 +35,14 @@ export class GalleriesService implements IBaseControllerAndService {
     return await this.galleryRepository.find({
       where: {
         ...ref,
-        character: {
-          id: character
-        }
+        character
       },
       skip: page > 0 ? (page - 1) * limit : undefined,
     });
   }
 
-  async getOne(params: GetParamsDto): Promise<Gallery> {
-    const parsed = getGalleryParamsSchema.safeParse(params);
+  async getOne(params: GetOneDto<Gallery>): Promise<Gallery> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -50,7 +50,7 @@ export class GalleriesService implements IBaseControllerAndService {
 
     return await this.galleryRepository.findOne({
       where: {
-        id: params
+        ...params,
       },
     });
   }
@@ -71,8 +71,8 @@ export class GalleriesService implements IBaseControllerAndService {
     return gallery;
   }
 
-  async create(dto: CreateGalleryDto): Promise<Gallery> {
-    const parsed = createGallerySchema.safeParse(dto);
+  async create(dto: CreateDto<Gallery>): Promise<Gallery> {
+    const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -90,14 +90,11 @@ export class GalleriesService implements IBaseControllerAndService {
 
     return await this.galleryRepository.save({
       ...dto,
-      character: {
-        id: dto.character
-      }
     });
   }
 
-  async update(dto: UpdateGalleryDto): Promise<void> {
-    const parsed = updateGallerySchema.safeParse(dto);
+  async update(dto: UpdateDto<Gallery>): Promise<void> {
+    const parsed = updateSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -115,9 +112,6 @@ export class GalleriesService implements IBaseControllerAndService {
 
     await this.galleryRepository.update({ id: dto.id }, {
       ...dto,
-      character: {
-        id: dto.character
-      }
     });
   }
 

@@ -1,10 +1,10 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Character } from "./character.entity";
-import { BaseEntity as KBaseEntity } from "@karasu-lab/karasu-lab-sdk";
 import { VersionsEntity } from "./versions.entity";
+import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('weapons')
-export class Weapon extends BaseEntity implements KBaseEntity {
+export class Weapon extends BaseEntity implements IBase {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
@@ -12,10 +12,10 @@ export class Weapon extends BaseEntity implements KBaseEntity {
   name: string;
 
   @CreateDateColumn()
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: string;
+  updatedAt: Date;
 
   @Column({ nullable: true })
   description?: string | undefined;

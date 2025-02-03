@@ -1,10 +1,10 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateCountryDto, createCountrySchema, GetCountriesDto, getCountriesSchema, UpdateCountryDto } from './contries.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
 import { Repository } from 'typeorm';
-import { DeleteDto, deleteSchema, GetParamsDto, getParamsSchema } from '@karasu-lab/karasu-lab-sdk';
+import { CreateDto, DeleteDto, deleteSchema, GetParamsDto, UpdateDto } from '@/utils/dto';
+import { createSchema, getSchema } from './contries.dto';
 
 @Injectable()
 export class CountriesService implements IBaseControllerAndService {
@@ -13,42 +13,41 @@ export class CountriesService implements IBaseControllerAndService {
     private readonly repository: Repository<Country>,
   ) { }
 
-  async get(params: GetCountriesDto): Promise<any[]> {
-    const parsed = getCountriesSchema.safeParse(params);
+  async get(params: GetParamsDto<Country>): Promise<Country[]> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, version, ...ref } = params;
+    const { page, limit, characters, ...ref } = params;
 
     return await this.repository.find({
       where: {
         ...ref,
-        version: {
-          version_string: version,
-        },
       },
       skip: page > 0 ? (page - 1) * limit : undefined,
     });
   }
 
-  async getOne(params: GetParamsDto): Promise<any> {
-    const parsed = getParamsSchema.safeParse(params);
+  async getOne(params: GetParamsDto<Country>): Promise<Country> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
+    const { page, limit, characters, ...ref } = params;
+
     return await this.repository.findOne({
       where: {
-        id: params,
+        ...ref
       },
     });
   }
 
-  async create(dto: CreateCountryDto): Promise<any> {
-    const parsed = createCountrySchema.safeParse(dto);
+  async create(dto: CreateDto<Country>): Promise<Country> {
+    const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
@@ -66,9 +65,7 @@ export class CountriesService implements IBaseControllerAndService {
 
     const versionExists = await this.repository.findOne({
       where: {
-        version: {
-          version_string: dto.version,
-        }
+        version: dto.version
       },
     });
 
@@ -82,8 +79,8 @@ export class CountriesService implements IBaseControllerAndService {
     });
   }
 
-  async update(dto: UpdateCountryDto): Promise<void> {
-    const parsed = createCountrySchema.safeParse(dto);
+  async update(dto: UpdateDto<Country>): Promise<void> {
+    const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
@@ -101,9 +98,7 @@ export class CountriesService implements IBaseControllerAndService {
 
     const versionExists = await this.repository.findOne({
       where: {
-        version: {
-          version_string: dto.version,
-        }
+        version: dto.version
       },
     });
 

@@ -5,9 +5,8 @@ import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { CreateWeaponDto, createWeaponSchema, GetWeaponDto, getWeaponSchema, UpdateWeaponDto } from './weapons.dto';
-import { updateCharacterSchema } from '../characters/characters.dto';
-import { DeleteDto, GetParamsDto } from '@karasu-lab/karasu-lab-sdk';
+import { createSchema, getSchema, updateSchema } from './weapons.dto';
+import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -21,37 +20,37 @@ export class WeaponsController implements IBaseControllerAndService {
 
   @ApiQuery({
     name: 'query',
-    schema: zodToOpenAPI(getWeaponSchema),
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetWeaponDto): Promise<Weapon[]> {
+  async get(@Query() params: GetParamsDto<Weapon>): Promise<Weapon[]> {
     return this.weaponsService.get(params);
   }
 
-  @ApiParam({
-    name: 'id',
-    type: 'string',
+  @ApiQuery({
+    name: 'query',
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get(':id')
-  async getOne(@Param() params: GetParamsDto): Promise<Weapon> {
+  @Get('getOne')
+  async getOne(@Param() params: GetOneDto<Weapon>): Promise<Weapon> {
     return this.weaponsService.getOne(params);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(createWeaponSchema),
+    schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(@Body() dto: CreateWeaponDto): Promise<Weapon> {
+  async create(@Body() dto: CreateDto<Weapon>): Promise<Weapon> {
     return this.weaponsService.create(dto);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(updateCharacterSchema),
+    schema: zodToOpenAPI(updateSchema),
   })
   @Put()
-  async update(@Body() dto: UpdateWeaponDto): Promise<void> {
+  async update(@Body() dto: UpdateDto<Weapon>): Promise<void> {
     return this.weaponsService.update(dto);
   }
 

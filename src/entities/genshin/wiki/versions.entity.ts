@@ -1,5 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { VersionsEntity as KVersionEntity } from "@karasu-lab/karasu-lab-sdk";
+import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
 import { Country } from "./countries.entity";
@@ -7,7 +7,7 @@ import { Character } from "./character.entity";
 import { Artifacts } from "./artifacts.entity";
 
 @Entity('versions')
-export class VersionsEntity extends BaseEntity implements KVersionEntity {
+export class VersionsEntity extends BaseEntity implements IBase {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
@@ -21,10 +21,10 @@ export class VersionsEntity extends BaseEntity implements KVersionEntity {
   released: boolean;
 
   @CreateDateColumn()
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: string;
+  updatedAt: Date;
 
   @OneToMany(() => Weapon, weapon => weapon.version)
   entities: Weapon[];
