@@ -15,6 +15,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle(`Karasu Lab API ${process.env.NODE_ENV}`)
+    .setLicense("MIT", "https://opensource.org/licenses/MIT")
     .setDescription("API documentation for Karasu Lab")
     .setVersion("1.0")
     .addServer(process.env.BASE_URL)
