@@ -16,7 +16,7 @@
           "ngVersion": "6.1.7",
           "npmName": "@karasu-lab/karasu256-api-client",
           "supportsES6": "true",
-          "npmVersion": "0.6.8",
+          "npmVersion": "0.6.9",
           "withInterfaces": true
         }
       }
