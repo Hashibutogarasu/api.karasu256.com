@@ -11,7 +11,7 @@
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
         "inputSpec": "https://api.karasu256.com/api/json",
-        "glob": "#${cwd}/client/latest/open-api.json",
+        "glob": "#{cwd}/client/latest/open-api.json",
         "output": "#{cwd}/client/latest/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
