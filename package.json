@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
-    "client:generate:typescript": "openapi-generator-cli generate --generator-key v0.6.7",
+    "client:generate:typescript": "openapi-generator-cli generate --generator-key latest",
     "vercel-build": "tsc && pnpm run lint && pnpm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "cross-env NODE_ENV=development nest start",

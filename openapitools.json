@@ -4,14 +4,14 @@
   "generator-cli": {
     "version": "7.11.0",
     "generators": {
-      "v0.6.7": {
+      "latest": {
         "packageName": "@karasu-lab/karasu256-api-client",
         "generatorName": "typescript-fetch",
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
         "inputSpec": "https://api.karasu256.com/api/json",
-        "output": "#{cwd}/client/v0.6.7/#{name}",
+        "output": "#{cwd}/client/latest/#{name}",
         "additionalProperties": {
           "ngVersion": "6.1.7",
           "npmName": "@karasu-lab/karasu256-api-client",
