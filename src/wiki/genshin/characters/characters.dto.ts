@@ -13,6 +13,7 @@ const getSchema = z.object({
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   rarity: rarityType.optional(),
   version: z.string().optional(),
+  property: z.string().optional(),
   unimplemented: z.string().transform((value) => value === 'true').optional(),
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
@@ -29,6 +30,7 @@ const createSchema = z.object({
   artifact_set: z.array(z.string()).optional(),
   weapon_type: z.string().optional(),
   rarity: rarityType.optional(),
+  property: z.string().optional(),
   version: z.string().default('1.0'),
   unimplemented: z.boolean().default(false),
 });
@@ -43,6 +45,7 @@ const updateSchema = z.object({
   country: z.string().optional().nullable(),
   weapon_type: z.string().optional().nullable(),
   rarity: rarityType.optional().nullable(),
+  property: z.string().optional(),
   version: z.string().optional().nullable().default('1.0'),
   unimplemented: z.boolean().optional().nullable(),
 });
