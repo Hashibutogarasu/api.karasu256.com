@@ -24,8 +24,8 @@ export class ArtifactsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
-    return this.artifactsService.get(params);
+  async get(@Query() query: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
+    return this.artifactsService.get(query);
   }
 
   @ApiQuery({
@@ -34,8 +34,8 @@ export class ArtifactsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get('getOne')
-  async getOne(@Param() params: GetOneDto<Artifacts>): Promise<Artifacts> {
-    return this.artifactsService.getOne(params);
+  async getOne(@Query() query: GetOneDto<Artifacts>): Promise<Artifacts> {
+    return this.artifactsService.getOne(query);
   }
 
   @ApiBody({

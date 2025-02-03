@@ -20,14 +20,14 @@ export class GalleriesService implements IBaseControllerAndService {
     private readonly s3Service: S3Service,
   ) { }
 
-  async get(params: GetParamsDto<Gallery, ["character", "createdAt", "updatedAt"]>): Promise<Gallery[]> {
-    const parsed = getSchema.safeParse(params);
+  async get(query: GetParamsDto<Gallery, ["character", "createdAt", "updatedAt"]>): Promise<Gallery[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, ...ref } = params;
+    const { page, limit, ...ref } = query;
 
     return await this.galleryRepository.find({
       where: {
@@ -38,8 +38,8 @@ export class GalleriesService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetOneDto<Gallery>): Promise<Gallery> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetOneDto<Gallery>): Promise<Gallery> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -47,7 +47,7 @@ export class GalleriesService implements IBaseControllerAndService {
 
     return await this.galleryRepository.findOne({
       where: {
-        ...params,
+        ...query,
       },
     });
   }

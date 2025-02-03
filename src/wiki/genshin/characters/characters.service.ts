@@ -29,14 +29,14 @@ export class CharactersService implements IBaseControllerAndService {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(dto: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
-    const parsed = getSchema.safeParse(dto);
+  async get(query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, artifact_set, version, galleries, country, weapon, ...ref } = dto;
+    const { page, limit, artifact_set, version, galleries, country, weapon, ...ref } = query;
 
     return await this.charactersService.find({
       where: {
@@ -52,14 +52,14 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetOneDto<Character>): Promise<Character> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetOneDto<Character>): Promise<Character> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { artifact_set, galleries, ...ref } = params;
+    const { artifact_set, galleries, ...ref } = query;
 
     return await this.charactersService.findOne({
       where: {

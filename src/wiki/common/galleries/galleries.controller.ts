@@ -22,8 +22,8 @@ export class GalleriesController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetParamsDto<Gallery, ["character"]>): Promise<Gallery[]> {
-    return this.galleriesService.get(params);
+  async get(@Query() query: GetParamsDto<Gallery, ["character"]>): Promise<Gallery[]> {
+    return this.galleriesService.get(query);
   }
 
   @ApiQuery({
@@ -32,8 +32,8 @@ export class GalleriesController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get('getOne')
-  async getOne(@Param() params: GetOneDto<Gallery>): Promise<Gallery> {
-    return this.galleriesService.getOne(params);
+  async getOne(@Param() query: GetOneDto<Gallery>): Promise<Gallery> {
+    return this.galleriesService.getOne(query);
   }
 
   @Authorization({

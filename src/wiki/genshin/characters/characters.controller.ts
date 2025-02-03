@@ -20,8 +20,8 @@ export class CharactersController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
-    return this.charactersService.get(params);
+  async get(@Query() query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+    return this.charactersService.get(query);
   }
 
   @ApiQuery({
@@ -30,8 +30,8 @@ export class CharactersController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get('getOne')
-  async getOne(@Param() params: GetOneDto<Character>): Promise<Character> {
-    return this.charactersService.getOne(params);
+  async getOne(@Query() query: GetOneDto<Character>): Promise<Character> {
+    return this.charactersService.getOne(query);
   }
 
 

@@ -20,8 +20,8 @@ export class ArtifactSetsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
-    return this.service.get(params);
+  async get(@Query() query: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
+    return this.service.get(query);
   }
 
   @ApiQuery({
@@ -30,8 +30,8 @@ export class ArtifactSetsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get('getOne')
-  async getOne(params: GetOneDto<ArtifactSets>): Promise<ArtifactSets> {
-    return this.service.getOne(params);
+  async getOne(@Query() query: GetOneDto<ArtifactSets>): Promise<ArtifactSets> {
+    return this.service.getOne(query);
   }
 
 
@@ -43,7 +43,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(dto: CreateDto<ArtifactSets>): Promise<ArtifactSets> {
+  async create(@Body() dto: CreateDto<ArtifactSets>): Promise<ArtifactSets> {
     return this.service.create(dto);
   }
 
@@ -56,7 +56,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(updateSchema),
   })
   @Put()
-  async update(dto: UpdateDto<ArtifactSets>): Promise<void> {
+  async update(@Body() dto: UpdateDto<ArtifactSets>): Promise<void> {
     return this.service.update(dto);
   }
 
@@ -69,7 +69,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(dto: DeleteDto): Promise<void> {
+  async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.service.delete(dto);
   }
 }

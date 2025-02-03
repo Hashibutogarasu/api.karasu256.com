@@ -13,14 +13,14 @@ export class ArtifactsService implements IBaseControllerAndService {
     private readonly artifactsRepository: Repository<Artifacts>
   ) { }
 
-  async get(dto: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
-    const parsed = getSchema.safeParse(dto);
+  async get(query: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, version, artifact_sets, ...ref } = dto;
+    const { page, limit, version, artifact_sets, ...ref } = query;
 
     return await this.artifactsRepository.find({
       where: {
@@ -33,14 +33,14 @@ export class ArtifactsService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetOneDto<Artifacts>): Promise<Artifacts> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetOneDto<Artifacts>): Promise<Artifacts> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { artifact_sets, ...ref } = params;
+    const { artifact_sets, ...ref } = query;
 
     return await this.artifactsRepository.findOne({
       where: {

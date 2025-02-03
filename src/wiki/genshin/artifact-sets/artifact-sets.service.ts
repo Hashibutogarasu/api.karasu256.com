@@ -17,14 +17,14 @@ export class ArtifactSetsService implements IBaseControllerAndService {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(params: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
-    const parsed = getSchema.safeParse(params);
+  async get(query: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, version, ...ref } = params;
+    const { page, limit, version, ...ref } = query;
 
     return await this.repository.find({
       where: {
@@ -37,14 +37,14 @@ export class ArtifactSetsService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetOneDto<ArtifactSets>): Promise<ArtifactSets> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetOneDto<ArtifactSets>): Promise<ArtifactSets> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { artifacts, characters, ...ref } = params;
+    const { artifacts, characters, ...ref } = query;
 
     return await this.repository.findOne({
       where: {

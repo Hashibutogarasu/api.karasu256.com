@@ -13,14 +13,14 @@ export class CountriesService implements IBaseControllerAndService {
     private readonly repository: Repository<Country>,
   ) { }
 
-  async get(params: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
-    const parsed = getSchema.safeParse(params);
+  async get(query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, characters, version, ...ref } = params;
+    const { page, limit, characters, version, ...ref } = query;
 
     return await this.repository.find({
       where: {
@@ -33,20 +33,20 @@ export class CountriesService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, ...ref } = params;
+    const { page, limit, ...ref } = query;
 
     return await this.repository.findOne({
       where: {
         ...ref,
         version: {
-          version_string: params.version.version_string,
+          version_string: query.version.version_string,
         }
       },
     });

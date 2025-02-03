@@ -13,14 +13,14 @@ export class WeaponsService implements IBaseControllerAndService {
     private readonly weaponsService: Repository<Weapon>
   ) { }
 
-  async get(dto: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
-    const parsed = getSchema.safeParse(dto);
+  async get(query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, version, ...ref } = dto;
+    const { page, limit, version, ...ref } = query;
 
     return await this.weaponsService.find({
       where: {
@@ -33,14 +33,14 @@ export class WeaponsService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetOneDto<Weapon>): Promise<Weapon> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetOneDto<Weapon>): Promise<Weapon> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { characters, ...ref } = params;
+    const { characters, ...ref } = query;
 
     return await this.weaponsService.findOne({
       where: {

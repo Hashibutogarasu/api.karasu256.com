@@ -20,8 +20,8 @@ export class WeaponsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
-    return this.weaponsService.get(params);
+  async get(@Query() query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
+    return this.weaponsService.get(query);
   }
 
   @ApiQuery({
@@ -30,8 +30,8 @@ export class WeaponsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get('getOne')
-  async getOne(@Param() params: GetOneDto<Weapon>): Promise<Weapon> {
-    return this.weaponsService.getOne(params);
+  async getOne(@Param() query: GetOneDto<Weapon>): Promise<Weapon> {
+    return this.weaponsService.getOne(query);
   }
 
 
