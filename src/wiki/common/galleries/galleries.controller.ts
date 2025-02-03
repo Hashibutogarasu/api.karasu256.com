@@ -16,22 +16,20 @@ export class GalleriesController implements IBaseControllerAndService {
     private readonly galleriesService: GalleriesService,
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
+  @Post()
   async get(@Query() query: GetParamsDto<Gallery, ["character"]>): Promise<Gallery[]> {
     return this.galleriesService.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
+  @Post('getOne')
   async getOne(@Param() query: GetOneDto<Gallery>): Promise<Gallery> {
     return this.galleriesService.getOne(query);
   }

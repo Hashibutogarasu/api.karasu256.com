@@ -14,8 +14,7 @@ export class WeaponsController implements IBaseControllerAndService {
     private readonly weaponsService: WeaponsService,
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
@@ -24,8 +23,7 @@ export class WeaponsController implements IBaseControllerAndService {
     return this.weaponsService.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()

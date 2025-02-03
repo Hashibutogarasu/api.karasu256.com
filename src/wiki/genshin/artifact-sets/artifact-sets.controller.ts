@@ -14,8 +14,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     private readonly service: ArtifactSetsService,
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
@@ -24,8 +23,7 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     return this.service.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()

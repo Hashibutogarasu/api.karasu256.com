@@ -14,8 +14,7 @@ export class CharactersController implements IBaseControllerAndService {
     private readonly charactersService: CharactersService
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
@@ -24,8 +23,7 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()

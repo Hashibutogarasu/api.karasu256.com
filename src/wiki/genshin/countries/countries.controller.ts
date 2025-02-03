@@ -14,8 +14,7 @@ export class CountriesController implements IBaseControllerAndService {
     private readonly service: CountriesService,
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
@@ -24,8 +23,7 @@ export class CountriesController implements IBaseControllerAndService {
     return this.service.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
