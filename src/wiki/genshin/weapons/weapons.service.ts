@@ -13,18 +13,21 @@ export class WeaponsService implements IBaseControllerAndService {
     private readonly weaponsService: Repository<Weapon>
   ) { }
 
-  async get(dto: GetParamsDto<Weapon>): Promise<Weapon[]> {
+  async get(dto: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
     const parsed = getSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, characters, ...ref } = dto;
+    const { page, limit, version, ...ref } = dto;
 
     return await this.weaponsService.find({
       where: {
         ...ref,
+        version: {
+          version_string: version.version_string,
+        }
       },
       skip: page > 0 ? (page - 1) * limit : undefined,
     });

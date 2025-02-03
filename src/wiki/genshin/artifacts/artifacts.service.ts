@@ -13,7 +13,7 @@ export class ArtifactsService implements IBaseControllerAndService {
     private readonly artifactsRepository: Repository<Artifacts>
   ) { }
 
-  async get(dto: GetParamsDto<Artifacts>): Promise<Artifacts[]> {
+  async get(dto: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
     const parsed = getSchema.safeParse(dto);
 
     if (!parsed.success) {

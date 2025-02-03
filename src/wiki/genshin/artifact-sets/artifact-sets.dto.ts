@@ -2,9 +2,7 @@ import { baseSchema } from "@/utils/dto";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getSchema = baseSchema.extend({
-  id: z.string().nonempty(),
-});
+const getSchema = baseSchema;
 
 const createSchema = z.object({
   name: z.string(),

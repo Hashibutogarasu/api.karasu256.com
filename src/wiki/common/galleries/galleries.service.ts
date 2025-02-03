@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { S3Service } from '@/s3/s3.service';
 import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, getSchema, updateSchema } from './galleries.dto';
+import { Character } from '@/entities/genshin/wiki/character.entity';
 
 @Injectable()
 export class GalleriesService implements IBaseControllerAndService {
@@ -19,21 +20,21 @@ export class GalleriesService implements IBaseControllerAndService {
     private readonly s3Service: S3Service,
   ) { }
 
-  async get(params: GetParamsDto<Gallery>): Promise<Gallery[]> {
+  async get(params: GetParamsDto<Gallery, ["character", "createdAt", "updatedAt"]>): Promise<Gallery[]> {
     const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, character, ...ref } = params;
+    const { page, limit, ...ref } = params;
 
     return await this.galleryRepository.find({
       where: {
         ...ref,
-        character
       },
-      skip: page > 0 ? (page - 1) * limit : undefined,
+      take: limit,
+      skip: (page - 1) * limit,
     });
   }
 

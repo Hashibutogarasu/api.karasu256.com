@@ -24,7 +24,7 @@ export class CharactersController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetParamsDto<Character>): Promise<Character[]> {
+  async get(@Query() params: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
     return this.charactersService.get(params);
   }
 

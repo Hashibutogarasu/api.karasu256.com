@@ -1,9 +1,7 @@
 import { baseSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const getSchema = baseSchema.extend({
-  id: z.string().nonempty(),
-});
+const getSchema = baseSchema;
 
 const createSchema = z.object({
   url: z.string().url(),

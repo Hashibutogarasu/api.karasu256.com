@@ -13,35 +13,41 @@ export class CountriesService implements IBaseControllerAndService {
     private readonly repository: Repository<Country>,
   ) { }
 
-  async get(params: GetParamsDto<Country>): Promise<Country[]> {
+  async get(params: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
     const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, characters, ...ref } = params;
+    const { page, limit, characters, version, ...ref } = params;
 
     return await this.repository.find({
       where: {
         ...ref,
+        version: {
+          version_string: version.version_string,
+        }
       },
       skip: page > 0 ? (page - 1) * limit : undefined,
     });
   }
 
-  async getOne(params: GetParamsDto<Country>): Promise<Country> {
+  async getOne(params: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
     const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, characters, ...ref } = params;
+    const { page, limit, ...ref } = params;
 
     return await this.repository.findOne({
       where: {
-        ...ref
+        ...ref,
+        version: {
+          version_string: params.version.version_string,
+        }
       },
     });
   }

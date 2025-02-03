@@ -24,7 +24,7 @@ export class WeaponsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetParamsDto<Weapon>): Promise<Weapon[]> {
+  async get(@Query() params: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
     return this.weaponsService.get(params);
   }
 

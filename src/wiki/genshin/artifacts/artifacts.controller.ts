@@ -24,7 +24,7 @@ export class ArtifactsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetParamsDto<Artifacts>): Promise<Artifacts[]> {
+  async get(@Query() params: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
     return this.artifactsService.get(params);
   }
 
