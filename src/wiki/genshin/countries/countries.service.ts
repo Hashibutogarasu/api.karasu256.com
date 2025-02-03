@@ -1,9 +1,10 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateCountryDto, createCountrySchema, DeleteCountryDto, GetCountriesDto, GetCountriesParamsDto, getCountriesParamsSchema, getCountriesSchema, UpdateCountryDto } from './contries.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
 import { Repository } from 'typeorm';
+import { CreateDto, DeleteDto, deleteSchema, GetParamsDto, UpdateDto } from '@/utils/dto';
+import { createSchema, getSchema } from './contries.dto';
 
 @Injectable()
 export class CountriesService implements IBaseControllerAndService {
@@ -12,14 +13,14 @@ export class CountriesService implements IBaseControllerAndService {
     private readonly repository: Repository<Country>,
   ) { }
 
-  async get(params: GetCountriesDto): Promise<any[]> {
-    const parsed = getCountriesSchema.safeParse(params);
+  async get(params: GetParamsDto<Country>): Promise<Country[]> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, ...ref } = params;
+    const { page, limit, characters, ...ref } = params;
 
     return await this.repository.find({
       where: {
@@ -29,22 +30,24 @@ export class CountriesService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetCountriesParamsDto): Promise<any> {
-    const parsed = getCountriesParamsSchema.safeParse(params);
+  async getOne(params: GetParamsDto<Country>): Promise<Country> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
+    const { page, limit, characters, ...ref } = params;
+
     return await this.repository.findOne({
       where: {
-        id: params.id,
+        ...ref
       },
     });
   }
 
-  async create(dto: CreateCountryDto): Promise<any> {
-    const parsed = createCountrySchema.safeParse(dto);
+  async create(dto: CreateDto<Country>): Promise<Country> {
+    const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
@@ -60,11 +63,24 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException('この国は既に存在しています');
     }
 
-    return await this.repository.save(dto);
+    const versionExists = await this.repository.findOne({
+      where: {
+        version: dto.version
+      },
+    });
+
+    if (!versionExists) {
+      throw new BadRequestException('このバージョンは存在しません');
+    }
+
+    return await this.repository.save({
+      ...dto,
+      version: versionExists,
+    });
   }
 
-  async update(dto: UpdateCountryDto): Promise<void> {
-    const parsed = createCountrySchema.safeParse(dto);
+  async update(dto: UpdateDto<Country>): Promise<void> {
+    const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
@@ -80,11 +96,24 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException('この国は存在しません');
     }
 
-    await this.repository.update(dto.id, dto);
+    const versionExists = await this.repository.findOne({
+      where: {
+        version: dto.version
+      },
+    });
+
+    if (!versionExists) {
+      throw new BadRequestException('このバージョンは存在しません');
+    }
+
+    await this.repository.update(dto.id, {
+      ...dto,
+      version: versionExists,
+    });
   }
 
-  async delete(dto: DeleteCountryDto): Promise<void> {
-    const parsed = createCountrySchema.safeParse(dto);
+  async delete(dto: DeleteDto): Promise<void> {
+    const parsed = deleteSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);

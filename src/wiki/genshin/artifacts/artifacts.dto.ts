@@ -1,10 +1,7 @@
-import { paginationSchema } from "@/types/zod/pagination.dto";
-import { idType } from "@/utils/zod_types";
-import { createZodDto } from "nestjs-zod";
+import { baseSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const getArtifactSchema = paginationSchema.extend({
-  id: idType.optional(),
+const getSchema = baseSchema.extend({
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -14,15 +11,7 @@ const getArtifactSchema = paginationSchema.extend({
   version: z.string().optional().default('1.0'),
 });
 
-class GetArtifactDto extends createZodDto(getArtifactSchema) { }
-
-const getArtifactParamsSchema = z.object({
-  id: idType.optional(),
-});
-
-class GetArtifactParamsDto extends createZodDto(getArtifactParamsSchema) { }
-
-const createArtifactSchema = z.object({
+const createSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -32,10 +21,8 @@ const createArtifactSchema = z.object({
   version: z.string().default('1.0'),
 });
 
-class CreateArtifactDto extends createZodDto(createArtifactSchema) { }
-
-const updateArtifactSchema = z.object({
-  id: idType,
+const updateSchema = z.object({
+  id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -45,23 +32,8 @@ const updateArtifactSchema = z.object({
   version: z.string().optional().default('1.0'),
 });
 
-class UpdateArtifactDto extends createZodDto(updateArtifactSchema) { }
-
-const deleteArtifactSchema = z.object({
-  id: idType
-});
-
-class DeleteArtifactDto extends createZodDto(deleteArtifactSchema) { }
-
 export {
-  createArtifactSchema,
-  updateArtifactSchema,
-  deleteArtifactSchema,
-  getArtifactSchema,
-  getArtifactParamsSchema,
-  GetArtifactDto,
-  GetArtifactParamsDto,
-  CreateArtifactDto,
-  UpdateArtifactDto,
-  DeleteArtifactDto,
-};
+  getSchema,
+  createSchema,
+  updateSchema,
+}

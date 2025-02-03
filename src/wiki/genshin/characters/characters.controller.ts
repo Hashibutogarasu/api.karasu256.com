@@ -2,10 +2,11 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { CharactersService } from './characters.service';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
-import { CreateCharacterDto, createCharacterSchema, DeleteCharacterDto, deleteCharacterSchema, GetCharacterDto, GetCharacterParamsDto, getCharacterParamsSchema, getCharacterSchema, ImportCharacterDto, importCharacterSchema, ImportFromHoyoLabDto, importFromHoyoLabSchema, UpdateCharacterDto, updateCharacterSchema } from './characters.dto';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { Character } from '@/entities/genshin/wiki/character.entity';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
+import { createSchema, getSchema, ImportCharacterDto, importCharacterSchema, ImportFromHoyoLabDto, importFromHoyoLabSchema, updateSchema } from './characters.dto';
+import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -19,37 +20,37 @@ export class CharactersController implements IBaseControllerAndService {
 
   @ApiQuery({
     name: 'query',
-    schema: zodToOpenAPI(getCharacterSchema),
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetCharacterDto): Promise<Character[]> {
+  async get(@Query() params: GetParamsDto<Character>): Promise<Character[]> {
     return this.charactersService.get(params);
   }
 
-  @ApiParam({
-    name: 'id',
-    type: 'string',
+  @ApiQuery({
+    name: 'query',
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get(':id')
-  async getOne(@Param() params: GetCharacterParamsDto): Promise<Character> {
+  @Get('getOne')
+  async getOne(@Param() params: GetOneDto<Character>): Promise<Character> {
     return this.charactersService.getOne(params);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(createCharacterSchema),
+    schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(@Body() dto: CreateCharacterDto): Promise<Character> {
+  async create(@Body() dto: CreateDto<Character>): Promise<Character> {
     return this.charactersService.create(dto);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(updateCharacterSchema),
+    schema: zodToOpenAPI(updateSchema),
   })
   @Put()
-  async update(@Body() dto: UpdateCharacterDto): Promise<void> {
+  async update(@Body() dto: UpdateDto<Character>): Promise<void> {
     return this.charactersService.update(dto);
   }
 
@@ -58,7 +59,7 @@ export class CharactersController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(@Param() dto: DeleteCharacterDto): Promise<void> {
+  async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.charactersService.delete(dto);
   }
 

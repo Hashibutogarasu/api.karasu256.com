@@ -1,10 +1,9 @@
-import { paginationSchema } from "@/types/zod/pagination.dto";
-import { idType, rarityType } from "@/utils/zod_types";
+import { rarityType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getCharacterSchema = paginationSchema.extend({
-  id: idType.optional(),
+const getSchema = z.object({
+  id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -19,15 +18,7 @@ const getCharacterSchema = paginationSchema.extend({
   updatedAt: z.string().datetime().optional(),
 });
 
-class GetCharacterDto extends createZodDto(getCharacterSchema) { }
-
-const getCharacterParamsSchema = z.object({
-  id: idType.optional(),
-});
-
-class GetCharacterParamsDto extends createZodDto(getCharacterParamsSchema) { }
-
-const createCharacterSchema = z.object({
+const createSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -42,10 +33,8 @@ const createCharacterSchema = z.object({
   unimplemented: z.boolean().default(false),
 });
 
-class CreateCharacterDto extends createZodDto(createCharacterSchema) { }
-
-const updateCharacterSchema = z.object({
-  id: idType,
+const updateSchema = z.object({
+  id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
@@ -57,14 +46,6 @@ const updateCharacterSchema = z.object({
   version: z.string().optional().default('1.0'),
   unimplemented: z.boolean().optional(),
 });
-
-class UpdateCharacterDto extends createZodDto(updateCharacterSchema) { }
-
-const deleteCharacterSchema = z.object({
-  id: idType,
-});
-
-class DeleteCharacterDto extends createZodDto(deleteCharacterSchema) { }
 
 const property = z.object({
   values: z.array(z.string()).default([]),
@@ -164,19 +145,12 @@ const importCharacterSchema = z.object({
 class ImportCharacterDto extends createZodDto(importCharacterSchema) { }
 
 export {
-  createCharacterSchema,
-  updateCharacterSchema,
-  deleteCharacterSchema,
-  getCharacterSchema,
-  getCharacterParamsSchema,
+  getSchema,
+  createSchema,
+  updateSchema,
+  fileterValues,
   importCharacterSchema,
   importFromHoyoLabSchema,
-  fileterValues,
-  GetCharacterDto,
-  GetCharacterParamsDto,
-  CreateCharacterDto,
-  UpdateCharacterDto,
-  DeleteCharacterDto,
+  ImportFromHoyoLabDto,
   ImportCharacterDto,
-  ImportFromHoyoLabDto
-};
+}

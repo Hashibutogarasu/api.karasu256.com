@@ -1,9 +1,10 @@
 import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateWeaponDto, createWeaponSchema, DeleteWeaponDto, GetWeaponDto, GetWeaponParamsDto, getWeaponParamsSchema, getWeaponSchema, UpdateWeaponDto } from './weapons.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { createSchema, getSchema, updateSchema } from './weapons.dto';
 
 @Injectable()
 export class WeaponsService implements IBaseControllerAndService {
@@ -12,14 +13,14 @@ export class WeaponsService implements IBaseControllerAndService {
     private readonly weaponsService: Repository<Weapon>
   ) { }
 
-  async get(dto: GetWeaponDto): Promise<Weapon[]> {
-    const parsed = getWeaponSchema.safeParse(dto);
+  async get(dto: GetParamsDto<Weapon>): Promise<Weapon[]> {
+    const parsed = getSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, ...ref } = dto;
+    const { page, limit, characters, ...ref } = dto;
 
     return await this.weaponsService.find({
       where: {
@@ -29,34 +30,51 @@ export class WeaponsService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetWeaponParamsDto): Promise<Weapon> {
-    const parsed = getWeaponParamsSchema.safeParse(params);
+  async getOne(params: GetOneDto<Weapon>): Promise<Weapon> {
+    const parsed = getSchema.safeParse(params);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
+    const { characters, ...ref } = params;
+
     return await this.weaponsService.findOne({
       where: {
-        id: params.id,
+        ...ref
       },
     });
   }
 
-  async create(dto: CreateWeaponDto): Promise<Weapon> {
-    const parsed = createWeaponSchema.safeParse(dto);
+  async create(dto: CreateDto<Weapon>): Promise<Weapon> {
+    const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const weapon = this.weaponsService.create(dto);
+    const { version, ...ref } = dto;
+
+    const versionExists = await this.weaponsService.findOne({
+      where: {
+        version
+      }
+    })
+
+    if (!versionExists) {
+      throw new BadRequestException('このバージョンは存在しません');
+    }
+
+    const weapon = this.weaponsService.create({
+      ...ref,
+      version: versionExists
+    });
 
     return await this.weaponsService.save(weapon);
   }
 
-  async update(dto: UpdateWeaponDto): Promise<void> {
-    const parsed = createWeaponSchema.safeParse(dto);
+  async update(dto: UpdateDto<Weapon>): Promise<void> {
+    const parsed = updateSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
@@ -72,11 +90,26 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException('Weapon not found');
     }
 
-    await this.weaponsService.update({ id: dto.id, }, dto);
+    const { version, ...ref } = dto;
+
+    const versionExists = await this.weaponsService.findOne({
+      where: {
+        version
+      }
+    })
+
+    if (!versionExists) {
+      throw new BadRequestException('このバージョンは存在しません');
+    }
+
+    await this.weaponsService.update(dto.id, {
+      ...ref,
+      version: versionExists
+    });
   }
 
-  async delete(dto: DeleteWeaponDto): Promise<void> {
-    const parsed = getWeaponParamsSchema.safeParse(dto);
+  async delete(dto: DeleteDto): Promise<void> {
+    const parsed = deleteSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);

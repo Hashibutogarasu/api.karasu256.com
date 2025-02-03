@@ -1,12 +1,13 @@
-import { IBaseEntity } from "@/types/baseentity";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Character } from "./character.entity";
 import { Artifacts } from "./artifacts.entity";
+import { IBase } from "@karasu-lab/karasu-lab-sdk";
+import { VersionsEntity } from "./versions.entity";
 
 @Entity('artifact_sets')
-export class ArtifactSets extends BaseEntity implements IBaseEntity {
+export class ArtifactSets extends BaseEntity implements IBase {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   name: string;
@@ -27,14 +28,17 @@ export class ArtifactSets extends BaseEntity implements IBaseEntity {
   four_set_effect: string;
 
   @CreateDateColumn()
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: string;
+  updatedAt: Date;
 
   @ManyToMany(() => Artifacts, artifact => artifact.artifact_sets)
   artifacts: Artifacts[];
 
   @ManyToMany(() => Character, character => character.artifact_set)
   characters: Character[];
+
+  @OneToMany(() => VersionsEntity, version => version.artifact_sets)
+  version: VersionsEntity;
 }

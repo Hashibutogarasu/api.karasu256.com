@@ -3,9 +3,10 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { ArtifactsService } from './artifacts.service';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
-import { CreateArtifactDto, createArtifactSchema, DeleteArtifactDto, deleteArtifactSchema, GetArtifactDto, GetArtifactParamsDto, getArtifactParamsSchema, getArtifactSchema, UpdateArtifactDto, updateArtifactSchema } from './artifacts.dto';
 import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
 import { zodToOpenAPI } from 'nestjs-zod';
+import { createSchema, getSchema, updateSchema } from './artifacts.dto';
+import { CreateDto, DeleteDto, GetParamsDto, GetOneDto, UpdateDto } from '@/utils/dto';
 
 @Authorization({
   allowedGroups: ["admin"],
@@ -19,38 +20,37 @@ export class ArtifactsController implements IBaseControllerAndService {
 
   @ApiQuery({
     name: 'query',
-    type: getSchemaPath(GetArtifactDto),
-    schema: zodToOpenAPI(getArtifactSchema),
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetArtifactDto): Promise<Artifacts[]> {
+  async get(@Query() params: GetParamsDto<Artifacts>): Promise<Artifacts[]> {
     return this.artifactsService.get(params);
   }
 
-  @ApiParam({
-    name: 'id',
-    type: 'string',
+  @ApiQuery({
+    name: 'query',
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get(':id')
-  async getOne(@Param() params: GetArtifactParamsDto): Promise<Artifacts> {
+  @Get('getOne')
+  async getOne(@Param() params: GetOneDto<Artifacts>): Promise<Artifacts> {
     return this.artifactsService.getOne(params);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(createArtifactSchema),
+    schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(dto: CreateArtifactDto): Promise<Artifacts> {
+  async create(dto: CreateDto<Artifacts>): Promise<Artifacts> {
     return this.artifactsService.create(dto);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(updateArtifactSchema),
+    schema: zodToOpenAPI(updateSchema),
   })
   @Put()
-  async update(@Body() dto: UpdateArtifactDto): Promise<void> {
+  async update(@Body() dto: UpdateDto<Artifacts>): Promise<void> {
     return this.artifactsService.update(dto);
   }
 
@@ -59,7 +59,7 @@ export class ArtifactsController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(@Param() dto: DeleteArtifactDto): Promise<void> {
+  async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.artifactsService.delete(dto);
   }
 }

@@ -1,14 +1,15 @@
-import { IBaseEntity } from "@/types/baseentity";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Country } from "./countries.entity";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
 import { Gallery } from "../../common/galleries.entity";
+import { VersionsEntity } from "./versions.entity";
+import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('characters')
-export class Character extends BaseEntity implements IBaseEntity {
+export class Character extends BaseEntity implements IBase {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   name: string;
@@ -26,9 +27,6 @@ export class Character extends BaseEntity implements IBaseEntity {
   rarity?: number | undefined;
 
   @Column()
-  version: string;
-
-  @Column()
   header_img_url: string;
 
   @Column({ nullable: true })
@@ -41,10 +39,10 @@ export class Character extends BaseEntity implements IBaseEntity {
   uninplemented: boolean;
 
   @CreateDateColumn()
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: string;
+  updatedAt: Date;
 
   @ManyToOne(() => Country, country => country.id, { nullable: true })
   country?: Country | null;
@@ -57,4 +55,7 @@ export class Character extends BaseEntity implements IBaseEntity {
 
   @OneToMany(() => Gallery, gallery => gallery.id, { nullable: true })
   galleries?: Gallery[] | null;
+
+  @OneToMany(() => VersionsEntity, version => version.entities)
+  version: VersionsEntity;
 }

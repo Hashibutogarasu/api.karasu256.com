@@ -1,12 +1,13 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, FileTypeValidator, Get, HttpStatus, Param, ParseFilePipe, ParseFilePipeBuilder, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { GalleriesService } from './galleries.service';
-import { CreateGalleryDto, createGallerySchema, DeleteGalleryDto, deleteGallerySchema, GetGalleryDto, GetGalleryParamsDto, getGallerySchema, UpdateGalleryDto, updateGallerySchema } from './galleries.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { Gallery } from '@/entities/common/galleries.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
+import { createSchema, getSchema, updateSchema } from './galleries.dto';
 
 
 @Controller('galleries')
@@ -17,22 +18,21 @@ export class GalleriesController implements IBaseControllerAndService {
 
   @ApiQuery({
     name: 'query',
-    type: getSchemaPath(GetGalleryDto),
-    schema: zodToOpenAPI(getGallerySchema),
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
   @Get()
-  async get(@Query() params: GetGalleryDto): Promise<Gallery[]> {
+  async get(@Query() params: GetParamsDto<Gallery>): Promise<Gallery[]> {
     return this.galleriesService.get(params);
   }
 
-  @ApiParam({
-    name: 'id',
-    type: 'string',
+  @ApiQuery({
+    name: 'query',
+    schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get(':id')
-  async getOne(@Param() params: GetGalleryParamsDto): Promise<Gallery> {
+  @Get('getOne')
+  async getOne(@Param() params: GetOneDto<Gallery>): Promise<Gallery> {
     return this.galleriesService.getOne(params);
   }
 
@@ -65,10 +65,10 @@ export class GalleriesController implements IBaseControllerAndService {
   })
   @ApiBearerAuth()
   @ApiBody({
-    schema: zodToOpenAPI(createGallerySchema),
+    schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(@Body() dto: CreateGalleryDto): Promise<Gallery> {
+  async create(@Body() dto: CreateDto<Gallery>): Promise<Gallery> {
     return this.galleriesService.create(dto);
   }
 
@@ -77,10 +77,10 @@ export class GalleriesController implements IBaseControllerAndService {
   })
   @ApiBearerAuth()
   @ApiBody({
-    schema: zodToOpenAPI(updateGallerySchema),
+    schema: zodToOpenAPI(updateSchema),
   })
   @Put()
-  async update(@Body() dto: UpdateGalleryDto): Promise<void> {
+  async update(@Body() dto: UpdateDto<Gallery>): Promise<void> {
     return this.galleriesService.update(dto);
   }
 
@@ -93,7 +93,7 @@ export class GalleriesController implements IBaseControllerAndService {
     type: 'string',
   })
   @Delete(':id')
-  async delete(@Param() dto: DeleteGalleryDto): Promise<void> {
+  async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.galleriesService.delete(dto);
   }
 }

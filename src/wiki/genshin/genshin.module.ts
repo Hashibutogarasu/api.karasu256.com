@@ -15,6 +15,7 @@ import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller
 import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
 import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
+import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
       Artifacts,
       Country,
       ArtifactSets,
+      VersionsEntity,
     ]),
   ],
   controllers: [CharactersController, WeaponsController, ArtifactsController, CountriesController, ArtifactSetsController],
