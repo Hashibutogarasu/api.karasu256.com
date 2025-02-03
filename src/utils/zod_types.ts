@@ -13,6 +13,4 @@ export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
 const number_type = numericString(z.number());
 const rarityType = numericString(z.number({ message: "レアリティは数値である必要があります" }).optional());
 
-const idType = z.string({ invalid_type_error: "idの型が不正です" }).transform(Number);
-
-export { rarityType, idType, number_type }
+export { rarityType, number_type }

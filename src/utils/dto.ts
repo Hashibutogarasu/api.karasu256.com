@@ -1,6 +1,5 @@
 import { z, ZodType } from "zod";
 import { IDeleteDto } from "@karasu-lab/karasu-lab-sdk";
-import { createZodDto } from "nestjs-zod";
 import { BaseEntity } from "typeorm";
 
 const baseSchema = z.object({

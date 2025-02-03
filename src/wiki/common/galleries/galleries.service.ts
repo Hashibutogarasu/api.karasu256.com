@@ -3,12 +3,8 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { S3Service } from '@/s3/s3.service';
-import { z } from 'zod';
-import { ToZodSchema } from '@/utils/zod';
 import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, getSchema, updateSchema } from './galleries.dto';
 
