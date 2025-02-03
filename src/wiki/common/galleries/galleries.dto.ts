@@ -1,7 +1,7 @@
-import { baseSchema, paginationSchema } from "@/utils/dto";
+import { baseSchema, getParamsSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const getSchema = baseSchema.merge(paginationSchema).optional();
+const getSchema = baseSchema.merge(getParamsSchema).optional();
 
 const createSchema = z.object({
   url: z.string().url(),

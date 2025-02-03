@@ -24,7 +24,7 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { query: { page, limit, version, ...ref } } = parsed.data;
+    const { query: { take, skip, version, ...ref } } = parsed.data;
 
     const versionExists = await this.versionsRepository.findOne({
       where: {
@@ -37,8 +37,8 @@ export class CountriesService implements IBaseControllerAndService {
         ...ref,
         version: versionExists
       },
-      take: limit,
-      skip: page > 0 && (page - 1) * limit,
+      take: take,
+      skip: skip,
     });
   }
 
@@ -49,7 +49,7 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, version, ...ref } = query;
+    const { take, skip, version, ...ref } = query;
 
     return await this.repository.findOne({
       where: {

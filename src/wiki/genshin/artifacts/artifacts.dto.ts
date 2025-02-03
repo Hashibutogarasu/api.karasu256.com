@@ -1,7 +1,7 @@
-import { paginationSchema } from "@/utils/dto";
+import { getParamsSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const base = paginationSchema.extend({
+const base = getParamsSchema.extend({
   id: z.string().optional().nullable(),
   name: z.string().optional(),
   description: z.string().optional(),

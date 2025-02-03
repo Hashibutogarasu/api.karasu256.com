@@ -29,18 +29,18 @@ export class CharactersService implements IBaseControllerAndService {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+  async get({ ...query }: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
     const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { query: { page, limit, weapon, country, version, ...ref } } = parsed.data;
+    const { query: { take, skip, country, version, ...ref } } = parsed.data;
 
     const weaponExists = await this.weaponsRepository.findOne({
       where: {
-        name: weapon
+        name: parsed.data.query.weapon
       }
     })
 
@@ -63,8 +63,8 @@ export class CharactersService implements IBaseControllerAndService {
         country: countryExists,
         version: versionExists,
       },
-      take: limit,
-      skip: page > 0 && (page - 1) * limit,
+      take: take,
+      skip: skip,
       relations: {
         country: true,
         weapon: true,
@@ -79,7 +79,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, country, weapon, version, ...ref } = parsed.data.query;
+    const { take, skip, country, weapon, version, ...ref } = parsed.data.query;
 
     return await this.charactersService.findOne({
       where: {

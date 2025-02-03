@@ -1,9 +1,9 @@
-import { paginationSchema } from "@/utils/dto";
+import { getParamsSchema, paginationSchema } from "@/utils/dto";
 import { rarityType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const base = paginationSchema.extend({
+const base = getParamsSchema.extend({
   id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),

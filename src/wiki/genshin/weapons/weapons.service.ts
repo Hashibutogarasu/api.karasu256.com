@@ -24,7 +24,7 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { query: { page, limit, version, ...ref } } = parsed.data;
+    const { query: { take, skip, version, ...ref } } = parsed.data;
 
     const versionExists = await this.versionsRepository.findOne({
       where: {
@@ -37,8 +37,8 @@ export class WeaponsService implements IBaseControllerAndService {
         ...ref,
         version: versionExists,
       },
-      take: limit,
-      skip: page > 0 && (page - 1) * limit,
+      take: take,
+      skip: skip,
     });
   }
 

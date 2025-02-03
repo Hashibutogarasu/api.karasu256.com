@@ -1,8 +1,8 @@
-import { paginationSchema } from "@/utils/dto";
+import { getParamsSchema, paginationSchema } from "@/utils/dto";
 import { rarityType } from "@/utils/zod_types";
 import { z } from "zod";
 
-const base = z.object({
+const base = getParamsSchema.extend({
   id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -11,7 +11,7 @@ const base = z.object({
   rarity: rarityType.optional(),
   effect: z.string().optional(),
   version: z.string().optional(),
-}).merge(paginationSchema);
+});
 
 const getSchema = z.object({
   query: base.optional()

@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, RequestMethod } from "@nestjs/common";
 import { AppController } from "@/app.controller";
 import { AppService } from "@/app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
 import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
 import { S3Service } from './s3/s3.service';
+import { PaginationMiddleware } from "./middleware/pagination.middleware";
 
 @Module({
   imports: [
@@ -25,4 +26,9 @@ import { S3Service } from './s3/s3.service';
   controllers: [AppController],
   providers: [AppService, ConfigService, S3Service],
 })
-export class AppModule { }
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(PaginationMiddleware)
+      .forRoutes({ path: 'product/paged', method: RequestMethod.GET })
+  }
+}

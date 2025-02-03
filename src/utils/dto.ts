@@ -17,13 +17,13 @@ const deleteSchema = baseSchema.extend({
 type DeleteDto = z.infer<typeof deleteSchema>;
 
 const paginationSchema = z.object({
-  page: z.string().transform((value) => parseInt(value)).optional().default("0"),
-  limit: z.string().transform((value) => parseInt(value)).optional().default("10"),
-});
+  take: z.string().transform((value) => parseInt(value)).optional(),
+  skip: z.string().transform((value) => parseInt(value)).optional(),
+})
 
-const getParamsSchema = paginationSchema.extend({
+const getParamsSchema = z.object({
   id: z.string().nonempty(),
-});
+}).merge(paginationSchema);
 
 type OmitFunctions<T, Exclude extends keyof T = never> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -45,7 +45,7 @@ type KeyOfType<Type, ValueType> = keyof {
   [Key in keyof Type as Type[Key] extends ValueType ? Key : never]: any;
 };
 
-type GetParamsDto<T extends BaseDto, R extends KeyOfType<T, Date | any>[]> = Omit<PartialRecursively<OmitRecursively<Omit<z.infer<typeof getParamsSchema> & T, keyof BaseEntity>, keyof BaseEntity>, keyof T>, R[number]>;
+type GetParamsDto<T extends BaseDto, R extends KeyOfType<T, Date | any>[]> = Omit<PartialRecursively<OmitRecursively<Omit<z.infer<typeof getParamsSchema> & T, keyof BaseEntity>, keyof BaseEntity>, keyof T>, R[number]> & z.infer<typeof paginationSchema>;
 
 type GetOneDto<T extends BaseDto> = Omit<Omit<Partial<T>, keyof BaseEntity>, keyof BaseEntity>;
 
