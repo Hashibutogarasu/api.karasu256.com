@@ -36,32 +36,16 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { query: { country, version, ...ref } } = parsed.data;
-
-    const weaponExists = await this.weaponsRepository.findOne({
-      where: {
-        name: parsed.data.query.weapon
-      }
-    })
-
-    const countryExists = await this.countriesService.findOne({
-      where: {
-        name: country,
-      },
-    });
-
-    const versionExists = await this.versionRepository.findOne({
-      where: {
-        version_string: version,
-      },
-    });
+    const { country, version, galleries, artifact_set, weapon, ...ref } = query;
 
     return await this.charactersService.find({
       where: {
+        ...country,
+        ...version,
+        ...galleries,
+        ...artifact_set,
+        ...weapon,
         ...ref,
-        weapon: weaponExists,
-        country: countryExists,
-        version: versionExists,
       },
       take: take,
       skip: skip,

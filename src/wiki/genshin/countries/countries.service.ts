@@ -24,18 +24,13 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { query: { version, ...ref } } = parsed.data;
-
-    const versionExists = await this.versionsRepository.findOne({
-      where: {
-        version_string: version
-      }
-    })
+    const { version, characters, ...ref } = query;
 
     return await this.repository.find({
       where: {
         ...ref,
-        version: versionExists
+        ...version,
+        ...characters
       },
       take: take,
       skip: skip,

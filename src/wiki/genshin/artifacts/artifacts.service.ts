@@ -24,19 +24,13 @@ export class ArtifactsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { query: { version, ...ref } } = parsed.data;
-
-    const versionExists = await this.versionRepository.findOne({
-      where: {
-        version_string: version
-      }
-    })
+    const { version, artifact_sets, ...ref } = query;
 
     return await this.artifactsRepository.find({
       where: {
+        ...artifact_sets,
+        ...version,
         ...ref,
-        ...ref,
-        version: versionExists
       },
       relations: {
         version: true
