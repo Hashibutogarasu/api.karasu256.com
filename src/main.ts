@@ -37,6 +37,8 @@ async function bootstrap() {
       "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-bundle.js",
       "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-standalone-preset.js",
     ],
+    jsonDocumentUrl: "/api/json",
+    yamlDocumentUrl: "/api/yaml",
   });
 
   app.useGlobalPipes(
