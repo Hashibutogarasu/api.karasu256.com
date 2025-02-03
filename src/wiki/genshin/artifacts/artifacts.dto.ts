@@ -1,7 +1,7 @@
-import { baseSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const getSchema = baseSchema.extend({
+const getSchema = z.object({
+  id: z.string().optional().nullable(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),

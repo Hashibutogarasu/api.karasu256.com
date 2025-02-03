@@ -1,21 +1,21 @@
-import { baseSchema } from "@/utils/dto";
 import { rarityType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getSchema = baseSchema.extend({
-  name: z.string().optional(),
-  description: z.string().optional(),
-  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  element: z.string().optional(),
-  country: z.string().optional(),
-  weapon: z.string().optional(),
-  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  rarity: rarityType.optional(),
-  version: z.string().optional(),
-  unimplemented: z.string().transform((value) => value === 'true').optional(),
-  createdAt: z.string().datetime().optional(),
-  updatedAt: z.string().datetime().optional(),
+const getSchema = z.object({
+  id: z.string().optional().nullable(),
+  name: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
+  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional().nullable(),
+  element: z.string().optional().nullable(),
+  country: z.string().optional().nullable(),
+  weapon: z.string().optional().nullable(),
+  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional().nullable(),
+  rarity: rarityType.optional().nullable(),
+  version: z.string().optional().nullable(),
+  unimplemented: z.string().transform((value) => value === 'true').optional().nullable(),
+  createdAt: z.string().datetime().optional().nullable(),
+  updatedAt: z.string().datetime().optional().nullable(),
 });
 
 const createSchema = z.object({
@@ -35,16 +35,16 @@ const createSchema = z.object({
 
 const updateSchema = z.object({
   id: z.string(),
-  name: z.string().optional(),
-  description: z.string().optional(),
-  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  element: z.string().optional(),
-  country: z.string().optional(),
-  weapon_type: z.string().optional(),
-  rarity: rarityType.optional(),
-  version: z.string().optional().default('1.0'),
-  unimplemented: z.boolean().optional(),
+  name: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
+  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional().nullable(),
+  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional().nullable(),
+  element: z.string().optional().nullable(),
+  country: z.string().optional().nullable(),
+  weapon_type: z.string().optional().nullable(),
+  rarity: rarityType.optional().nullable(),
+  version: z.string().optional().nullable().default('1.0'),
+  unimplemented: z.boolean().optional().nullable(),
 });
 
 const property = z.object({
