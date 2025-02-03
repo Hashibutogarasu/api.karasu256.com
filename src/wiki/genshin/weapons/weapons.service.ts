@@ -29,7 +29,8 @@ export class WeaponsService implements IBaseControllerAndService {
           version_string: version.version_string,
         }
       },
-      skip: page > 0 ? (page - 1) * limit : undefined,
+      take: limit,
+      skip: page > 0 && (page - 1) * limit,
     });
   }
 
@@ -40,11 +41,14 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { characters, ...ref } = query;
+    const { page, limit, version, ...ref } = parsed.data;
 
     return await this.weaponsService.findOne({
       where: {
-        ...ref
+        ...ref,
+        version: version && {
+          version_string: version
+        }
       },
     });
   }

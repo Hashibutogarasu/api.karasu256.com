@@ -30,7 +30,7 @@ export class CountriesController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get('getOne')
-  async getOne(@Param() query: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
+  async getOne(@Query() query: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
     return this.service.getOne(query);
   }
 

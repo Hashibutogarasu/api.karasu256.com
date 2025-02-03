@@ -33,7 +33,8 @@ export class ArtifactSetsService implements IBaseControllerAndService {
           version_string: version.version_string,
         }
       },
-      skip: page > 0 ? (page - 1) * limit : undefined,
+      take: limit,
+      skip: page > 0 && (page - 1) * limit,
     });
   }
 

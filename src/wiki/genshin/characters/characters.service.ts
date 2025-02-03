@@ -23,7 +23,7 @@ export class CharactersService implements IBaseControllerAndService {
     private readonly artifactSetsService: Repository<ArtifactSets>,
 
     @InjectRepository(Weapon)
-    private readonly weaponsService: Repository<Weapon>,
+    private readonly weaponsRepository: Repository<Weapon>,
 
     @InjectRepository(VersionsEntity)
     private readonly versionRepository: Repository<VersionsEntity>,
@@ -36,14 +36,34 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, artifact_set, version, galleries, country, weapon, ...ref } = query;
+    const { page, limit, country, weapon, createdAt, updatedAt, version, ...ref } = parsed.data;
+
+    const weaponExists = await this.weaponsRepository.findOne({
+      where: {
+        name: weapon
+      }
+    })
+
+    const countryExists = await this.countriesService.findOne({
+      where: {
+        name: country,
+      },
+    });
+
+    const versionExists = await this.versionRepository.findOne({
+      where: {
+        version_string: version,
+      },
+    });
 
     return await this.charactersService.find({
       where: {
         ...ref,
-        country: country as Country,
-        version: version as VersionsEntity,
+        weapon: weaponExists,
+        country: countryExists,
+        version: versionExists,
       },
+      take: limit,
       skip: page > 0 && (page - 1) * limit,
       relations: {
         country: true,
@@ -59,11 +79,22 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { artifact_set, galleries, ...ref } = query;
+    const { createdAt, updatedAt, country, weapon, version, ...ref } = parsed.data.query;
 
     return await this.charactersService.findOne({
       where: {
         ...ref,
+        country: country && {
+          name: country,
+        },
+        weapon: weapon && {
+          name: weapon,
+        },
+        version: version && {
+          version_string: version,
+        },
+        createdAt: createdAt && new Date(createdAt),
+        updatedAt: updatedAt && new Date(updatedAt),
       },
       relations: {
         country: true,
@@ -117,7 +148,7 @@ export class CharactersService implements IBaseControllerAndService {
     });
 
     if (!weaponExists) {
-      const newWeapon = await this.weaponsService.save({
+      const newWeapon = await this.weaponsRepository.save({
         name: weapon,
       });
 

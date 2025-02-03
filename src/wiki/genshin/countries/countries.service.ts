@@ -5,12 +5,16 @@ import { Country } from '@/entities/genshin/wiki/countries.entity';
 import { Repository } from 'typeorm';
 import { CreateDto, DeleteDto, deleteSchema, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, getSchema } from './contries.dto';
+import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Injectable()
 export class CountriesService implements IBaseControllerAndService {
   constructor(
     @InjectRepository(Country)
     private readonly repository: Repository<Country>,
+
+    @InjectRepository(VersionsEntity)
+    private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
   async get(query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
@@ -20,16 +24,21 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, characters, version, ...ref } = query;
+    const { page, limit, version, ...ref } = parsed.data;
+
+    const versionExists = await this.versionsRepository.findOne({
+      where: {
+        version_string: version
+      }
+    })
 
     return await this.repository.find({
       where: {
         ...ref,
-        version: {
-          version_string: version.version_string,
-        }
+        version: versionExists
       },
-      skip: page > 0 ? (page - 1) * limit : undefined,
+      take: limit,
+      skip: page > 0 && (page - 1) * limit,
     });
   }
 
@@ -40,13 +49,13 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, ...ref } = query;
+    const { page, limit, version, ...ref } = query;
 
     return await this.repository.findOne({
       where: {
         ...ref,
-        version: {
-          version_string: query.version.version_string,
+        version: version && {
+          version_string: version.version_string,
         }
       },
     });

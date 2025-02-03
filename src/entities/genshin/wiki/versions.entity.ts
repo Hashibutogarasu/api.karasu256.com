@@ -40,4 +40,7 @@ export class VersionsEntity extends BaseEntity implements IBase {
 
   @ManyToOne(() => Artifacts, artifact => artifact.version)
   artifacts: Artifacts[];
+
+  @ManyToOne(() => Weapon, weapon => weapon.version)
+  weapons: Weapon[];
 }

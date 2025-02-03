@@ -8,7 +8,7 @@ const getSchema = z.object({
   one_set_effect: z.string().optional(),
   two_set_effect: z.string().optional(),
   four_set_effect: z.string().optional(),
-  version: z.string().optional().default('1.0'),
+  version: z.string().optional(),
 });
 
 const createSchema = z.object({
@@ -18,7 +18,7 @@ const createSchema = z.object({
   one_set_effect: z.string().optional(),
   two_set_effect: z.string().optional(),
   four_set_effect: z.string().optional(),
-  version: z.string().default('1.0'),
+  version: z.string(),
 });
 
 const updateSchema = z.object({
@@ -29,7 +29,7 @@ const updateSchema = z.object({
   one_set_effect: z.string().optional(),
   two_set_effect: z.string().optional(),
   four_set_effect: z.string().optional(),
-  version: z.string().optional().default('1.0'),
+  version: z.string().optional(),
 });
 
 export {

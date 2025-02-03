@@ -1,6 +1,7 @@
+import { paginationSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const getSchema = z.object({
+const base = z.object({
   id: z.string().optional().nullable(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -8,8 +9,12 @@ const getSchema = z.object({
   one_set_effect: z.string().optional(),
   two_set_effect: z.string().optional(),
   four_set_effect: z.string().optional(),
-  version: z.string().optional().default('1.0'),
-});
+  version: z.string().optional(),
+})
+
+const getSchema = paginationSchema.extend({
+  query: base
+}).merge(base);
 
 const createSchema = z.object({
   name: z.string(),
@@ -18,7 +23,7 @@ const createSchema = z.object({
   one_set_effect: z.string().optional(),
   two_set_effect: z.string().optional(),
   four_set_effect: z.string().optional(),
-  version: z.string().default('1.0'),
+  version: z.string(),
 });
 
 const updateSchema = z.object({
@@ -29,7 +34,7 @@ const updateSchema = z.object({
   one_set_effect: z.string().optional(),
   two_set_effect: z.string().optional(),
   four_set_effect: z.string().optional(),
-  version: z.string().optional().default('1.0'),
+  version: z.string().optional(),
 });
 
 export {

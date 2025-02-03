@@ -5,46 +5,65 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createSchema, getSchema, updateSchema } from './artifacts.dto';
+import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Injectable()
 export class ArtifactsService implements IBaseControllerAndService {
   constructor(
     @InjectRepository(Artifacts)
-    private readonly artifactsRepository: Repository<Artifacts>
+    private readonly artifactsRepository: Repository<Artifacts>,
+
+    @InjectRepository(VersionsEntity)
+    private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(query: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
-    const parsed = getSchema.safeParse(query);
+  async get(query_: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
+    const parsed = getSchema.safeParse(query_);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, version, artifact_sets, ...ref } = query;
+    const { page, limit, version, query, ...ref } = parsed.data;
+
+    const versionExists = await this.versionRepository.findOne({
+      where: {
+        version_string: version
+      }
+    })
 
     return await this.artifactsRepository.find({
       where: {
         ...ref,
-        version: {
-          version_string: version.version_string,
-        }
+        version: versionExists
       },
-      skip: page > 0 ? (page - 1) * limit : undefined,
+      relations: {
+        version: true
+      },
+      take: limit,
+      skip: page > 0 && (page - 1) * limit,
     });
   }
 
-  async getOne(query: GetOneDto<Artifacts>): Promise<Artifacts> {
-    const parsed = getSchema.safeParse(query);
+  async getOne(query_: GetOneDto<Artifacts>): Promise<Artifacts> {
+    const parsed = getSchema.safeParse(query_);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { artifact_sets, ...ref } = query;
+    const { page, limit, version, query, ...ref } = parsed.data;
+
+    const versionExists = await this.versionRepository.findOne({
+      where: {
+        version_string: version,
+      },
+    });
 
     return await this.artifactsRepository.findOne({
       where: {
         ...ref,
+        version: version && versionExists
       },
     });
   }

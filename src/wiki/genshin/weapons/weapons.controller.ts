@@ -30,7 +30,7 @@ export class WeaponsController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Get('getOne')
-  async getOne(@Param() query: GetOneDto<Weapon>): Promise<Weapon> {
+  async getOne(@Query() query: GetOneDto<Weapon>): Promise<Weapon> {
     return this.weaponsService.getOne(query);
   }
 

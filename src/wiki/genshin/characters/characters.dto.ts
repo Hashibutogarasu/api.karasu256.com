@@ -1,8 +1,9 @@
+import { paginationSchema } from "@/utils/dto";
 import { rarityType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getSchema = z.object({
+const base = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -17,6 +18,10 @@ const getSchema = z.object({
   unimplemented: z.string().transform((value) => value === 'true').optional(),
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
+}).merge(paginationSchema);
+
+const getSchema = base.extend({
+  query: base.optional()
 });
 
 const createSchema = z.object({
@@ -31,7 +36,7 @@ const createSchema = z.object({
   weapon_type: z.string().optional(),
   rarity: rarityType.optional(),
   property: z.string().optional(),
-  version: z.string().default('1.0'),
+  version: z.string(),
   unimplemented: z.boolean().default(false),
 });
 
@@ -46,7 +51,7 @@ const updateSchema = z.object({
   weapon_type: z.string().optional().nullable(),
   rarity: rarityType.optional().nullable(),
   property: z.string().optional(),
-  version: z.string().optional().nullable().default('1.0'),
+  version: z.string().optional().nullable(),
   unimplemented: z.boolean().optional().nullable(),
 });
 
