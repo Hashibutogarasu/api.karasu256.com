@@ -36,7 +36,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, country, weapon, createdAt, updatedAt, version, ...ref } = parsed.data;
+    const { query: { page, limit, weapon, country, version, ...ref } } = parsed.data;
 
     const weaponExists = await this.weaponsRepository.findOne({
       where: {
@@ -79,7 +79,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { createdAt, updatedAt, country, weapon, version, ...ref } = parsed.data.query;
+    const { page, limit, country, weapon, version, ...ref } = parsed.data.query;
 
     return await this.charactersService.findOne({
       where: {
@@ -93,8 +93,6 @@ export class CharactersService implements IBaseControllerAndService {
         version: version && {
           version_string: version,
         },
-        createdAt: createdAt && new Date(createdAt),
-        updatedAt: updatedAt && new Date(updatedAt),
       },
       relations: {
         country: true,

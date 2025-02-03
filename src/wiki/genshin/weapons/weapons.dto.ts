@@ -13,7 +13,7 @@ const base = z.object({
   version: z.string().optional(),
 }).merge(paginationSchema);
 
-const getSchema = base.extend({
+const getSchema = z.object({
   query: base.optional()
 });
 

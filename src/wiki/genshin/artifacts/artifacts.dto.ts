@@ -1,7 +1,7 @@
 import { paginationSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const base = z.object({
+const base = paginationSchema.extend({
   id: z.string().optional().nullable(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -10,11 +10,11 @@ const base = z.object({
   two_set_effect: z.string().optional(),
   four_set_effect: z.string().optional(),
   version: z.string().optional(),
-})
+});
 
-const getSchema = paginationSchema.extend({
-  query: base
-}).merge(base);
+const getSchema = base.extend({
+  query: base.optional()
+});
 
 const createSchema = z.object({
   name: z.string(),

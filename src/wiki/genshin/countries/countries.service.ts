@@ -24,7 +24,7 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, version, ...ref } = parsed.data;
+    const { query: { page, limit, version, ...ref } } = parsed.data;
 
     const versionExists = await this.versionsRepository.findOne({
       where: {

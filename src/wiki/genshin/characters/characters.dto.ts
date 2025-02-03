@@ -3,7 +3,7 @@ import { rarityType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const base = z.object({
+const base = paginationSchema.extend({
   id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -16,11 +16,9 @@ const base = z.object({
   version: z.string().optional(),
   property: z.string().optional(),
   unimplemented: z.string().transform((value) => value === 'true').optional(),
-  createdAt: z.string().datetime().optional(),
-  updatedAt: z.string().datetime().optional(),
-}).merge(paginationSchema);
+});
 
-const getSchema = base.extend({
+const getSchema = z.object({
   query: base.optional()
 });
 

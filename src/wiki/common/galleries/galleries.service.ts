@@ -27,14 +27,14 @@ export class GalleriesService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, ...ref } = query;
+    const { page, limit, ...ref } = parsed.data;
 
     return await this.galleryRepository.find({
       where: {
         ...ref,
       },
-      take: limit,
-      skip: (page - 1) * limit,
+      take: limit ?? limit,
+      skip: page & limit && (page - 1) * limit,
     });
   }
 
