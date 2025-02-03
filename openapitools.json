@@ -11,13 +11,23 @@
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
         "inputSpec": "https://api.karasu256.com/api/json",
+        "glob": "#${cwd}/client/latest/open-api.json",
         "output": "#{cwd}/client/latest/#{name}",
+        "enablePostProcessFile": true,
         "additionalProperties": {
           "ngVersion": "6.1.7",
           "npmName": "@karasu-lab/karasu256-api-client",
-          "supportsES6": "true",
-          "npmVersion": "0.7.1",
-          "withInterfaces": true
+          "withSeparateModelsAndApi": true,
+          "supportsES6": true,
+          "npmVersion": "0.7.0",
+          "withInterfaces": true,
+          "apiPackage": "api",
+          "modelPackage": "models",
+          "enumPropertyNaming": "UPPERCASE"
+        },
+        "typeMappings": {
+          "date": "Date",
+          "DateTime": "Date"
         }
       }
     }
