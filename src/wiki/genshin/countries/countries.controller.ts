@@ -1,13 +1,17 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { CountriesService } from './countries.service';
-import { PublicRoute } from '@nestjs-cognito/auth';
+import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { createSchema, getSchema, updateSchema } from './contries.dto';
 import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
 
+@Authorization({
+  allowedGroups: ["admin"],
+})
+@ApiBearerAuth()
 @Controller('wiki/genshin/countries')
 export class CountriesController implements IBaseControllerAndService {
   constructor(
