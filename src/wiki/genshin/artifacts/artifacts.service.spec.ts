@@ -39,11 +39,12 @@ describe('ArtifactsService', () => {
         name: 'Test Version',
         version_string: '1.0.0',
         artifact_sets: [],
-        artifacts: [],
-        characters: [],
-        countries: [],
-        entities: [],
         released: false,
+        entities: [],
+        countries: [],
+        characters: [],
+        artifacts: [],
+        weapons: []
       }
     });
 
