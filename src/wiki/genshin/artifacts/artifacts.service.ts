@@ -17,14 +17,14 @@ export class ArtifactsService implements IBaseControllerAndService {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(query_: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
-    const parsed = getSchema.safeParse(query_);
+  async get({ take, skip, ...query }: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { query: { take, skip, version, ...ref } } = parsed.data;
+    const { query: { version, ...ref } } = parsed.data;
 
     const versionExists = await this.versionRepository.findOne({
       where: {
