@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "client:generate:typescript": "openapi-generator-cli generate --generator-key latest",
+    "publish": "cd ./client/latest/json/ && npm publish --access public && cd ../../..",
     "vercel-build": "tsc && pnpm run lint && pnpm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "cross-env NODE_ENV=development nest start",
