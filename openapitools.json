@@ -20,8 +20,6 @@
           "supportsES6": true,
           "npmVersion": "0.7.2",
           "withInterfaces": true,
-          "apiPackage": "api",
-          "modelPackage": "models",
           "enumPropertyNaming": "UPPERCASE"
         },
         "typeMappings": {
