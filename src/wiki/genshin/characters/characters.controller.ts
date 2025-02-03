@@ -18,7 +18,7 @@ export class CharactersController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
+  @Post()
   async get(@Query() query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
     return this.charactersService.get(query);
   }
@@ -27,7 +27,7 @@ export class CharactersController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
+  @Post('getOne')
   async getOne(@Query() query: GetOneDto<Character>): Promise<Character> {
     return this.charactersService.getOne(query);
   }
