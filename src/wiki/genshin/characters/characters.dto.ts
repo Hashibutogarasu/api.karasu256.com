@@ -3,19 +3,19 @@ import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 const getSchema = z.object({
-  id: z.string().optional().nullable(),
-  name: z.string().optional().nullable(),
-  description: z.string().optional().nullable(),
-  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional().nullable(),
-  element: z.string().optional().nullable(),
-  country: z.string().optional().nullable(),
-  weapon: z.string().optional().nullable(),
-  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional().nullable(),
-  rarity: rarityType.optional().nullable(),
-  version: z.string().optional().nullable(),
-  unimplemented: z.string().transform((value) => value === 'true').optional().nullable(),
-  createdAt: z.string().datetime().optional().nullable(),
-  updatedAt: z.string().datetime().optional().nullable(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+  description: z.string().optional(),
+  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
+  element: z.string().optional(),
+  country: z.string().optional(),
+  weapon: z.string().optional(),
+  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
+  rarity: rarityType.optional(),
+  version: z.string().optional(),
+  unimplemented: z.string().transform((value) => value === 'true').optional(),
+  createdAt: z.string().datetime().optional(),
+  updatedAt: z.string().datetime().optional(),
 });
 
 const createSchema = z.object({
