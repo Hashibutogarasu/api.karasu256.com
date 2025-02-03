@@ -53,11 +53,13 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { version, ...ref } = dto;
+    const { characters, version, ...ref } = dto;
 
     const versionExists = await this.weaponsService.findOne({
       where: {
-        version
+        version: {
+          version_string: version.version_string
+        }
       }
     })
 
@@ -90,11 +92,13 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException('Weapon not found');
     }
 
-    const { version, ...ref } = dto;
+    const { characters, version, ...ref } = dto;
 
     const versionExists = await this.weaponsService.findOne({
       where: {
-        version
+        version: {
+          version_string: version.version_string
+        }
       }
     })
 

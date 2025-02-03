@@ -84,8 +84,10 @@ export class GalleriesService implements IBaseControllerAndService {
       throw new BadRequestException('この画像は既に存在しています');
     }
 
+    const { character, ...ref } = dto;
+
     return await this.galleryRepository.save({
-      ...dto,
+      ...ref,
     });
   }
 
@@ -106,8 +108,10 @@ export class GalleriesService implements IBaseControllerAndService {
       throw new BadRequestException('画像が見つかりません');
     }
 
+    const { character, ...ref } = dto;
+
     await this.galleryRepository.update({ id: dto.id }, {
-      ...dto,
+      ...ref,
     });
   }
 

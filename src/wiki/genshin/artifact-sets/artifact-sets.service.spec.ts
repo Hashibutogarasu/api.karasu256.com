@@ -39,9 +39,11 @@ describe('ArtifactSetsService', () => {
       one_set_effect: 'Test One Set Effect',
       two_set_effect: 'Test Two Set Effect',
       four_set_effect: 'Test Four Set Effect',
+      artifacts: [],
+      characters: [],
     });
 
-    const { id, ...rest } = artifactSets;
+    const { ...rest } = artifactSets;
 
     expect(await service.get({ ...rest })).toEqual(rest);
   });

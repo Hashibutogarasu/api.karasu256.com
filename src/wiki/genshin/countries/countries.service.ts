@@ -65,7 +65,9 @@ export class CountriesService implements IBaseControllerAndService {
 
     const versionExists = await this.repository.findOne({
       where: {
-        version: dto.version
+        version: {
+          version_string: dto.version.version_string,
+        }
       },
     });
 
@@ -73,8 +75,10 @@ export class CountriesService implements IBaseControllerAndService {
       throw new BadRequestException('このバージョンは存在しません');
     }
 
+    const { version, characters, ...ref } = dto;
+
     return await this.repository.save({
-      ...dto,
+      ...ref,
       version: versionExists,
     });
   }
@@ -85,6 +89,8 @@ export class CountriesService implements IBaseControllerAndService {
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
+
+    const { version, characters, ...ref } = dto;
 
     const country = await this.repository.findOne({
       where: {
@@ -98,7 +104,9 @@ export class CountriesService implements IBaseControllerAndService {
 
     const versionExists = await this.repository.findOne({
       where: {
-        version: dto.version
+        version: {
+          version_string: dto.version.version_string,
+        }
       },
     });
 
@@ -107,7 +115,7 @@ export class CountriesService implements IBaseControllerAndService {
     }
 
     await this.repository.update(dto.id, {
-      ...dto,
+      ...ref,
       version: versionExists,
     });
   }

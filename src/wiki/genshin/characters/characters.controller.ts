@@ -42,7 +42,7 @@ export class CharactersController implements IBaseControllerAndService {
     schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(@Body() dto: CreateDto<Character>): Promise<Character> {
+  async create(@Body() dto: Omit<CreateDto<Character>, "country">): Promise<Character> {
     return this.charactersService.create(dto);
   }
 

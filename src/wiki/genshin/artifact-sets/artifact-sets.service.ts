@@ -92,7 +92,7 @@ export class ArtifactSetsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { version, ...ref } = dto;
+    const { version, artifacts, characters, ...ref } = dto;
 
     const versionExists = await this.versionRepository.findOne({
       where: {
