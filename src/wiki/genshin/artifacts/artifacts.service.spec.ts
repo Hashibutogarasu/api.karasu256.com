@@ -35,10 +35,19 @@ describe('ArtifactsService', () => {
     const artifacts = await service.create({
       name: 'Test Artifact',
       icon_url: 'https://example.com/icon.png',
-      version: '1.0',
+      version: {
+        name: 'Test Version',
+        version_string: '1.0.0',
+        artifact_sets: [],
+        artifacts: [],
+        characters: [],
+        countries: [],
+        entities: [],
+        released: false,
+      }
     });
 
-    const { id, ...rest } = artifacts;
+    const { ...rest } = artifacts;
 
     expect(await service.get({ ...rest })).toEqual(rest);
   });
