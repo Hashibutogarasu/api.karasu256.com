@@ -41,7 +41,7 @@ const getParamsSchema = paginationSchema.extend({
   id: z.string().nonempty(),
 });
 
-type GetParamsDto<T extends BaseDto> = Omit<Omit<z.infer<typeof getParamsSchema> & T, keyof BaseEntity>, keyof BaseEntity>;
+type GetParamsDto<T extends BaseDto> = PartialRecursively<Omit<Omit<z.infer<typeof getParamsSchema> & T, keyof BaseEntity>, keyof BaseEntity>, keyof T>;
 
 type GetOneDto<T extends BaseDto> = Omit<Omit<Partial<T>, keyof BaseEntity>, keyof BaseEntity>;
 
