@@ -20,7 +20,7 @@
           "useSingleRequestParameter": true,
           "supportsES6": true,
           "withInterfaces": true,
-          "npmVersion": "0.7.4",
+          "npmVersion": "0.7.5",
           "enumPropertyNaming": "UPPERCASE"
         },
         "typeMappings": {
