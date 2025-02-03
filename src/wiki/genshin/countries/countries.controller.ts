@@ -8,10 +8,6 @@ import { createSchema, getSchema, updateSchema } from './contries.dto';
 import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
 
-@Authorization({
-  allowedGroups: ["admin"],
-})
-@ApiBearerAuth()
 @Controller('wiki/genshin/countries')
 export class CountriesController implements IBaseControllerAndService {
   constructor(
@@ -38,6 +34,11 @@ export class CountriesController implements IBaseControllerAndService {
     return this.service.getOne(params);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -46,6 +47,11 @@ export class CountriesController implements IBaseControllerAndService {
     return this.service.create(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -54,6 +60,11 @@ export class CountriesController implements IBaseControllerAndService {
     return this.service.update(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     type: 'string',

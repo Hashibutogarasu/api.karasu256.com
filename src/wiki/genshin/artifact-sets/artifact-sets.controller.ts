@@ -8,10 +8,6 @@ import { zodToOpenAPI } from 'nestjs-zod';
 import { createSchema, getSchema, updateSchema } from './artifact-sets.dto';
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 
-@Authorization({
-  allowedGroups: ["admin"],
-})
-@ApiBearerAuth()
 @Controller('wiki/genshin/artifact-sets')
 export class ArtifactSetsController implements IBaseControllerAndService {
   constructor(
@@ -38,6 +34,11 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     return this.service.getOne(params);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -46,6 +47,11 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     return this.service.create(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -54,6 +60,10 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     return this.service.update(dto);
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     type: 'string',

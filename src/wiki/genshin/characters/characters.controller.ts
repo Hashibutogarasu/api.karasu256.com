@@ -8,10 +8,6 @@ import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { createSchema, getSchema, ImportCharacterDto, importCharacterSchema, ImportFromHoyoLabDto, importFromHoyoLabSchema, updateSchema } from './characters.dto';
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 
-@Authorization({
-  allowedGroups: ["admin"],
-})
-@ApiBearerAuth()
 @Controller('wiki/genshin/characters')
 export class CharactersController implements IBaseControllerAndService {
   constructor(
@@ -38,6 +34,11 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.getOne(params);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -46,6 +47,11 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.create(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -54,6 +60,11 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.update(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     type: 'string',
@@ -63,6 +74,11 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.delete(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiQuery({
     name: 'query',
     schema: zodToOpenAPI(importFromHoyoLabSchema),
@@ -103,6 +119,11 @@ export class CharactersController implements IBaseControllerAndService {
     });
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(importCharacterSchema),
   })

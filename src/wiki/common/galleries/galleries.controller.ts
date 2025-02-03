@@ -10,7 +10,6 @@ import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/util
 import { createSchema, getSchema, updateSchema } from './galleries.dto';
 import { Character } from '@/entities/genshin/wiki/character.entity';
 
-
 @Controller('galleries')
 export class GalleriesController implements IBaseControllerAndService {
   constructor(
