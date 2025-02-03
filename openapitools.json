@@ -6,7 +6,7 @@
     "generators": {
       "latest": {
         "packageName": "@karasu-lab/karasu256-api-client",
-        "generatorName": "typescript-axios",
+        "generatorName": "typescript-fetch",
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
