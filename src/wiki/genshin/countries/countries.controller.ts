@@ -19,8 +19,8 @@ export class CountriesController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
-  async get(@Query() query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
+  @Post()
+  async get(@Body() query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
     return this.service.get(query);
   }
 
@@ -29,8 +29,8 @@ export class CountriesController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
-  async getOne(@Query() query: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
+  @Post('getOne')
+  async getOne(@Body() query: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
     return this.service.getOne(query);
   }
 

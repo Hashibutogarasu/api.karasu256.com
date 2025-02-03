@@ -17,14 +17,14 @@ export class CountriesService implements IBaseControllerAndService {
     private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
-  async get({ take, skip, ...query }: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
+  async get(query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
     const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { version, characters, ...ref } = query;
+    const { version, characters, take, skip, ...ref } = query;
 
     return await this.repository.find({
       where: {

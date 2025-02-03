@@ -19,8 +19,8 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
-  async get(@Query() query: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
+  @Post()
+  async get(@Body() query: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
     return this.service.get(query);
   }
 
@@ -29,11 +29,10 @@ export class ArtifactSetsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
-  async getOne(@Query() query: GetOneDto<ArtifactSets>): Promise<ArtifactSets> {
+  @Post('getOne')
+  async getOne(@Body() query: GetOneDto<ArtifactSets>): Promise<ArtifactSets> {
     return this.service.getOne(query);
   }
-
 
   @Authorization({
     allowedGroups: ["admin"],

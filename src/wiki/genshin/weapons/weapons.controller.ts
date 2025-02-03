@@ -19,8 +19,8 @@ export class WeaponsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
-  async get(@Query() query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
+  @Post()
+  async get(@Body() query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
     return this.weaponsService.get(query);
   }
 
@@ -29,8 +29,8 @@ export class WeaponsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
-  async getOne(@Query() query: GetOneDto<Weapon>): Promise<Weapon> {
+  @Post('getOne')
+  async getOne(@Body() query: GetOneDto<Weapon>): Promise<Weapon> {
     return this.weaponsService.getOne(query);
   }
 

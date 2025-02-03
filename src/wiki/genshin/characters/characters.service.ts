@@ -29,14 +29,14 @@ export class CharactersService implements IBaseControllerAndService {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get({ take, skip, ...query }: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+  async get(query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
     const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { country, version, galleries, artifact_set, weapon, ...ref } = query;
+    const { country, version, galleries, artifact_set, weapon, take, skip, ...ref } = query;
 
     return await this.charactersService.find({
       where: {
