@@ -36,10 +36,9 @@ describe('WeaponsService', () => {
       name: 'Test Weapon',
       type: 'Test Type',
       rarity: 5,
-      version: '1.0',
     });
 
-    const { id, ...rest } = weapon;
+    const { ...rest } = weapon;
 
     expect(await service.get({ ...rest })).toEqual(rest);
   });

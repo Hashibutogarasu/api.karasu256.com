@@ -38,20 +38,13 @@ describe('CharactersService', () => {
       description: 'Test Description',
       element: 'Test Element',
       icon_url: 'https://example.com/icon.png',
-      country: 'Test Country',
-      weapon: 'Test Weapon',
       header_img_url: 'https://example.com/header.png',
       rarity: 5,
-      version: '1.0',
     });
 
-    const { id, country, weapon, ...rest } = character;
+    const { ...rest } = character;
 
-    expect(await service.get({
-      ...rest,
-      country: country.name,
-      weapon: weapon.name,
-    })).toEqual(rest);
+    expect(await service.get({ ...rest })).toEqual(rest);
   });
 
   it('import a character from hoyolab', async () => {
@@ -78,10 +71,8 @@ describe('CharactersService', () => {
       ...json,
     });
 
-    const { id, country, weapon, ...rest } = character;
+    const { ...rest } = character;
 
-    expect(await service.get({
-      ...rest,
-    })).toEqual(rest);
+    expect(await service.get({ ...rest })).toEqual(rest);
   });
 });

@@ -36,10 +36,9 @@ describe('CountriesService', () => {
       name: 'Test Country',
       description: 'Test Description',
       sumbnail_url: 'https://example.com/sumbnail.png',
-      version: '1.0',
     });
 
-    const { id, ...rest } = country;
+    const { ...rest } = country;
 
     expect(await service.get({ ...rest })).toEqual(rest);
   });
