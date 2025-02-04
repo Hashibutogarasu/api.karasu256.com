@@ -29,7 +29,9 @@ export class WeaponsService implements IBaseControllerAndService {
     return await this.weaponsRepository.find({
       where: {
         ...ref,
-        ...version,
+        version: {
+          id: version.id
+        }
       },
       take: take,
       skip: skip,

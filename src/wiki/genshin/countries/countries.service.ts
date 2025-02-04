@@ -29,7 +29,9 @@ export class CountriesService implements IBaseControllerAndService {
     return await this.repository.find({
       where: {
         ...ref,
-        ...version,
+        version: {
+          id: version.id
+        },
         ...characters
       },
       take: take,

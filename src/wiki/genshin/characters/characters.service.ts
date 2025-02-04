@@ -36,21 +36,29 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { country, version, galleries, artifact_set, weapon, take, skip, ...ref } = query;
+    const { region, version, galleries, artifact_set, weapon, take, skip, ...ref } = query;
 
     return await this.charactersService.find({
       where: {
-        ...country,
-        ...version,
-        ...galleries,
-        ...artifact_set,
-        ...weapon,
         ...ref,
+        region: region && {
+          id: region.id
+        },
+        weapon: weapon && {
+          id: weapon.id
+        },
+        version: version && {
+          id: version.id
+        },
+        ...galleries,
+        ...artifact_set
       },
       take: take,
       skip: skip,
       relations: {
-        country: true,
+        galleries: true,
+        version: true,
+        region: true,
         weapon: true,
       }
     });
@@ -63,13 +71,13 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { take, skip, country, weapon, version, ...ref } = parsed.data;
+    const { take, skip, region, weapon, version, ...ref } = parsed.data;
 
     return await this.charactersService.findOne({
       where: {
         ...ref,
-        country: country && {
-          name: country,
+        region: region && {
+          name: region,
         },
         weapon: weapon && {
           name: weapon,
@@ -79,8 +87,7 @@ export class CharactersService implements IBaseControllerAndService {
         },
       },
       relations: {
-        country: true,
-        weapon: true,
+        version: true,
       }
     });
   }
@@ -92,7 +99,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { country, weapon, artifact_set, version, ...ref } = parsed.data;
+    const { region, weapon, artifact_set, version, ...ref } = parsed.data;
 
     const versionExists = await this.versionRepository.findOne({
       where: {
@@ -111,16 +118,16 @@ export class CharactersService implements IBaseControllerAndService {
 
     const countryExists = await this.countriesService.findOne({
       where: {
-        name: country,
+        name: region,
       },
     });
 
     if (!countryExists) {
       const newCountry = await this.countriesService.save({
-        name: country,
+        name: region,
       });
 
-      character.country = newCountry;
+      character.region = newCountry;
     }
 
     const weaponExists = await this.charactersService.findOne({
@@ -172,7 +179,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { country, version, ...ref } = parsed.data;
+    const { region, version, ...ref } = parsed.data;
 
     const characterExists = await this.charactersService.findOne({
       where: {
@@ -194,8 +201,11 @@ export class CharactersService implements IBaseControllerAndService {
       throw new NotFoundException('このバージョンは存在しません');
     }
 
-    await this.charactersService.update(dto.id, {
+    await Character.update({
+      id: dto.id,
+    }, {
       ...ref,
+      version: versionExists,
     });
   }
 
@@ -265,7 +275,7 @@ export class CharactersService implements IBaseControllerAndService {
       }
 
       if (character_region) {
-        character.country = await this.countriesService.findOne({
+        character.region = await this.countriesService.findOne({
           where: {
             name: character_region,
           },

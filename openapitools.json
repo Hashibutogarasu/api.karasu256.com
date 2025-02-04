@@ -22,7 +22,7 @@
           "modelPropertyNaming": "original",
           "supportsES6": true,
           "withInterfaces": true,
-          "npmVersion": "0.8.4"
+          "npmVersion": "0.8.5"
         },
         "typeMappings": {
           "date": "Date",

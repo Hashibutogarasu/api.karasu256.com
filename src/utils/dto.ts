@@ -45,9 +45,9 @@ type KeyOfType<Type, ValueType> = keyof {
   [Key in keyof Type as Type[Key] extends ValueType ? Key : never]: any;
 };
 
-type GetDto<T extends BaseDto, R extends KeyOfType<T, Date | any>[]> = Omit<PartialRecursively<OmitRecursively<Omit<z.infer<typeof getParamsSchema> & T, keyof BaseEntity>, keyof BaseEntity>, keyof T>, R[number]> & z.infer<typeof paginationSchema>;
+type GetDto<T extends BaseDto, R extends KeyOfType<T, any>[]> = Omit<PartialRecursively<Omit<z.infer<typeof getParamsSchema> & T, keyof BaseEntity>, keyof BaseEntity>, R[number]> & z.infer<typeof paginationSchema>;
 
-type GetParamsDto<T extends BaseDto, R extends KeyOfType<T, Date | any>[]> = GetDto<T, R> & { query?: GetDto<T, R> };
+type GetParamsDto<T extends BaseDto, R extends KeyOfType<T, any>[]> = GetDto<T, R>;
 
 type GetOneDto<T extends BaseDto> = Omit<Omit<Partial<T>, keyof BaseEntity>, keyof BaseEntity>;
 
