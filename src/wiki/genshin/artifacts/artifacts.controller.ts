@@ -22,7 +22,7 @@ export class ArtifactsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Post()
+  @Post("get")
   async get(@Body() query: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
     return this.artifactsService.get(query);
   }

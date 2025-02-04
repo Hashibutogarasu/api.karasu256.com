@@ -18,7 +18,7 @@ export class VersionsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Post()
+  @Post("get")
   async get(@Body() query: GetParamsDto<VersionsEntity, ["createdAt", "updatedAt"]>): Promise<VersionsEntity[]> {
     return this.versionsService.get(query);
   }
