@@ -38,17 +38,17 @@ const createSchema = z.object({
 
 const updateSchema = z.object({
   id: z.string(),
-  name: z.string().optional().nullable(),
-  description: z.string().optional().nullable(),
-  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional().nullable(),
-  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional().nullable(),
-  element: z.string().optional().nullable(),
-  country: z.string().optional().nullable(),
-  weapon_type: z.string().optional().nullable(),
-  rarity: rarityType.optional().nullable(),
+  name: z.string().optional(),
+  description: z.string().optional(),
+  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
+  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
+  element: z.string().optional(),
+  country: z.string().optional(),
+  weapon_type: z.string().optional(),
+  rarity: rarityType.optional(),
   property: z.string().optional(),
-  version: z.string().optional().nullable(),
-  unimplemented: z.boolean().optional().nullable(),
+  version: z.string().optional(),
+  unimplemented: z.boolean().optional(),
 });
 
 const property = z.object({
