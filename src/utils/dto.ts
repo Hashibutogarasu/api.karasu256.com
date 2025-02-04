@@ -17,8 +17,8 @@ const deleteSchema = baseSchema.extend({
 type DeleteDto = z.infer<typeof deleteSchema>;
 
 const paginationSchema = z.object({
-  take: z.string().transform((value) => parseInt(value)).default("10").optional(),
-  skip: z.string().transform((value) => parseInt(value)).default("0").optional(),
+  take: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("10").optional(),
+  skip: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("0").optional(),
 })
 
 const getParamsSchema = z.object({
