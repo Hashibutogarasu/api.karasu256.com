@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
@@ -26,18 +26,18 @@ export class VersionsEntity extends BaseEntity implements IBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Weapon, weapon => weapon.version)
-  weapons: Weapon[];
-
-  @OneToMany(() => ArtifactSets, artifact_set => artifact_set.version)
-  artifact_sets: ArtifactSets[];
-
-  @OneToMany(() => Country, country => country.version)
-  countries: Country[];
-
-  @OneToMany(() => Character, character => character.version)
+  @OneToMany(() => Character, (character) => character.version)
   characters: Character[];
 
-  @OneToMany(() => Artifacts, artifact => artifact.version)
+  @ManyToMany(() => Weapon)
+  weapons: Weapon[];
+
+  @ManyToMany(() => ArtifactSets)
+  artifact_sets: ArtifactSets[];
+
+  @ManyToMany(() => Country)
+  countries: Country[];
+
+  @ManyToMany(() => Artifacts)
   artifacts: Artifacts[];
 }

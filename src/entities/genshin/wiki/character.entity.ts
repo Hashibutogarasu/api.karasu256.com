@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Country } from "./countries.entity";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
@@ -44,18 +44,40 @@ export class Character extends BaseEntity implements IBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Country, country => country.id, { nullable: true })
-  country?: Country | null;
+  @ManyToOne(() => Country, region => region.id, { nullable: true })
+  region?: Country | null;
 
   @ManyToOne(() => Weapon, weapon => weapon.id, { nullable: true })
   weapon?: Weapon | null;
 
-  @ManyToMany(() => ArtifactSets, artifactSet => artifactSet.characters, { nullable: true })
-  artifact_set: ArtifactSets[] | null;
-
-  @OneToMany(() => Gallery, gallery => gallery.id, { nullable: true })
-  galleries?: Gallery[] | null;
-
-  @OneToMany(() => VersionsEntity, version => version.id)
+  @ManyToOne(() => VersionsEntity, version => version.characters)
   version: VersionsEntity;
+
+  @ManyToMany(() => ArtifactSets)
+  @JoinTable({
+    name: "artifact_set_id",
+    joinColumn: {
+      name: "artifact_set",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "artifact_set",
+      referencedColumnName: "id"
+    }
+  })
+  artifact_set: ArtifactSets[];
+
+  @ManyToMany(() => Gallery)
+  @JoinTable({
+    name: "galleries_id",
+    joinColumn: {
+      name: "galleries",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "galleries",
+      referencedColumnName: "id"
+    }
+  })
+  galleries: Gallery[];
 }

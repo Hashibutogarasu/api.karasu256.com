@@ -17,7 +17,7 @@ export class Country extends BaseEntity implements IBase {
   @Column({ nullable: true })
   sumbnail_url?: string | null;
 
-  @OneToMany(() => Character, character => character.country)
+  @OneToMany(() => Character, character => character.region)
   characters: Character[];
 
   @CreateDateColumn()

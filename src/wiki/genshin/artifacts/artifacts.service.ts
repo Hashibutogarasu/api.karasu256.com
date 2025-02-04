@@ -28,9 +28,11 @@ export class ArtifactsService implements IBaseControllerAndService {
 
     return await this.artifactsRepository.find({
       where: {
-        ...artifact_sets,
-        ...version,
         ...ref,
+        ...artifact_sets,
+        version: {
+          id: version.id
+        }
       },
       relations: {
         version: true
