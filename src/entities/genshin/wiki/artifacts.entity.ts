@@ -23,6 +23,6 @@ export class Artifacts extends BaseEntity implements IBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => VersionsEntity, version => version.entities)
+  @OneToMany(() => VersionsEntity, version => version.artifacts)
   version: VersionsEntity;
 }

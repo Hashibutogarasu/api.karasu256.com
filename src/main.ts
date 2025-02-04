@@ -8,13 +8,26 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   patchNestJsSwagger();
 
-  app.enableCors();
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
 
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    next();
+  });
+
+  app.getHttpAdapter().getInstance().set('etag', false);
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   const config = new DocumentBuilder()
     .setTitle(`Karasu Lab API ${process.env.NODE_ENV}`)
+    .setLicense("MIT", "https://opensource.org/licenses/MIT")
     .setDescription("API documentation for Karasu Lab")
     .setVersion("1.0")
     .addServer(process.env.BASE_URL)

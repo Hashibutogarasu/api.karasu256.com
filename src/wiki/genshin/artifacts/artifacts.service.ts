@@ -5,46 +5,60 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createSchema, getSchema, updateSchema } from './artifacts.dto';
+import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Injectable()
 export class ArtifactsService implements IBaseControllerAndService {
   constructor(
     @InjectRepository(Artifacts)
-    private readonly artifactsRepository: Repository<Artifacts>
+    private readonly artifactsRepository: Repository<Artifacts>,
+
+    @InjectRepository(VersionsEntity)
+    private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(dto: GetParamsDto<Artifacts>): Promise<Artifacts[]> {
-    const parsed = getSchema.safeParse(dto);
+  async get(query: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, version, artifact_sets, ...ref } = dto;
+    const { version, artifact_sets, take, skip, ...ref } = query;
 
     return await this.artifactsRepository.find({
       where: {
+        ...artifact_sets,
+        ...version,
         ...ref,
-        version: {
-          version_string: version.version_string,
-        }
       },
-      skip: page > 0 ? (page - 1) * limit : undefined,
+      relations: {
+        version: true
+      },
+      take: take,
+      skip: skip,
     });
   }
 
-  async getOne(params: GetOneDto<Artifacts>): Promise<Artifacts> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query_: GetOneDto<Artifacts>): Promise<Artifacts> {
+    const parsed = getSchema.safeParse(query_);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { artifact_sets, ...ref } = params;
+    const { take, skip, version, query, ...ref } = parsed.data;
+
+    const versionExists = await this.versionRepository.findOne({
+      where: {
+        version_string: version,
+      },
+    });
 
     return await this.artifactsRepository.findOne({
       where: {
         ...ref,
+        version: version && versionExists
       },
     });
   }

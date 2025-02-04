@@ -18,24 +18,22 @@ export class ArtifactsController implements IBaseControllerAndService {
     private readonly artifactsService: ArtifactsService
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
-  async get(@Query() params: GetParamsDto<Artifacts>): Promise<Artifacts[]> {
-    return this.artifactsService.get(params);
+  @Post()
+  async get(@Body() query: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
+    return this.artifactsService.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
-  async getOne(@Param() params: GetOneDto<Artifacts>): Promise<Artifacts> {
-    return this.artifactsService.getOne(params);
+  @Post('getOne')
+  async getOne(@Body() query: GetOneDto<Artifacts>): Promise<Artifacts> {
+    return this.artifactsService.getOne(query);
   }
 
   @ApiBody({

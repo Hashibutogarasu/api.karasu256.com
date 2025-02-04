@@ -8,36 +8,35 @@ import { zodToOpenAPI } from 'nestjs-zod';
 import { createSchema, getSchema, updateSchema } from './weapons.dto';
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 
-@Authorization({
-  allowedGroups: ["admin"],
-})
-@ApiBearerAuth()
 @Controller('wiki/genshin/weapons')
 export class WeaponsController implements IBaseControllerAndService {
   constructor(
     private readonly weaponsService: WeaponsService,
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
-  async get(@Query() params: GetParamsDto<Weapon>): Promise<Weapon[]> {
-    return this.weaponsService.get(params);
+  @Post()
+  async get(@Body() query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
+    return this.weaponsService.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
-  async getOne(@Param() params: GetOneDto<Weapon>): Promise<Weapon> {
-    return this.weaponsService.getOne(params);
+  @Post('getOne')
+  async getOne(@Body() query: GetOneDto<Weapon>): Promise<Weapon> {
+    return this.weaponsService.getOne(query);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -46,6 +45,11 @@ export class WeaponsController implements IBaseControllerAndService {
     return this.weaponsService.create(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -54,6 +58,11 @@ export class WeaponsController implements IBaseControllerAndService {
     return this.weaponsService.update(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     type: 'string',

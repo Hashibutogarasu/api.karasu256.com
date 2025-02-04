@@ -56,6 +56,6 @@ export class Character extends BaseEntity implements IBase {
   @OneToMany(() => Gallery, gallery => gallery.id, { nullable: true })
   galleries?: Gallery[] | null;
 
-  @OneToMany(() => VersionsEntity, version => version.entities)
+  @OneToMany(() => VersionsEntity, version => version.characters)
   version: VersionsEntity;
 }

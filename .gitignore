@@ -70,3 +70,5 @@ supabase/
 .env*.local
 
 example.json
+
+client/

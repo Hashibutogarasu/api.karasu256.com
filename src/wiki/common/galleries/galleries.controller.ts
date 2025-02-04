@@ -8,7 +8,7 @@ import { Gallery } from '@/entities/common/galleries.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, getSchema, updateSchema } from './galleries.dto';
-
+import { Character } from '@/entities/genshin/wiki/character.entity';
 
 @Controller('galleries')
 export class GalleriesController implements IBaseControllerAndService {
@@ -16,24 +16,22 @@ export class GalleriesController implements IBaseControllerAndService {
     private readonly galleriesService: GalleriesService,
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
-  async get(@Query() params: GetParamsDto<Gallery>): Promise<Gallery[]> {
-    return this.galleriesService.get(params);
+  @Post()
+  async get(@Query() query: GetParamsDto<Gallery, ["character"]>): Promise<Gallery[]> {
+    return this.galleriesService.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
-  async getOne(@Param() params: GetOneDto<Gallery>): Promise<Gallery> {
-    return this.galleriesService.getOne(params);
+  @Post('getOne')
+  async getOne(@Param() query: GetOneDto<Gallery>): Promise<Gallery> {
+    return this.galleriesService.getOne(query);
   }
 
   @Authorization({

@@ -1,5 +1,6 @@
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { VersionsEntity } from "./versions.entity";
 
 @Entity('items')
 export class Items extends BaseEntity implements IBase {
@@ -10,12 +11,12 @@ export class Items extends BaseEntity implements IBase {
   @Column()
   name: string;
 
-  @Column()
-  version: string;
-
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => VersionsEntity, version => version.countries)
+  version: VersionsEntity;
 }

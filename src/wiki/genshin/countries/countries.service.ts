@@ -5,43 +5,53 @@ import { Country } from '@/entities/genshin/wiki/countries.entity';
 import { Repository } from 'typeorm';
 import { CreateDto, DeleteDto, deleteSchema, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, getSchema } from './contries.dto';
+import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Injectable()
 export class CountriesService implements IBaseControllerAndService {
   constructor(
     @InjectRepository(Country)
     private readonly repository: Repository<Country>,
+
+    @InjectRepository(VersionsEntity)
+    private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
-  async get(params: GetParamsDto<Country>): Promise<Country[]> {
-    const parsed = getSchema.safeParse(params);
+  async get(query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, characters, ...ref } = params;
+    const { version, characters, take, skip, ...ref } = query;
 
     return await this.repository.find({
       where: {
         ...ref,
+        ...version,
+        ...characters
       },
-      skip: page > 0 ? (page - 1) * limit : undefined,
+      take: take,
+      skip: skip,
     });
   }
 
-  async getOne(params: GetParamsDto<Country>): Promise<Country> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { page, limit, characters, ...ref } = params;
+    const { take, skip, version, ...ref } = query;
 
     return await this.repository.findOne({
       where: {
-        ...ref
+        ...ref,
+        version: version && {
+          version_string: version.version_string,
+        }
       },
     });
   }

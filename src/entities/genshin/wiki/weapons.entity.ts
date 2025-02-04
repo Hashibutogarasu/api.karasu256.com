@@ -35,6 +35,6 @@ export class Weapon extends BaseEntity implements IBase {
   @OneToMany(() => Character, character => character.weapon)
   characters: Character[];
 
-  @OneToMany(() => VersionsEntity, version => version.entities)
+  @OneToMany(() => VersionsEntity, version => version.weapons)
   version: VersionsEntity;
 }

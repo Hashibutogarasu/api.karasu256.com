@@ -5,43 +5,52 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createSchema, getSchema, updateSchema } from './weapons.dto';
+import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Injectable()
 export class WeaponsService implements IBaseControllerAndService {
   constructor(
     @InjectRepository(Weapon)
-    private readonly weaponsService: Repository<Weapon>
+    private readonly weaponsRepository: Repository<Weapon>,
+
+    @InjectRepository(VersionsEntity)
+    private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
-  async get(dto: GetParamsDto<Weapon>): Promise<Weapon[]> {
-    const parsed = getSchema.safeParse(dto);
+  async get(query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, characters, ...ref } = dto;
+    const { version, take, skip, ...ref } = query;
 
-    return await this.weaponsService.find({
+    return await this.weaponsRepository.find({
       where: {
         ...ref,
+        ...version,
       },
-      skip: page > 0 ? (page - 1) * limit : undefined,
+      take: take,
+      skip: skip,
     });
   }
 
-  async getOne(params: GetOneDto<Weapon>): Promise<Weapon> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetOneDto<Weapon>): Promise<Weapon> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { characters, ...ref } = params;
+    const { query: { version, ...ref } } = parsed.data;
 
-    return await this.weaponsService.findOne({
+    return await this.weaponsRepository.findOne({
       where: {
-        ...ref
+        ...ref,
+        version: version && {
+          version_string: version
+        }
       },
     });
   }
@@ -55,7 +64,7 @@ export class WeaponsService implements IBaseControllerAndService {
 
     const { characters, version, ...ref } = dto;
 
-    const versionExists = await this.weaponsService.findOne({
+    const versionExists = await this.weaponsRepository.findOne({
       where: {
         version: {
           version_string: version.version_string
@@ -67,12 +76,12 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException('このバージョンは存在しません');
     }
 
-    const weapon = this.weaponsService.create({
+    const weapon = this.weaponsRepository.create({
       ...ref,
       version: versionExists
     });
 
-    return await this.weaponsService.save(weapon);
+    return await this.weaponsRepository.save(weapon);
   }
 
   async update(dto: UpdateDto<Weapon>): Promise<void> {
@@ -82,7 +91,7 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const weapon = await this.weaponsService.findOne({
+    const weapon = await this.weaponsRepository.findOne({
       where: {
         id: dto.id,
       },
@@ -94,7 +103,7 @@ export class WeaponsService implements IBaseControllerAndService {
 
     const { characters, version, ...ref } = dto;
 
-    const versionExists = await this.weaponsService.findOne({
+    const versionExists = await this.weaponsRepository.findOne({
       where: {
         version: {
           version_string: version.version_string
@@ -106,7 +115,7 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException('このバージョンは存在しません');
     }
 
-    await this.weaponsService.update(dto.id, {
+    await this.weaponsRepository.update(dto.id, {
       ...ref,
       version: versionExists
     });
@@ -119,7 +128,7 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const weapon = await this.weaponsService.findOne({
+    const weapon = await this.weaponsRepository.findOne({
       where: {
         id: dto.id,
       },
@@ -129,6 +138,6 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException('Weapon not found');
     }
 
-    await this.weaponsService.delete({ id: dto.id, });
+    await this.weaponsRepository.delete({ id: dto.id, });
   }
 }

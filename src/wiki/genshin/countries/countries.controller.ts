@@ -1,9 +1,9 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { CountriesService } from './countries.service';
-import { PublicRoute } from '@nestjs-cognito/auth';
+import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { createSchema, getSchema, updateSchema } from './contries.dto';
 import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
@@ -14,26 +14,29 @@ export class CountriesController implements IBaseControllerAndService {
     private readonly service: CountriesService,
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
-  async get(@Query() params: GetParamsDto<Country>): Promise<Country[]> {
-    return this.service.get(params);
+  @Post()
+  async get(@Body() query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
+    return this.service.get(query);
   }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get('getOne')
-  async getOne(@Param() params: GetParamsDto<Country>): Promise<Country> {
-    return this.service.getOne(params);
+  @Post('getOne')
+  async getOne(@Body() query: GetParamsDto<Country, ["characters", "createdAt", "updatedAt"]>): Promise<Country> {
+    return this.service.getOne(query);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -42,6 +45,11 @@ export class CountriesController implements IBaseControllerAndService {
     return this.service.create(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -50,6 +58,11 @@ export class CountriesController implements IBaseControllerAndService {
     return this.service.update(dto);
   }
 
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     type: 'string',

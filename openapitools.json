@@ -1,0 +1,34 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.11.0",
+    "generators": {
+      "latest": {
+        "packageName": "@karasu-lab/karasu256-api-client",
+        "generatorName": "typescript-fetch",
+        "auth": "Bearer",
+        "gitUserId": "Hashibutogarasu",
+        "gitRepoId": "api.karasu256.com",
+        "inputSpec": "https://api.karasu256.com/api/json",
+        "output": "#{cwd}/client/latest/#{name}",
+        "enablePostProcessFile": true,
+        "additionalProperties": {
+          "ngVersion": "6.1.8",
+          "npmName": "@karasu-lab/karasu256-api-client",
+          "withSeparateModelsAndApi": true,
+          "useSingleRequestParameter": true,
+          "enumPropertyNaming": "original",
+          "modelPropertyNaming": "original",
+          "supportsES6": true,
+          "withInterfaces": true,
+          "npmVersion": "0.8.2"
+        },
+        "typeMappings": {
+          "date": "Date",
+          "DateTime": "Date"
+        }
+      }
+    }
+  }
+}

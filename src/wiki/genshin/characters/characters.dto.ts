@@ -1,8 +1,9 @@
+import { getParamsSchema, paginationSchema } from "@/utils/dto";
 import { rarityType } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-const getSchema = z.object({
+const base = getParamsSchema.extend({
   id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -13,9 +14,12 @@ const getSchema = z.object({
   header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
   rarity: rarityType.optional(),
   version: z.string().optional(),
+  property: z.string().optional(),
   unimplemented: z.string().transform((value) => value === 'true').optional(),
-  createdAt: z.string().datetime().optional(),
-  updatedAt: z.string().datetime().optional(),
+});
+
+const getSchema = z.object({
+  query: base.optional()
 });
 
 const createSchema = z.object({
@@ -29,22 +33,24 @@ const createSchema = z.object({
   artifact_set: z.array(z.string()).optional(),
   weapon_type: z.string().optional(),
   rarity: rarityType.optional(),
-  version: z.string().default('1.0'),
+  property: z.string().optional(),
+  version: z.string(),
   unimplemented: z.boolean().default(false),
 });
 
 const updateSchema = z.object({
   id: z.string(),
-  name: z.string().optional(),
-  description: z.string().optional(),
-  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  element: z.string().optional(),
-  country: z.string().optional(),
-  weapon_type: z.string().optional(),
-  rarity: rarityType.optional(),
-  version: z.string().optional().default('1.0'),
-  unimplemented: z.boolean().optional(),
+  name: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
+  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional().nullable(),
+  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional().nullable(),
+  element: z.string().optional().nullable(),
+  country: z.string().optional().nullable(),
+  weapon_type: z.string().optional().nullable(),
+  rarity: rarityType.optional().nullable(),
+  property: z.string().optional(),
+  version: z.string().optional().nullable(),
+  unimplemented: z.boolean().optional().nullable(),
 });
 
 const property = z.object({

@@ -8,44 +8,46 @@ import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { createSchema, getSchema, ImportCharacterDto, importCharacterSchema, ImportFromHoyoLabDto, importFromHoyoLabSchema, updateSchema } from './characters.dto';
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 
-@Authorization({
-  allowedGroups: ["admin"],
-})
-@ApiBearerAuth()
 @Controller('wiki/genshin/characters')
 export class CharactersController implements IBaseControllerAndService {
   constructor(
     private readonly charactersService: CharactersService
   ) { }
 
-  @ApiQuery({
-    name: 'query',
+  @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Get()
-  async get(@Query() params: GetParamsDto<Character>): Promise<Character[]> {
-    return this.charactersService.get(params);
-  }
-
-  @ApiQuery({
-    name: 'query',
-    schema: zodToOpenAPI(getSchema),
-  })
-  @PublicRoute()
-  @Get('getOne')
-  async getOne(@Param() params: GetOneDto<Character>): Promise<Character> {
-    return this.charactersService.getOne(params);
+  @Post()
+  async get(@Body() query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+    return this.charactersService.get(query);
   }
 
   @ApiBody({
+    schema: zodToOpenAPI(getSchema),
+  })
+  @PublicRoute()
+  @Post('getOne')
+  async getOne(@Body() query: GetOneDto<Character>): Promise<Character> {
+    return this.charactersService.getOne(query);
+  }
+
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
+  @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
-  @Post()
+  @Put()
   async create(@Body() dto: Omit<CreateDto<Character>, "country">): Promise<Character> {
     return this.charactersService.create(dto);
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -54,6 +56,10 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.update(dto);
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     type: 'string',
@@ -63,6 +69,10 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.delete(dto);
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiQuery({
     name: 'query',
     schema: zodToOpenAPI(importFromHoyoLabSchema),
@@ -103,6 +113,10 @@ export class CharactersController implements IBaseControllerAndService {
     });
   }
 
+  @Authorization({
+    allowedGroups: ["admin"],
+  })
+  @ApiBearerAuth()
   @ApiBody({
     schema: zodToOpenAPI(importCharacterSchema),
   })

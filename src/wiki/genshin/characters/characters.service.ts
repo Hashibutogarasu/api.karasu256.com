@@ -23,26 +23,32 @@ export class CharactersService implements IBaseControllerAndService {
     private readonly artifactSetsService: Repository<ArtifactSets>,
 
     @InjectRepository(Weapon)
-    private readonly weaponsService: Repository<Weapon>,
+    private readonly weaponsRepository: Repository<Weapon>,
 
     @InjectRepository(VersionsEntity)
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(dto: GetParamsDto<Character>): Promise<Character[]> {
-    const parsed = getSchema.safeParse(dto);
+  async get(query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { page, limit, artifact_set, galleries, ...ref } = dto;
+    const { country, version, galleries, artifact_set, weapon, take, skip, ...ref } = query;
 
     return await this.charactersService.find({
       where: {
+        ...country,
+        ...version,
+        ...galleries,
+        ...artifact_set,
+        ...weapon,
         ...ref,
       },
-      skip: page > 0 && (page - 1) * limit,
+      take: take,
+      skip: skip,
       relations: {
         country: true,
         weapon: true,
@@ -50,18 +56,27 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(params: GetOneDto<Character>): Promise<Character> {
-    const parsed = getSchema.safeParse(params);
+  async getOne(query: GetOneDto<Character>): Promise<Character> {
+    const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { artifact_set, galleries, ...ref } = params;
+    const { take, skip, country, weapon, version, ...ref } = parsed.data.query;
 
     return await this.charactersService.findOne({
       where: {
         ...ref,
+        country: country && {
+          name: country,
+        },
+        weapon: weapon && {
+          name: weapon,
+        },
+        version: version && {
+          version_string: version,
+        },
       },
       relations: {
         country: true,
@@ -115,7 +130,7 @@ export class CharactersService implements IBaseControllerAndService {
     });
 
     if (!weaponExists) {
-      const newWeapon = await this.weaponsService.save({
+      const newWeapon = await this.weaponsRepository.save({
         name: weapon,
       });
 

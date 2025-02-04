@@ -1,13 +1,16 @@
-import { paginationSchema } from "@/types/zod/pagination.dto";
-import { createZodDto } from "nestjs-zod";
+import { getParamsSchema } from "@/utils/dto";
 import { z } from "zod";
 
-const getSchema = z.object({
+const base = getParamsSchema.extend({
   id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  version: z.string().optional().default('1.0'),
+  version: z.string().optional(),
+});
+
+const getSchema = z.object({
+  query: base.optional()
 });
 
 const createSchema = z.object({
@@ -15,7 +18,7 @@ const createSchema = z.object({
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
   sumbnail_url: z.string().url({ message: 'sumbnail_urlはurlである必要があります' }).optional(),
-  version: z.string().default('1.0'),
+  version: z.string(),
 });
 
 const updateSchema = z.object({
@@ -23,7 +26,7 @@ const updateSchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  version: z.string().optional().default('1.0'),
+  version: z.string().optional(),
 });
 
 export {
