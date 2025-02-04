@@ -3,9 +3,8 @@ import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { CreateDto, DeleteDto, deleteSchema, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getSchema, updateSchema } from './versions.dto';
+import { createSchema, getSchema, updateSchema } from './versions.dto';
 import { Repository } from 'typeorm';
-import { createSchema } from '../characters/characters.dto';
 
 @Injectable()
 export class VersionsService implements IBaseControllerAndService {
