@@ -18,7 +18,7 @@ export class WeaponsController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Post()
+  @Post("get")
   async get(@Body() query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
     return this.weaponsService.get(query);
   }
@@ -45,7 +45,6 @@ export class WeaponsController implements IBaseControllerAndService {
     return this.weaponsService.create(dto);
   }
 
-
   @Authorization({
     allowedGroups: ["admin"],
   })
@@ -57,7 +56,6 @@ export class WeaponsController implements IBaseControllerAndService {
   async update(@Body() dto: UpdateDto<Weapon>): Promise<void> {
     return this.weaponsService.update(dto);
   }
-
 
   @Authorization({
     allowedGroups: ["admin"],
