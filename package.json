@@ -10,7 +10,7 @@
     "prebuild": "tsc && pnpm run lint",
     "deploy": "npm version patch && git push && git push --tags && vercel deploy --prod",
     "client:generate:typescript": "openapi-generator-cli generate --generator-key latest && cd ./client/latest/json && npm version patch && cd ../..",
-    "publish": "cd ./client/latest/json/ && npm publish --access public && cd ../../..",
+    "client:publish": "cd ./client/latest/json/ && npm publish --access public && cd ../../..",
     "vercel-build": "tsc && pnpm run lint && pnpm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "cross-env NODE_ENV=development nest start",
