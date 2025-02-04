@@ -19,7 +19,7 @@ export class CharactersController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Post()
-  async get(@Query() query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+  async get(@Body() query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
     return this.charactersService.get(query);
   }
 
@@ -28,10 +28,9 @@ export class CharactersController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Post('getOne')
-  async getOne(@Query() query: GetOneDto<Character>): Promise<Character> {
+  async getOne(@Body() query: GetOneDto<Character>): Promise<Character> {
     return this.charactersService.getOne(query);
   }
-
 
   @Authorization({
     allowedGroups: ["admin"],
@@ -45,7 +44,6 @@ export class CharactersController implements IBaseControllerAndService {
     return this.charactersService.create(dto);
   }
 
-
   @Authorization({
     allowedGroups: ["admin"],
   })
@@ -57,7 +55,6 @@ export class CharactersController implements IBaseControllerAndService {
   async update(@Body() dto: UpdateDto<Character>): Promise<void> {
     return this.charactersService.update(dto);
   }
-
 
   @Authorization({
     allowedGroups: ["admin"],
@@ -71,7 +68,6 @@ export class CharactersController implements IBaseControllerAndService {
   async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.charactersService.delete(dto);
   }
-
 
   @Authorization({
     allowedGroups: ["admin"],
@@ -116,7 +112,6 @@ export class CharactersController implements IBaseControllerAndService {
       ...parsed.data,
     });
   }
-
 
   @Authorization({
     allowedGroups: ["admin"],
