@@ -18,9 +18,7 @@ const base = getParamsSchema.extend({
   unimplemented: z.string().transform((value) => value === 'true').optional(),
 });
 
-const getSchema = z.object({
-  query: base.optional()
-});
+const getSchema = base.extend({});
 
 const createSchema = z.object({
   name: z.string(),

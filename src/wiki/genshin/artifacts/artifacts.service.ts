@@ -47,7 +47,7 @@ export class ArtifactsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { take, skip, version, query, ...ref } = parsed.data;
+    const { take, skip, version, ...ref } = parsed.data;
 
     const versionExists = await this.versionRepository.findOne({
       where: {

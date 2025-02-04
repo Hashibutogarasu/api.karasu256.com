@@ -63,7 +63,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { take, skip, country, weapon, version, ...ref } = parsed.data.query;
+    const { take, skip, country, weapon, version, ...ref } = parsed.data;
 
     return await this.charactersService.findOne({
       where: {
