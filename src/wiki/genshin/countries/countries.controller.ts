@@ -18,7 +18,7 @@ export class CountriesController implements IBaseControllerAndService {
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Post()
+  @Post("get")
   async get(@Body() query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
     return this.service.get(query);
   }

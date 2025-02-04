@@ -43,7 +43,7 @@ export class WeaponsService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { query: { version, ...ref } } = parsed.data;
+    const { version, ...ref } = parsed.data;
 
     return await this.weaponsRepository.findOne({
       where: {

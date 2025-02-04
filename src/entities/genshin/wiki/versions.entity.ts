@@ -12,7 +12,7 @@ export class VersionsEntity extends BaseEntity implements IBase {
   id: string;
 
   @Column({ nullable: true })
-  name?: string | undefined;
+  name?: string | null;
 
   @Column()
   version_string: string;

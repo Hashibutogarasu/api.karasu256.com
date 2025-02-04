@@ -18,7 +18,7 @@ export class Weapon extends BaseEntity implements IBase {
   updatedAt: Date;
 
   @Column({ nullable: true })
-  description?: string | undefined;
+  description?: string | null;
 
   @Column()
   icon_url: string;

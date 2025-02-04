@@ -63,7 +63,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { take, skip, country, weapon, version, ...ref } = parsed.data.query;
+    const { take, skip, country, weapon, version, ...ref } = parsed.data;
 
     return await this.charactersService.findOne({
       where: {
@@ -174,23 +174,13 @@ export class CharactersService implements IBaseControllerAndService {
 
     const { country, version, ...ref } = parsed.data;
 
-    const countryExists = await this.charactersService.findOne({
-      where: {
-        name: country,
-      },
-    });
-
-    if (!countryExists) {
-      throw new NotFoundException('Country not found');
-    }
-
-    const character = await this.charactersService.findOne({
+    const characterExists = await this.charactersService.findOne({
       where: {
         id: dto.id,
       },
     });
 
-    if (!character) {
+    if (!characterExists) {
       throw new NotFoundException('Character not found');
     }
 
@@ -206,8 +196,6 @@ export class CharactersService implements IBaseControllerAndService {
 
     await this.charactersService.update(dto.id, {
       ...ref,
-      country: countryExists,
-      version: versionExists,
     });
   }
 

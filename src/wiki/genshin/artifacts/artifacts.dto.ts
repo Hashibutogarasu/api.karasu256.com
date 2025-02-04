@@ -12,9 +12,7 @@ const base = getParamsSchema.extend({
   version: z.string().optional(),
 });
 
-const getSchema = base.extend({
-  query: base.optional()
-});
+const getSchema = base.extend({});
 
 const createSchema = z.object({
   name: z.string(),

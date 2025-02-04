@@ -12,10 +12,10 @@ export class Country extends BaseEntity implements IBase {
   name: string;
 
   @Column({ nullable: true })
-  description?: string | undefined;
+  description?: string | null;
 
   @Column({ nullable: true })
-  sumbnail_url?: string | undefined;
+  sumbnail_url?: string | null;
 
   @OneToMany(() => Character, character => character.country)
   characters: Character[];
