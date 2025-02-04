@@ -18,10 +18,11 @@
           "npmName": "@karasu-lab/karasu256-api-client",
           "withSeparateModelsAndApi": true,
           "useSingleRequestParameter": true,
+          "enumPropertyNaming": "original",
+          "modelPropertyNaming": "original",
           "supportsES6": true,
           "withInterfaces": true,
-          "npmVersion": "0.8.1",
-          "enumPropertyNaming": "UPPERCASE"
+          "npmVersion": "0.8.2"
         },
         "typeMappings": {
           "date": "Date",
