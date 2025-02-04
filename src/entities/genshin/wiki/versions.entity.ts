@@ -27,7 +27,7 @@ export class VersionsEntity extends BaseEntity implements IBase {
   updatedAt: Date;
 
   @OneToMany(() => Weapon, weapon => weapon.version)
-  entities: Weapon[];
+  weapons: Weapon[];
 
   @OneToMany(() => ArtifactSets, artifact_set => artifact_set.version)
   artifact_sets: ArtifactSets[];
@@ -38,9 +38,6 @@ export class VersionsEntity extends BaseEntity implements IBase {
   @OneToMany(() => Character, character => character.version)
   characters: Character[];
 
-  @ManyToOne(() => Artifacts, artifact => artifact.version)
+  @OneToMany(() => Artifacts, artifact => artifact.version)
   artifacts: Artifacts[];
-
-  @ManyToOne(() => Weapon, weapon => weapon.version)
-  weapons: Weapon[];
 }
