@@ -14,26 +14,26 @@ export class Character extends BaseEntity implements IBase {
   @Column()
   name: string;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description?: string | null;
 
   @Column()
   icon_url: string;
 
   @Column({ nullable: true })
-  element?: string | undefined;
+  element?: string | null;
 
   @Column({ nullable: true })
-  rarity?: number | undefined;
-
-  @Column()
-  header_img_url: string;
+  rarity?: number | null;
 
   @Column({ nullable: true })
-  weapon_type?: string | undefined;
+  header_img_url: string | null;
 
   @Column({ nullable: true })
-  property?: string | undefined;
+  weapon_type?: string | null;
+
+  @Column({ nullable: true })
+  property?: string | null;
 
   @Column({ default: false })
   uninplemented: boolean;
@@ -50,12 +50,12 @@ export class Character extends BaseEntity implements IBase {
   @ManyToOne(() => Weapon, weapon => weapon.id, { nullable: true })
   weapon?: Weapon | null;
 
-  @ManyToMany(() => ArtifactSets, artifactSet => artifactSet.characters)
-  artifact_set: ArtifactSets[];
+  @ManyToMany(() => ArtifactSets, artifactSet => artifactSet.characters, { nullable: true })
+  artifact_set: ArtifactSets[] | null;
 
   @OneToMany(() => Gallery, gallery => gallery.id, { nullable: true })
   galleries?: Gallery[] | null;
 
-  @OneToMany(() => VersionsEntity, version => version.characters)
+  @OneToMany(() => VersionsEntity, version => version.id)
   version: VersionsEntity;
 }
