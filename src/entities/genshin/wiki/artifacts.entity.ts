@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ArtifactSets } from "./artifact-sets.entity";
 import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
@@ -23,6 +23,6 @@ export class Artifacts extends BaseEntity implements IBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => VersionsEntity, version => version.artifacts)
+  @ManyToOne(() => VersionsEntity, version => version.artifacts)
   version: VersionsEntity;
 }

@@ -40,11 +40,10 @@ describe('ArtifactsService', () => {
         version_string: '1.0.0',
         artifact_sets: [],
         released: false,
-        entities: [],
+        weapons: [],
         countries: [],
         characters: [],
         artifacts: [],
-        weapons: []
       }
     });
 

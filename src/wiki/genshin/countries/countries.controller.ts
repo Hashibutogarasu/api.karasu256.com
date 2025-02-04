@@ -32,7 +32,6 @@ export class CountriesController implements IBaseControllerAndService {
     return this.service.getOne(query);
   }
 
-
   @Authorization({
     allowedGroups: ["admin"],
   })
@@ -45,7 +44,6 @@ export class CountriesController implements IBaseControllerAndService {
     return this.service.create(dto);
   }
 
-
   @Authorization({
     allowedGroups: ["admin"],
   })
@@ -57,7 +55,6 @@ export class CountriesController implements IBaseControllerAndService {
   async update(@Body() dto: UpdateDto<Country>): Promise<void> {
     return this.service.update(dto);
   }
-
 
   @Authorization({
     allowedGroups: ["admin"],

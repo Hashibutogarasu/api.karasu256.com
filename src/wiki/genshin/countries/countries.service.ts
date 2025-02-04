@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
 import { Repository } from 'typeorm';
 import { CreateDto, DeleteDto, deleteSchema, GetParamsDto, UpdateDto } from '@/utils/dto';
-import { createSchema, getSchema } from './contries.dto';
+import { createSchema, getSchema, updateSchema } from './contries.dto';
 import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
 
 @Injectable()
@@ -94,7 +94,7 @@ export class CountriesService implements IBaseControllerAndService {
   }
 
   async update(dto: UpdateDto<Country>): Promise<void> {
-    const parsed = createSchema.safeParse(dto);
+    const parsed = updateSchema.safeParse(dto);
 
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.errors[0].message);

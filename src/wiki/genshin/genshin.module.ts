@@ -16,6 +16,8 @@ import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
 import { Country } from '@/entities/genshin/wiki/countries.entity';
 import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
 import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { VersionsController } from './versions/versions.controller';
+import { VersionsService } from './versions/versions.service';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
       VersionsEntity,
     ]),
   ],
-  controllers: [CharactersController, WeaponsController, ArtifactsController, CountriesController, ArtifactSetsController],
-  providers: [CharactersService, WeaponsService, ArtifactsService, CountriesService, ArtifactSetsService]
+  controllers: [CharactersController, WeaponsController, ArtifactsController, CountriesController, ArtifactSetsController, VersionsController],
+  providers: [CharactersService, WeaponsService, ArtifactsService, CountriesService, ArtifactSetsService, VersionsService]
 })
 export class GenshinModule { }
