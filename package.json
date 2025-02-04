@@ -1,12 +1,13 @@
 {
   "name": "api.karasu256.com",
-  "version": "0.8.6",
+  "version": "1.0.0",
   "description": "API for api.karasu256.com",
   "author": "Hashibutogarasu",
   "private": true,
   "license": "MIT",
   "scripts": {
     "build": "nest build",
+    "prebuild": "tsc && pnpm run lint",
     "deploy": "npm version patch && git push && git push --tags && vercel deploy --prod",
     "client:generate:typescript": "openapi-generator-cli generate --generator-key latest && cd ./client/latest/json && npm version patch && cd ../..",
     "publish": "cd ./client/latest/json/ && npm publish --access public && cd ../../..",
