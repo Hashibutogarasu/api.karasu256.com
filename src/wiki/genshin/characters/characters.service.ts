@@ -87,7 +87,10 @@ export class CharactersService implements IBaseControllerAndService {
         },
       },
       relations: {
+        galleries: true,
         version: true,
+        region: true,
+        weapon: true,
       }
     });
   }
