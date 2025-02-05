@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: api.karasu256.com
+    runtime: node
+    buildCommand: pnpm install && pnpm run build
+    startCommand: pnpm start
+    repo: https://github.com/Hashibutogarasu/api.karasu256.com.git
+    buildFilter:
+      ignoredPaths:
+        - src/**/*.spec.ts

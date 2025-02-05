@@ -44,6 +44,13 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
       where: {
         ...ref,
       },
+      relations: {
+        weapons: true,
+        artifacts: true,
+        characters: true,
+        countries: true,
+        artifact_sets: true,
+      }
     });
   }
 }

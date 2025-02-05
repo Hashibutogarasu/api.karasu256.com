@@ -45,7 +45,7 @@ export class VersionsEntity extends BaseEntity implements IBase {
       referencedColumnName: 'id',
     },
   })
-  weapons: Weapon[] | null;
+  weapons?: Weapon[] | null;
 
   @ManyToMany(() => ArtifactSets, { eager: true, nullable: true })
   @JoinTable({
@@ -59,7 +59,7 @@ export class VersionsEntity extends BaseEntity implements IBase {
       referencedColumnName: 'id',
     },
   })
-  artifact_sets: ArtifactSets[] | null;
+  artifact_sets?: ArtifactSets[] | null;
 
   @ManyToMany(() => Country, { eager: true, nullable: true })
   @JoinTable({
