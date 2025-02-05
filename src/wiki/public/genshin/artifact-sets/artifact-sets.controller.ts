@@ -2,11 +2,12 @@ import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { ArtifactSetsService } from "./artifact-sets.service";
 import { ArtifactSets } from "@/entities/wiki/genshin/artifact-sets.entity";
 import { Body, Controller, Post } from "@nestjs/common";
-import { ApiBody, ApiOperation } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./artifact-sets.dto";
 import { GetOneDto, GetParamsDto } from "@/utils/dto";
 
+@ApiTags("genshin-impact")
 @Controller("wiki/genshin/artifact-sets")
 export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
   constructor(
@@ -16,7 +17,7 @@ export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
   @ApiOperation({
     operationId: "getArtifactSets",
     summary: "Get artifact sets",
-    tags: ["genshin-impact", "artifact-sets"],
+    tags: ["artifact-sets"],
   })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
@@ -29,7 +30,7 @@ export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
   @ApiOperation({
     operationId: "getArtifactSet",
     summary: "Get artifact set",
-    tags: ["genshin-impact", "artifact-sets"],
+    tags: ["artifact-sets"],
   })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),

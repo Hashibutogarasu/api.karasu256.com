@@ -11,6 +11,8 @@ import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller
 import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
 import { ArtifactsController } from './artifacts/artifacts.controller';
 import { ArtifactsService } from './artifacts/artifacts.service';
+import { CharactersController } from './characters/characters.controller';
+import { CharactersService } from './characters/characters.service';
 
 @Module({
   imports: [
@@ -24,7 +26,7 @@ import { ArtifactsService } from './artifacts/artifacts.service';
       VersionsEntity,
     ]),
   ],
-  controllers: [ArtifactSetsController, ArtifactsController],
-  providers: [ArtifactSetsService, ArtifactsService]
+  controllers: [ArtifactSetsController, ArtifactsController, CharactersController],
+  providers: [ArtifactSetsService, ArtifactsService, CharactersService]
 })
 export class GenshinModule { }

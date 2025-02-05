@@ -4,6 +4,8 @@ import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
+import { WikiModule } from "./wiki/wiki.module";
+import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -41,7 +43,11 @@ async function bootstrap() {
     })
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    include: [
+      GenshinModule
+    ],
+  });
   const documentFactory = () => document;
 
   SwaggerModule.setup("api", app, documentFactory, {
