@@ -109,6 +109,6 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(publicPort);
+  await app.listen(process.env.PORT || publicPort);
 }
 bootstrap();
