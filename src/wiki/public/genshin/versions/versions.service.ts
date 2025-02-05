@@ -26,13 +26,6 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
       where: {
         ...ref,
       },
-      relations: {
-        artifact_sets: true,
-        artifacts: true,
-        characters: true,
-        countries: true,
-        weapons: true,
-      },
       take: take,
       skip: skip,
     });
@@ -50,13 +43,6 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
     return await this.versionsRepository.findOne({
       where: {
         ...ref,
-      },
-      relations: {
-        artifact_sets: true,
-        artifacts: true,
-        characters: true,
-        countries: true,
-        weapons: true,
       },
     });
   }
