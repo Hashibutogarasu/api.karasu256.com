@@ -9,7 +9,6 @@ import { Country } from "@/entities/wiki/genshin/countries.entity";
 import { AutoOperationName } from "@/utils/operation";
 
 @Controller("wiki/genshin/regions")
-@AutoOperationName()
 @ApiTags("regions")
 export class CountriesController implements IBasePublicCaS<Country> {
   constructor(

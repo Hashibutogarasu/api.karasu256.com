@@ -9,7 +9,6 @@ import { getSchema } from "./galleries.dto";
 import { AutoOperationName } from "@/utils/operation";
 
 @Controller("wiki/galleries")
-@AutoOperationName()
 @ApiTags("galleries")
 export class GalleriesController implements IBasePublicCaS<Gallery> {
   constructor(

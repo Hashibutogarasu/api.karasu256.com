@@ -9,7 +9,6 @@ import { getSchema } from "./versions.dto";
 import { AutoOperationName } from "@/utils/operation";
 
 @Controller("wiki/genshin/versions")
-@AutoOperationName()
 @ApiTags("versions")
 export class VersionsController implements IBasePublicCaS<VersionsEntity> {
   constructor(

@@ -9,7 +9,6 @@ import { GetOneDto, GetParamsDto } from "@/utils/dto";
 import { AutoOperationName } from "@/utils/operation";
 
 @Controller("wiki/genshin/artifact-sets")
-@AutoOperationName()
 @ApiTags("artifact-sets")
 export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
   constructor(

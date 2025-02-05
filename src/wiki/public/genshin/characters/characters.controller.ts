@@ -9,7 +9,6 @@ import { GetOneDto, GetParamsDto } from "@/utils/dto";
 import { AutoOperationName } from "@/utils/operation";
 
 @Controller("wiki/genshin/characters")
-@AutoOperationName()
 @ApiTags("characters")
 export class CharactersController implements IBasePublicCaS<GICharacter> {
   constructor(
