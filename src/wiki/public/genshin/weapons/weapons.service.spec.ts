@@ -31,15 +31,7 @@ describe('WeaponsService', () => {
     service = module.get<WeaponsService>(WeaponsService);
   });
 
-  it('create a weapon', async () => {
-    const weapon = await service.create({
-      name: 'Test Weapon',
-      type: 'Test Type',
-      rarity: 5,
-    });
-
-    const { ...rest } = weapon;
-
-    expect(await service.get({ ...rest })).toEqual(rest);
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });

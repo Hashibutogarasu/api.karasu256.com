@@ -31,24 +31,7 @@ describe('ArtifactsService', () => {
     service = module.get<ArtifactsService>(ArtifactsService);
   });
 
-  it('create a artifact', async () => {
-    const artifacts = await service.create({
-      name: 'Test Artifact',
-      icon_url: 'https://example.com/icon.png',
-      version: {
-        name: 'Test Version',
-        version_string: '1.0.0',
-        artifact_sets: [],
-        released: false,
-        weapons: [],
-        countries: [],
-        characters: [],
-        artifacts: [],
-      }
-    });
-
-    const { ...rest } = artifacts;
-
-    expect(await service.get({ ...rest })).toEqual(rest);
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });

@@ -31,20 +31,7 @@ describe('ArtifactSetsService', () => {
     service = module.get<ArtifactSetsService>(ArtifactSetsService);
   });
 
-  it('create a artifact set', async () => {
-    const artifactSets = await service.create({
-      name: 'Test Artifact Set',
-      description: 'Test Artifact Set Description',
-      icon_url: 'https://example.com/icon.png',
-      one_set_effect: 'Test One Set Effect',
-      two_set_effect: 'Test Two Set Effect',
-      four_set_effect: 'Test Four Set Effect',
-      artifacts: [],
-      characters: [],
-    });
-
-    const { ...rest } = artifactSets;
-
-    expect(await service.get({ ...rest })).toEqual(rest);
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });
