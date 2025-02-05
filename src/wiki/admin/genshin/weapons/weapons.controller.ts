@@ -21,7 +21,6 @@ export class WeaponsController implements IBaseAdminCaS<Weapon> {
   @ApiOperation({
     operationId: "createWeapon",
     summary: "Create weapon",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
@@ -34,7 +33,6 @@ export class WeaponsController implements IBaseAdminCaS<Weapon> {
   @ApiOperation({
     operationId: "updateWeapon",
     summary: "Update weapon",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
@@ -47,7 +45,6 @@ export class WeaponsController implements IBaseAdminCaS<Weapon> {
   @ApiOperation({
     operationId: "deleteWeapon",
     summary: "Delete weapon",
-    tags: ["admin"],
   })
   @ApiParam({
     name: "id",

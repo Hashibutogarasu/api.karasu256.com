@@ -1,11 +1,13 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "@/app.module";
-import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
 import { WikiModule } from "./wiki/wiki.module";
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
+import { AdminModule } from "./wiki/admin/admin.module";
+import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -43,22 +45,42 @@ async function bootstrap() {
     })
     .build();
 
-  const document = SwaggerModule.createDocument(app, config, {
-    include: [
-      GenshinModule
-    ],
-  });
-  const documentFactory = () => document;
-
-  SwaggerModule.setup("api", app, documentFactory, {
+  const options: SwaggerCustomOptions = {
     useGlobalPrefix: true,
+    customSiteTitle: "Karasu Lab API",
     customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui.min.css",
     customJs: [
       "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-bundle.js",
       "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-standalone-preset.js",
     ],
-    jsonDocumentUrl: "/api/json",
-    yamlDocumentUrl: "/api/yaml",
+  };
+
+  const publicdocument = SwaggerModule.createDocument(app, config, {
+    include: [
+      GenshinModule
+    ],
+  });
+  const publicDocumentFactory = () => publicdocument;
+
+  SwaggerModule.setup("api/public", app, publicDocumentFactory, {
+    ...options,
+    jsonDocumentUrl: "/api/public/api-json",
+    yamlDocumentUrl: "/api/public/api-yaml",
+  });
+
+  const privateDocument = SwaggerModule.createDocument(app, config, {
+    include: [
+      AdminModule,
+      GenshinAdminModule
+    ],
+  });
+
+  const privateDocumentFactory = () => privateDocument;
+
+  SwaggerModule.setup("api/private", app, privateDocumentFactory, {
+    ...options,
+    jsonDocumentUrl: "/api/private/api-json",
+    yamlDocumentUrl: "/api/private/api-yaml",
   });
 
   app.useGlobalPipes(

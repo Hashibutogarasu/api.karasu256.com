@@ -21,7 +21,6 @@ export class ArtifactsController implements IBaseAdminCaS<Artifacts> {
   @ApiOperation({
     operationId: "createArtifact",
     summary: "Create artifact",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
@@ -34,7 +33,6 @@ export class ArtifactsController implements IBaseAdminCaS<Artifacts> {
   @ApiOperation({
     operationId: "updateArtifact",
     summary: "Update artifact",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
@@ -47,7 +45,6 @@ export class ArtifactsController implements IBaseAdminCaS<Artifacts> {
   @ApiOperation({
     operationId: "deleteArtifact",
     summary: "Delete artifact",
-    tags: ["admin"],
   })
   @ApiParam({
     name: "id",

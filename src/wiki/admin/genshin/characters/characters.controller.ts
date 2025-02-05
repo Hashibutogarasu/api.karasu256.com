@@ -21,7 +21,6 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
   @ApiOperation({
     operationId: "createCharacter",
     summary: "Create character",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
@@ -34,7 +33,6 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
   @ApiOperation({
     operationId: "updateCharacter",
     summary: "Update character",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
@@ -47,7 +45,6 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
   @ApiOperation({
     operationId: "deleteCharacter",
     summary: "Delete character",
-    tags: ["admin"],
   })
 
   @ApiParam({

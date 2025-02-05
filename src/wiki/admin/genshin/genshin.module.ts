@@ -35,4 +35,4 @@ import { WeaponsService } from './weapons/weapons.service';
   controllers: [ArtifactSetsController, ArtifactsController, CharactersController, CountriesController, VersionsController, WeaponsController],
   providers: [ArtifactSetsService, ArtifactsService, CharactersService, CountriesService, VersionsService, WeaponsService]
 })
-export class GenshinModule { }
+export class GenshinAdminModule { }

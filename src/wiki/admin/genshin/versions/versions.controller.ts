@@ -21,7 +21,6 @@ export class VersionsController implements IBaseAdminCaS<VersionsEntity> {
   @ApiOperation({
     operationId: "createVersion",
     summary: "Create version",
-    tags: ["admin"],
   })
 
   @ApiBody({
@@ -35,7 +34,6 @@ export class VersionsController implements IBaseAdminCaS<VersionsEntity> {
   @ApiOperation({
     operationId: "updateVersion",
     summary: "Update version",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
@@ -48,7 +46,6 @@ export class VersionsController implements IBaseAdminCaS<VersionsEntity> {
   @ApiOperation({
     operationId: "deleteVersion",
     summary: "Delete version",
-    tags: ["admin"],
   })
   @ApiParam({
     name: "id",

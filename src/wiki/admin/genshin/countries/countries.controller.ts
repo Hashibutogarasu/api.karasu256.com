@@ -21,7 +21,6 @@ export class CountriesController implements IBaseAdminCaS<Country> {
   @ApiOperation({
     operationId: "createRegion",
     summary: "Create region",
-    tags: ["admin"],
   })
 
   @ApiBody({
@@ -35,7 +34,6 @@ export class CountriesController implements IBaseAdminCaS<Country> {
   @ApiOperation({
     operationId: "updateRegion",
     summary: "Update region",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
@@ -48,7 +46,6 @@ export class CountriesController implements IBaseAdminCaS<Country> {
   @ApiOperation({
     operationId: "deleteRegion",
     summary: "Delete region",
-    tags: ["admin"],
   })
   @ApiParam({
     name: "id",

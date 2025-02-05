@@ -2,7 +2,7 @@ import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
 import { CreateDto, DeleteDto, UpdateDto } from '@/utils/dto';
 import { Authorization } from '@nestjs-cognito/auth';
 import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { createSchema, updateSchema } from './artifact-sets.dto';
 import { IBaseAdminCaS } from '@/types/ibase_admin_cas';
@@ -21,7 +21,6 @@ export class ArtifactSetsController implements IBaseAdminCaS<ArtifactSets> {
   @ApiOperation({
     operationId: "createArtifactSet",
     summary: "Create artifact set",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
@@ -34,7 +33,6 @@ export class ArtifactSetsController implements IBaseAdminCaS<ArtifactSets> {
   @ApiOperation({
     operationId: "updateArtifactSet",
     summary: "Update artifact set",
-    tags: ["admin"],
   })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
@@ -47,7 +45,6 @@ export class ArtifactSetsController implements IBaseAdminCaS<ArtifactSets> {
   @ApiOperation({
     operationId: "deleteArtifactSet",
     summary: "Delete artifact set",
-    tags: ["admin"],
   })
   @ApiParam({
     name: "id",
