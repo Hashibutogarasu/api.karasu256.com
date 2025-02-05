@@ -1,5 +1,5 @@
 import { Artifacts } from '@/entities/wiki/genshin/artifacts.entity';
-import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { CreateDto, GetParamsDto, GetOneDto, UpdateDto, DeleteDto, deleteSchema } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,7 +8,7 @@ import { createSchema, getSchema, updateSchema } from './artifacts.dto';
 import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 
 @Injectable()
-export class ArtifactsService implements IBaseControllerAndService {
+export class ArtifactsService implements IBasePublicCaS<Artifacts> {
   constructor(
     @InjectRepository(Artifacts)
     private readonly artifactsRepository: Repository<Artifacts>,

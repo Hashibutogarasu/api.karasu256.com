@@ -1,5 +1,5 @@
 import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
-import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { CreateDto, DeleteDto, deleteSchema, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,7 +7,7 @@ import { createSchema, getSchema, updateSchema } from './versions.dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class VersionsService implements IBaseControllerAndService {
+export class VersionsService implements IBasePublicCaS<VersionsEntity> {
   constructor(
     @InjectRepository(VersionsEntity)
     private readonly versionsRepository: Repository<VersionsEntity>

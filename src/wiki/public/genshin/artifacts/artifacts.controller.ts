@@ -1,4 +1,4 @@
-import { IBaseControllerAndService } from "@/types/basecontroller_service";
+import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { ArtifactsService } from "./artifacts.service";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, getSchemaPath } from "@nestjs/swagger";
@@ -9,7 +9,7 @@ import { createSchema, getSchema, updateSchema } from "./artifacts.dto";
 import { CreateDto, DeleteDto, GetParamsDto, GetOneDto, UpdateDto } from "@/utils/dto";
 
 @Controller("wiki/genshin/artifacts")
-export class ArtifactsController implements IBaseControllerAndService {
+export class ArtifactsController implements IBasePublicCaS<Artifacts> {
   constructor(
     private readonly artifactsService: ArtifactsService
   ) { }

@@ -1,4 +1,4 @@
-import { IBaseControllerAndService } from "@/types/basecontroller_service";
+import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { Body, Controller, Delete, FileTypeValidator, Get, HttpStatus, Param, ParseFilePipe, ParseFilePipeBuilder, Post, Put, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { GalleriesService } from "./galleries.service";
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiQuery, getSchemaPath } from "@nestjs/swagger";
@@ -10,7 +10,7 @@ import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from "@/util
 import { createSchema, getSchema, updateSchema } from "./galleries.dto";
 
 @Controller("galleries")
-export class GalleriesController implements IBaseControllerAndService {
+export class GalleriesController implements IBasePublicCaS<Gallery> {
   constructor(
     private readonly galleriesService: GalleriesService,
   ) { }

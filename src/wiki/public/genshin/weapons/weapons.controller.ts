@@ -1,4 +1,4 @@
-import { IBaseControllerAndService } from "@/types/basecontroller_service";
+import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { WeaponsService } from "./weapons.service";
 import { Weapon } from "@/entities/wiki/genshin/weapons.entity";
@@ -9,7 +9,7 @@ import { createSchema, getSchema, updateSchema } from "./weapons.dto";
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from "@/utils/dto";
 
 @Controller("wiki/genshin/weapons")
-export class WeaponsController implements IBaseControllerAndService {
+export class WeaponsController implements IBasePublicCaS<Weapon> {
   constructor(
     private readonly weaponsService: WeaponsService,
   ) { }

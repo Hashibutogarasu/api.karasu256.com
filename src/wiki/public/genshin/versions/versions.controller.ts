@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Param, Post, Put } from "@nestjs/common";
 import { VersionsService } from "./versions.service";
-import { IBaseControllerAndService } from "@/types/basecontroller_service";
+import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { VersionsEntity } from "@/entities/wiki/genshin/versions.entity";
 import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from "@/utils/dto";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam } from "@nestjs/swagger";
@@ -9,7 +9,7 @@ import { createSchema, getSchema, updateSchema } from "./versions.dto";
 import { Authorization, PublicRoute } from "@nestjs-cognito/auth";
 
 @Controller("wiki/genshin/versions")
-export class VersionsController implements IBaseControllerAndService {
+export class VersionsController implements IBasePublicCaS<VersionsEntity> {
   constructor(
     private readonly versionsService: VersionsService
   ) { }

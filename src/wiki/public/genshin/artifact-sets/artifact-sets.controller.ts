@@ -1,4 +1,4 @@
-import { IBaseControllerAndService } from "@/types/basecontroller_service";
+import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { ArtifactSetsService } from "./artifact-sets.service";
 import { ArtifactSets } from "@/entities/wiki/genshin/artifact-sets.entity";
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
@@ -9,7 +9,7 @@ import { createSchema, getSchema, updateSchema } from "./artifact-sets.dto";
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from "@/utils/dto";
 
 @Controller("wiki/genshin/artifact-sets")
-export class ArtifactSetsController implements IBaseControllerAndService {
+export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
   constructor(
     private readonly service: ArtifactSetsService,
   ) { }

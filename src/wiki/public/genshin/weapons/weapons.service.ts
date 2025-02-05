@@ -1,5 +1,5 @@
 import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
-import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,7 +8,7 @@ import { createSchema, getSchema, updateSchema } from './weapons.dto';
 import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 
 @Injectable()
-export class WeaponsService implements IBaseControllerAndService {
+export class WeaponsService implements IBasePublicCaS<Weapon> {
   constructor(
     @InjectRepository(Weapon)
     private readonly weaponsRepository: Repository<Weapon>,

@@ -1,5 +1,5 @@
 import { GICharacter } from '@/entities/wiki/genshin/gi_character.entity';
-import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,7 +11,7 @@ import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto 
 import { createSchema, fileterValues, getSchema, ImportCharacterDto, updateSchema } from './characters.dto';
 
 @Injectable()
-export class CharactersService implements IBaseControllerAndService {
+export class CharactersService implements IBasePublicCaS<GICharacter> {
   constructor(
     @InjectRepository(GICharacter)
     private readonly charactersService: Repository<GICharacter>,

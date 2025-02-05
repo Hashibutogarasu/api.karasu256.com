@@ -1,4 +1,4 @@
-import { IBaseControllerAndService } from "@/types/basecontroller_service";
+import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { zodToOpenAPI } from "nestjs-zod";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, getSchemaPath } from "@nestjs/swagger";
@@ -9,7 +9,7 @@ import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from "@/utils/dto";
 import { Country } from "@/entities/wiki/genshin/countries.entity";
 
 @Controller("wiki/genshin/regions")
-export class CountriesController implements IBaseControllerAndService {
+export class CountriesController implements IBasePublicCaS<Country> {
   constructor(
     private readonly service: CountriesService,
   ) { }

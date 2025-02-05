@@ -1,4 +1,4 @@
-import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Country } from '@/entities/wiki/genshin/countries.entity';
@@ -8,7 +8,7 @@ import { createSchema, getSchema, updateSchema } from './contries.dto';
 import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 
 @Injectable()
-export class CountriesService implements IBaseControllerAndService {
+export class CountriesService implements IBasePublicCaS<Country> {
   constructor(
     @InjectRepository(Country)
     private readonly repository: Repository<Country>,

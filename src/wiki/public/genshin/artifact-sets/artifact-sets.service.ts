@@ -1,4 +1,4 @@
-import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
@@ -8,7 +8,7 @@ import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto 
 import { createSchema, getSchema, updateSchema } from './artifact-sets.dto';
 
 @Injectable()
-export class ArtifactSetsService implements IBaseControllerAndService {
+export class ArtifactSetsService implements IBasePublicCaS<ArtifactSets> {
   constructor(
     @InjectRepository(ArtifactSets)
     private readonly repository: Repository<ArtifactSets>,

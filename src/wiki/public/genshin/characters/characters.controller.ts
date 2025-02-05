@@ -1,4 +1,4 @@
-import { IBaseControllerAndService } from "@/types/basecontroller_service";
+import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
 import { CharactersService } from "./characters.service";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, getSchemaPath } from "@nestjs/swagger";
@@ -9,7 +9,7 @@ import { createSchema, getSchema, ImportCharacterDto, importCharacterSchema, Imp
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from "@/utils/dto";
 
 @Controller("wiki/genshin/characters")
-export class CharactersController implements IBaseControllerAndService {
+export class CharactersController implements IBasePublicCaS<GICharacter> {
   constructor(
     private readonly charactersService: CharactersService
   ) { }

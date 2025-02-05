@@ -1,5 +1,5 @@
 import { Gallery } from '@/entities/common/galleries.entity';
-import { IBaseControllerAndService } from '@/types/basecontroller_service';
+import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,7 +10,7 @@ import { createSchema, getSchema, updateSchema } from './galleries.dto';
 import { GICharacter } from '@/entities/wiki/genshin/gi_character.entity';
 
 @Injectable()
-export class GalleriesService implements IBaseControllerAndService {
+export class GalleriesService implements IBasePublicCaS<Gallery> {
   constructor(
     @InjectRepository(Gallery)
     private readonly galleryRepository: Repository<Gallery>,
