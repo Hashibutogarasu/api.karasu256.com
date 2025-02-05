@@ -45,7 +45,7 @@ export class VersionsEntity extends BaseEntity implements IBase {
       referencedColumnName: 'id',
     },
   })
-  weapons?: Promise<Weapon[]> | null;
+  weapons?: Weapon[] | null;
 
   @ManyToMany(() => ArtifactSets, { eager: true, nullable: true })
   @JoinTable({
@@ -59,7 +59,7 @@ export class VersionsEntity extends BaseEntity implements IBase {
       referencedColumnName: 'id',
     },
   })
-  artifact_sets?: Promise<ArtifactSets[]> | null;
+  artifact_sets?: ArtifactSets[] | null;
 
   @ManyToMany(() => Country, { eager: true, nullable: true })
   @JoinTable({
@@ -73,7 +73,7 @@ export class VersionsEntity extends BaseEntity implements IBase {
       referencedColumnName: 'id',
     },
   })
-  countries?: Promise<Country[]> | null;
+  countries?: Country[] | null;
 
   @ManyToMany(() => Artifacts, { eager: true, nullable: true })
   @JoinTable({
@@ -87,5 +87,5 @@ export class VersionsEntity extends BaseEntity implements IBase {
       referencedColumnName: 'id',
     },
   })
-  artifacts?: Promise<Artifacts[]> | null;
+  artifacts?: Artifacts[] | null;
 }
