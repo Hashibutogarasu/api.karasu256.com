@@ -91,7 +91,8 @@ async function bootstrap() {
 
   const privatedocument = SwaggerModule.createDocument(app, config, {
     include: [
-      AdminModule
+      AdminModule,
+      GenshinAdminModule,
     ],
   });
   const privateDocumentFactory = () => privatedocument;
