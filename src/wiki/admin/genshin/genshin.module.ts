@@ -8,6 +8,7 @@ import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller';
+import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller
       VersionsEntity,
     ]),
   ],
-  controllers: [ArtifactSetsController]
+  controllers: [ArtifactSetsController],
+  providers: [ArtifactSetsService]
 })
 export class GenshinModule { }

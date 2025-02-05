@@ -1,12 +1,11 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { ArtifactSetsService } from "./artifact-sets.service";
 import { ArtifactSets } from "@/entities/wiki/genshin/artifact-sets.entity";
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, getSchemaPath } from "@nestjs/swagger";
-import { Authorization, PublicRoute } from "@nestjs-cognito/auth";
+import { Body, Controller, Post } from "@nestjs/common";
+import { ApiBody, ApiOperation } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
-import { createSchema, getSchema, updateSchema } from "./artifact-sets.dto";
-import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from "@/utils/dto";
+import { getSchema } from "./artifact-sets.dto";
+import { GetOneDto, GetParamsDto } from "@/utils/dto";
 
 @Controller("wiki/genshin/artifact-sets")
 export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
@@ -22,7 +21,6 @@ export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
-  @PublicRoute()
   @Post("get")
   async get(@Body() query: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
     return this.service.get(query);
@@ -36,61 +34,8 @@ export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
-  @PublicRoute()
   @Post("getOne")
   async getOne(@Body() query: GetOneDto<ArtifactSets>): Promise<ArtifactSets> {
     return this.service.getOne(query);
-  }
-
-  @ApiOperation({
-    operationId: "createArtifactSet",
-    summary: "Create artifact set",
-    tags: ["admin"],
-  })
-  @Authorization({
-    allowedGroups: ["admin"],
-  })
-  @ApiBearerAuth()
-  @ApiBody({
-    schema: zodToOpenAPI(createSchema),
-  })
-  @Post()
-  async create(@Body() dto: CreateDto<ArtifactSets>): Promise<ArtifactSets> {
-    return this.service.create(dto);
-  }
-
-  @ApiOperation({
-    operationId: "updateArtifactSet",
-    summary: "Update artifact set",
-    tags: ["admin"],
-  })
-  @Authorization({
-    allowedGroups: ["admin"],
-  })
-  @ApiBearerAuth()
-  @ApiBody({
-    schema: zodToOpenAPI(updateSchema),
-  })
-  @Put()
-  async update(@Body() dto: UpdateDto<ArtifactSets>): Promise<void> {
-    return this.service.update(dto);
-  }
-
-  @ApiOperation({
-    operationId: "deleteArtifactSet",
-    summary: "Delete artifact set",
-    tags: ["admin"],
-  })
-  @Authorization({
-    allowedGroups: ["admin"],
-  })
-  @ApiBearerAuth()
-  @ApiParam({
-    name: "id",
-    type: "string",
-  })
-  @Delete(":id")
-  async delete(@Param() dto: DeleteDto): Promise<void> {
-    return this.service.delete(dto);
   }
 }
