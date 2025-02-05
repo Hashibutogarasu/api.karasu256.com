@@ -8,6 +8,7 @@ import * as basicAuth from 'express-basic-auth'
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -31,8 +32,18 @@ function configureApp(app: INestApplication) {
 }
 
 async function bootstrap() {
+  const publicPort = 8080;
+  const privatePort = 8081;
+
   const app = configureApp(await NestFactory.create(AppModule));
   const privateApp = configureApp(await NestFactory.create(AppModule));
+
+  const proxyMiddleware = createProxyMiddleware<Request, Response>({
+    target: `http://localhost:${privatePort}`,
+    changeOrigin: true,
+  });
+
+  app.use('/api/private', proxyMiddleware);
 
   patchNestJsSwagger();
 
@@ -68,11 +79,7 @@ async function bootstrap() {
   });
   const publicDocumentFactory = () => publicdocument;
 
-  SwaggerModule.setup("api/public", app, publicDocumentFactory, {
-    ...options,
-    jsonDocumentUrl: "/api/public/api-json",
-    yamlDocumentUrl: "/api/public/api-yaml",
-  });
+  SwaggerModule.setup("api/public/publicDocs", app, publicDocumentFactory, options);
 
   const privateDocument = SwaggerModule.createDocument(privateApp, config, {
     include: [
@@ -83,11 +90,7 @@ async function bootstrap() {
 
   const privateDocumentFactory = () => privateDocument;
 
-  SwaggerModule.setup("api/private", privateApp, privateDocumentFactory, {
-    ...options,
-    jsonDocumentUrl: "/api/private/api-json",
-    yamlDocumentUrl: "/api/private/api-yaml",
-  });
+  SwaggerModule.setup("privateDocs", privateApp, privateDocumentFactory, options);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -101,7 +104,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(8080);
-  await privateApp.listen(8081);
+  await app.listen(publicPort);
+  await privateApp.listen(privatePort);
 }
 bootstrap();

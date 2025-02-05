@@ -54,6 +54,7 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "express-basic-auth": "^1.2.1",
+    "http-proxy-middleware": "^3.0.3",
     "jwks-rsa": "^3.1.0",
     "nestjs-zod": "^4.2.0",
     "node-fetch": "^3.3.2",
