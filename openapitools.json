@@ -16,14 +16,14 @@
         "additionalProperties": {
           "ngVersion": "6.1.8",
           "npmName": "@karasu-lab/karasu256-api-client",
-          "withSeparateModelsAndApi": true,
+          "withSeparateModelsAndApi": false,
           "useSingleRequestParameter": false,
           "enumPropertyNaming": "original",
           "modelPropertyNaming": "original",
           "paramNaming": "original",
           "supportsES6": true,
           "withInterfaces": true,
-          "npmVersion": "1.1.1"
+          "npmVersion": "1.1.2"
         },
         "typeMappings": {
           "date": "Date",
