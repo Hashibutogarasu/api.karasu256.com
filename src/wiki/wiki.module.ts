@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { GenshinModule } from './genshin/genshin.module';
-import { CommonModule } from './common/common.module';
+import { GenshinModule } from './public/genshin/genshin.module';
 import { S3Service } from '@/s3/s3.service';
+import { PublicModule } from './public/public.module';
 
 @Module({
   imports: [
-    GenshinModule,
-    CommonModule,
+    PublicModule,
   ],
   providers: [S3Service],
   controllers: [],

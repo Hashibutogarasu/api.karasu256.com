@@ -1,19 +1,24 @@
-import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
-import { VersionsService } from './versions.service';
-import { IBaseControllerAndService } from '@/types/basecontroller_service';
-import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
-import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from '@/utils/dto';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
-import { zodToOpenAPI } from 'nestjs-zod';
-import { createSchema, getSchema, updateSchema } from './versions.dto';
-import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
+import { Body, Controller, Delete, Param, Post, Put } from "@nestjs/common";
+import { VersionsService } from "./versions.service";
+import { IBaseControllerAndService } from "@/types/basecontroller_service";
+import { VersionsEntity } from "@/entities/wiki/genshin/versions.entity";
+import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from "@/utils/dto";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam } from "@nestjs/swagger";
+import { zodToOpenAPI } from "nestjs-zod";
+import { createSchema, getSchema, updateSchema } from "./versions.dto";
+import { Authorization, PublicRoute } from "@nestjs-cognito/auth";
 
-@Controller('wiki/genshin/versions')
+@Controller("wiki/genshin/versions")
 export class VersionsController implements IBaseControllerAndService {
   constructor(
     private readonly versionsService: VersionsService
   ) { }
 
+  @ApiOperation({
+    operationId: "getVersions",
+    summary: "Get versions",
+    tags: ["genshin-impact"],
+  })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
@@ -23,15 +28,25 @@ export class VersionsController implements IBaseControllerAndService {
     return this.versionsService.get(query);
   }
 
+  @ApiOperation({
+    operationId: "getVersion",
+    summary: "Get version",
+    tags: ["genshin-impact"],
+  })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
   @PublicRoute()
-  @Post('getOne')
+  @Post("getOne")
   async getOne(@Body() query: GetParamsDto<VersionsEntity, ["weapons", "artifacts", "characters", "countries", "artifact_sets", "createdAt", "updatedAt"]>): Promise<VersionsEntity> {
     return this.versionsService.getOne(query);
   }
 
+  @ApiOperation({
+    operationId: "createVersion",
+    summary: "Create version",
+    tags: ["admin"],
+  })
   @Authorization({
     allowedGroups: ["admin"],
   })
@@ -44,6 +59,11 @@ export class VersionsController implements IBaseControllerAndService {
     return this.versionsService.create(dto);
   }
 
+  @ApiOperation({
+    operationId: "updateVersion",
+    summary: "Update version",
+    tags: ["admin"],
+  })
   @Authorization({
     allowedGroups: ["admin"],
   })
@@ -56,15 +76,20 @@ export class VersionsController implements IBaseControllerAndService {
     return this.versionsService.update(dto);
   }
 
+  @ApiOperation({
+    operationId: "deleteVersion",
+    summary: "Delete version",
+    tags: ["admin"],
+  })
   @Authorization({
     allowedGroups: ["admin"],
   })
   @ApiBearerAuth()
   @ApiParam({
-    name: 'id',
-    type: 'string',
+    name: "id",
+    type: "string",
   })
-  @Delete(':id')
+  @Delete(":id")
   async delete(@Param() dto: DeleteDto): Promise<void> {
     return this.versionsService.delete(dto);
   }

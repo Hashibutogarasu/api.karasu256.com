@@ -18,10 +18,15 @@ import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
 import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { VersionsController } from './versions/versions.controller';
 import { VersionsService } from './versions/versions.service';
+import { Gallery } from '@/entities/common/galleries.entity';
+import { GalleriesController } from '../galleries/galleries.controller';
+import { GalleriesService } from '../galleries/galleries.service';
+import { S3Service } from '@/s3/s3.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
+      Gallery,
       GICharacter,
       Weapon,
       Artifacts,
@@ -30,7 +35,7 @@ import { VersionsService } from './versions/versions.service';
       VersionsEntity,
     ]),
   ],
-  controllers: [CharactersController, WeaponsController, ArtifactsController, CountriesController, ArtifactSetsController, VersionsController],
-  providers: [CharactersService, WeaponsService, ArtifactsService, CountriesService, ArtifactSetsService, VersionsService]
+  controllers: [GalleriesController, CharactersController, WeaponsController, ArtifactsController, CountriesController, ArtifactSetsController, VersionsController],
+  providers: [S3Service, GalleriesService, CharactersService, WeaponsService, ArtifactsService, CountriesService, ArtifactSetsService, VersionsService]
 })
 export class GenshinModule { }
