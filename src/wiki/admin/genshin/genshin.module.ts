@@ -9,6 +9,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller';
 import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
+import { ArtifactsController } from './artifacts/artifacts.controller';
+import { ArtifactsService } from './artifacts/artifacts.service';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
       VersionsEntity,
     ]),
   ],
-  controllers: [ArtifactSetsController],
-  providers: [ArtifactSetsService]
+  controllers: [ArtifactSetsController, ArtifactsController],
+  providers: [ArtifactSetsService, ArtifactsService]
 })
 export class GenshinModule { }
