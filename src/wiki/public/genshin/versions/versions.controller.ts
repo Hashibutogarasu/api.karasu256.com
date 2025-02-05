@@ -3,22 +3,19 @@ import { VersionsService } from "./versions.service";
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { VersionsEntity } from "@/entities/wiki/genshin/versions.entity";
 import { GetParamsDto } from "@/utils/dto";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./versions.dto";
+import { AutoOperationName } from "@/utils/operation";
 
-@ApiTags("genshin-impact")
 @Controller("wiki/genshin/versions")
+@AutoOperationName()
+@ApiTags("versions")
 export class VersionsController implements IBasePublicCaS<VersionsEntity> {
   constructor(
     private readonly versionsService: VersionsService
   ) { }
 
-  @ApiOperation({
-    operationId: "getVersions",
-    summary: "Get versions",
-    tags: ["genshin-impact"],
-  })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
@@ -27,11 +24,6 @@ export class VersionsController implements IBasePublicCaS<VersionsEntity> {
     return this.versionsService.get(query);
   }
 
-  @ApiOperation({
-    operationId: "getVersion",
-    summary: "Get version",
-    tags: ["genshin-impact"],
-  })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
