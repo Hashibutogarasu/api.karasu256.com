@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { VersionsService } from './versions.service';
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
-import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';

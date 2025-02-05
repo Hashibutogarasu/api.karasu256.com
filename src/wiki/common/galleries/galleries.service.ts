@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { S3Service } from '@/s3/s3.service';
 import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, getSchema, updateSchema } from './galleries.dto';
-import { Character } from '@/entities/genshin/wiki/character.entity';
+import { GICharacter } from '@/entities/wiki/genshin/gi_character.entity';
 
 @Injectable()
 export class GalleriesService implements IBaseControllerAndService {

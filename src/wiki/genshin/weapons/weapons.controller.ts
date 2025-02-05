@@ -1,7 +1,7 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { WeaponsService } from './weapons.service';
-import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
+import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { zodToOpenAPI } from 'nestjs-zod';

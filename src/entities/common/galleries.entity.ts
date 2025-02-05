@@ -1,5 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Character } from "../genshin/wiki/character.entity";
+import { GICharacter } from "../wiki/genshin/gi_character.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('galleries')
@@ -22,6 +22,6 @@ export class Gallery extends BaseEntity implements IBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Character, character => character.id, { nullable: true })
-  character?: Character | null;
+  @ManyToOne(() => GICharacter, character => character.id, { nullable: true })
+  character?: GICharacter | null;
 }

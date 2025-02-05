@@ -1,9 +1,9 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
+import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
 import { Repository } from 'typeorm';
-import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, getSchema, updateSchema } from './artifact-sets.dto';
 

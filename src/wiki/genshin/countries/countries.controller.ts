@@ -6,7 +6,7 @@ import { CountriesService } from './countries.service';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { createSchema, getSchema, updateSchema } from './contries.dto';
 import { CreateDto, DeleteDto, GetParamsDto, UpdateDto } from '@/utils/dto';
-import { Country } from '@/entities/genshin/wiki/countries.entity';
+import { Country } from '@/entities/wiki/genshin/countries.entity';
 
 @Controller('wiki/genshin/countries')
 export class CountriesController implements IBaseControllerAndService {

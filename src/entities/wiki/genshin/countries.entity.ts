@@ -1,5 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Character } from "./character.entity";
+import { GICharacter } from "./gi_character.entity";
 import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
@@ -17,8 +17,8 @@ export class Country extends BaseEntity implements IBase {
   @Column({ nullable: true })
   sumbnail_url?: string | null;
 
-  @OneToMany(() => Character, character => character.region)
-  characters: Character[];
+  @OneToMany(() => GICharacter, character => character.region)
+  characters: GICharacter[];
 
   @CreateDateColumn()
   createdAt: Date;

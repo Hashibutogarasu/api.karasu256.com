@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CountriesService } from './countries.service';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Country } from '@/entities/genshin/wiki/countries.entity';
+import { Country } from '@/entities/wiki/genshin/countries.entity';
 
 describe('CountriesService', () => {
   let service: CountriesService;

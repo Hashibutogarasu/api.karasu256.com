@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { ArtifactsService } from './artifacts.service';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
-import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
+import { Artifacts } from '@/entities/wiki/genshin/artifacts.entity';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { createSchema, getSchema, updateSchema } from './artifacts.dto';
 import { CreateDto, DeleteDto, GetParamsDto, GetOneDto, UpdateDto } from '@/utils/dto';

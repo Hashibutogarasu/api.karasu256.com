@@ -3,7 +3,7 @@ import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
 import { Country } from "./countries.entity";
-import { Character } from "./character.entity";
+import { GICharacter } from "./gi_character.entity";
 import { Artifacts } from "./artifacts.entity";
 
 @Entity('versions')
@@ -26,8 +26,8 @@ export class VersionsEntity extends BaseEntity implements IBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Character, (character) => character.version)
-  characters: Character[];
+  @OneToMany(() => GICharacter, (character) => character.version)
+  characters: GICharacter[];
 
   @ManyToMany(() => Weapon)
   weapons: Weapon[];

@@ -1,11 +1,11 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Country } from '@/entities/genshin/wiki/countries.entity';
+import { Country } from '@/entities/wiki/genshin/countries.entity';
 import { Repository } from 'typeorm';
 import { CreateDto, DeleteDto, deleteSchema, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, getSchema, updateSchema } from './contries.dto';
-import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 
 @Injectable()
 export class CountriesService implements IBaseControllerAndService {

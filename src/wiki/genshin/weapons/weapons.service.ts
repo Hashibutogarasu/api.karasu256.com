@@ -1,11 +1,11 @@
-import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
+import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createSchema, getSchema, updateSchema } from './weapons.dto';
-import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 
 @Injectable()
 export class WeaponsService implements IBaseControllerAndService {

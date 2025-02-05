@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArtifactsService } from './artifacts.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
+import { Artifacts } from '@/entities/wiki/genshin/artifacts.entity';
 import { Repository } from 'typeorm';
 
 describe('ArtifactsService', () => {

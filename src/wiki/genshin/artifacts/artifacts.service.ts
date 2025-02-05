@@ -1,11 +1,11 @@
-import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
+import { Artifacts } from '@/entities/wiki/genshin/artifacts.entity';
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { CreateDto, GetParamsDto, GetOneDto, UpdateDto, DeleteDto, deleteSchema } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createSchema, getSchema, updateSchema } from './artifacts.dto';
-import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 
 @Injectable()
 export class ArtifactsService implements IBaseControllerAndService {
