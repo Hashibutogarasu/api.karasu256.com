@@ -29,6 +29,6 @@ import { PaginationMiddleware } from "./middleware/pagination.middleware";
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(PaginationMiddleware)
-      .forRoutes({ path: 'product/paged', method: RequestMethod.GET })
+      .forRoutes({ path: 'api/', method: RequestMethod.GET })
   }
 }

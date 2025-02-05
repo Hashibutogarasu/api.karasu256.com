@@ -10,7 +10,7 @@ const baseSchema = z.object({
 
 type BaseDto = z.infer<typeof baseSchema>;
 
-const deleteSchema = baseSchema.extend({
+const deleteSchema = z.object({
   id: z.string().nonempty(),
 }) as ZodType<IDeleteDto>;
 
