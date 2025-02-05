@@ -9,5 +9,8 @@
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "yaml.schemas": {
+    "https://render.com/schema/render.yaml.json": "file:///c%3A/Documents/NodeJs/api.karasu256.com/render.yaml"
   }
 }

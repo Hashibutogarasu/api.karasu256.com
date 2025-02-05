@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: api.karasu256.com
+    runtime: node
+    repo: https://github.com/Hashibutogarasu/api.karasu256.com.git
+    buildFilter:
+      ignoredPaths:
+        - src/**/*.spec.ts
