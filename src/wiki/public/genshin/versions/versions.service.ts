@@ -60,6 +60,4 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
       },
     });
   }
-
-
 }
