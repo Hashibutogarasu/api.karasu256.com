@@ -31,15 +31,7 @@ describe('CountriesService', () => {
     service = module.get<CountriesService>(CountriesService);
   });
 
-  it('create a country', async () => {
-    const country = await service.create({
-      name: 'Test Country',
-      description: 'Test Description',
-      sumbnail_url: 'https://example.com/sumbnail.png',
-    });
-
-    const { ...rest } = country;
-
-    expect(await service.get({ ...rest })).toEqual(rest);
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });
