@@ -12,7 +12,7 @@ import { createSchema, updateSchema } from './versions.dto';
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-@Controller('versions')
+  @Controller("wiki/genshin/admin/versions")
 export class VersionsController implements IBaseAdminCaS<VersionsEntity> {
   constructor(
     private readonly versionsService: VersionsService

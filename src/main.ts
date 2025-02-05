@@ -38,6 +38,11 @@ async function bootstrap() {
   const app = configureApp(await NestFactory.create(AppModule));
   const privateApp = configureApp(await NestFactory.create(AppModule));
 
+  privateApp.use(basicAuth({
+    users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD },
+    challenge: true,
+  }));
+
   const proxyMiddleware = createProxyMiddleware<Request, Response>({
     target: `http://localhost:${privatePort}`,
     changeOrigin: true,
@@ -79,7 +84,11 @@ async function bootstrap() {
   });
   const publicDocumentFactory = () => publicdocument;
 
-  SwaggerModule.setup("api/public/publicDocs", app, publicDocumentFactory, options);
+  SwaggerModule.setup("api/public/publicDocs", app, publicDocumentFactory, {
+    ...options,
+    jsonDocumentUrl: "/api/public/api-json",
+    yamlDocumentUrl: "/api/public/api-yaml",
+  });
 
   const privateDocument = SwaggerModule.createDocument(privateApp, config, {
     include: [
@@ -90,7 +99,11 @@ async function bootstrap() {
 
   const privateDocumentFactory = () => privateDocument;
 
-  SwaggerModule.setup("privateDocs", privateApp, privateDocumentFactory, options);
+  SwaggerModule.setup("privateDocs", privateApp, privateDocumentFactory, {
+    ...options,
+    jsonDocumentUrl: "api-json",
+    yamlDocumentUrl: "api-yaml",
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({

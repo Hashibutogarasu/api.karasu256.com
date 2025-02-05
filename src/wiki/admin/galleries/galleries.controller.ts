@@ -13,7 +13,7 @@ import { createSchema, updateSchema } from './galleries.dto';
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-@Controller('galleries')
+  @Controller('galleries/admin')
 export class GalleriesController implements IBaseAdminCaS<Gallery> {
   constructor(
     private readonly galleriesService: GalleriesService,

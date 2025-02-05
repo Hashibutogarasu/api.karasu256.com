@@ -12,7 +12,7 @@ import { createSchema, updateSchema } from "./weapons.dto";
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-@Controller('weapons')
+  @Controller("wiki/genshin/admin/weapons")
 export class WeaponsController implements IBaseAdminCaS<Weapon> {
   constructor(
     private readonly weaponsService: WeaponsService,
