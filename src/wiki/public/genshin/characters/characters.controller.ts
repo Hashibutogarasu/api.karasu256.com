@@ -1,12 +1,13 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { Body, Controller, Post } from "@nestjs/common";
 import { CharactersService } from "./characters.service";
-import { ApiBody, ApiOperation } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { GICharacter } from "@/entities/wiki/genshin/gi_character.entity";
 import { getSchema } from "./characters.dto";
 import { GetOneDto, GetParamsDto } from "@/utils/dto";
 
+@ApiTags("genshin-impact")
 @Controller("wiki/genshin/characters")
 export class CharactersController implements IBasePublicCaS<GICharacter> {
   constructor(

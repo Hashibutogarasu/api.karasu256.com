@@ -2,11 +2,12 @@ import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { Body, Controller, Post } from "@nestjs/common";
 import { WeaponsService } from "./weapons.service";
 import { Weapon } from "@/entities/wiki/genshin/weapons.entity";
-import { ApiBody, ApiOperation } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./weapons.dto";
 import { GetOneDto, GetParamsDto } from "@/utils/dto";
 
+@ApiTags("genshin-impact")
 @Controller("wiki/genshin/weapons")
 export class WeaponsController implements IBasePublicCaS<Weapon> {
   constructor(

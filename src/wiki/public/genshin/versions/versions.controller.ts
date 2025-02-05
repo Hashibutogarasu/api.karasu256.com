@@ -3,10 +3,11 @@ import { VersionsService } from "./versions.service";
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { VersionsEntity } from "@/entities/wiki/genshin/versions.entity";
 import { GetParamsDto } from "@/utils/dto";
-import { ApiBody, ApiOperation } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./versions.dto";
 
+@ApiTags("genshin-impact")
 @Controller("wiki/genshin/versions")
 export class VersionsController implements IBasePublicCaS<VersionsEntity> {
   constructor(

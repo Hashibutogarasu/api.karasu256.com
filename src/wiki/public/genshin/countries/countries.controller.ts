@@ -1,12 +1,13 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { Body, Controller, Post } from "@nestjs/common";
 import { zodToOpenAPI } from "nestjs-zod";
-import { ApiBody, ApiOperation } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CountriesService } from "./countries.service";
 import { getSchema } from "./contries.dto";
 import { GetParamsDto } from "@/utils/dto";
 import { Country } from "@/entities/wiki/genshin/countries.entity";
 
+@ApiTags("genshin-impact")
 @Controller("wiki/genshin/regions")
 export class CountriesController implements IBasePublicCaS<Country> {
   constructor(
