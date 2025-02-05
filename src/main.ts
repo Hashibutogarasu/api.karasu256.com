@@ -1,18 +1,15 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "@/app.module";
 import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from "@nestjs/swagger";
-import { ValidationPipe } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
-import { WikiModule } from "./wiki/wiki.module";
+import * as basicAuth from 'express-basic-auth'
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  patchNestJsSwagger();
-
+function configureApp(app: INestApplication) {
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
@@ -29,6 +26,15 @@ async function bootstrap() {
   app.getHttpAdapter().getInstance().set('etag', false);
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+  return app;
+}
+
+async function bootstrap() {
+  const app = configureApp(await NestFactory.create(AppModule));
+  const privateApp = configureApp(await NestFactory.create(AppModule));
+
+  patchNestJsSwagger();
 
   const config = new DocumentBuilder()
     .setTitle(`Karasu Lab API ${process.env.NODE_ENV}`)
@@ -68,7 +74,7 @@ async function bootstrap() {
     yamlDocumentUrl: "/api/public/api-yaml",
   });
 
-  const privateDocument = SwaggerModule.createDocument(app, config, {
+  const privateDocument = SwaggerModule.createDocument(privateApp, config, {
     include: [
       AdminModule,
       GenshinAdminModule
@@ -77,7 +83,7 @@ async function bootstrap() {
 
   const privateDocumentFactory = () => privateDocument;
 
-  SwaggerModule.setup("api/private", app, privateDocumentFactory, {
+  SwaggerModule.setup("api/private", privateApp, privateDocumentFactory, {
     ...options,
     jsonDocumentUrl: "/api/private/api-json",
     yamlDocumentUrl: "/api/private/api-yaml",
@@ -89,6 +95,13 @@ async function bootstrap() {
     }),
   );
 
+  privateApp.useGlobalPipes(
+    new ValidationPipe({
+      disableErrorMessages: process.env.NODE_ENV !== "production",
+    }),
+  );
+
   await app.listen(8080);
+  await privateApp.listen(8081);
 }
 bootstrap();
