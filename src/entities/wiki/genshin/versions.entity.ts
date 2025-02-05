@@ -20,6 +20,9 @@ export class VersionsEntity extends BaseEntity implements IBase {
   @Column({ default: false })
   released: boolean;
 
+  @Column({ nullable: true })
+  release_date?: Date | null;
+
   @CreateDateColumn()
   createdAt: Date;
 
