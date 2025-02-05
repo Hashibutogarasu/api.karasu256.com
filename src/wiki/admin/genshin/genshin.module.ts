@@ -15,6 +15,8 @@ import { CharactersController } from './characters/characters.controller';
 import { CharactersService } from './characters/characters.service';
 import { CountriesController } from './countries/countries.controller';
 import { CountriesService } from './countries/countries.service';
+import { VersionsController } from './versions/versions.controller';
+import { VersionsService } from './versions/versions.service';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { CountriesService } from './countries/countries.service';
       VersionsEntity,
     ]),
   ],
-  controllers: [ArtifactSetsController, ArtifactsController, CharactersController, CountriesController],
-  providers: [ArtifactSetsService, ArtifactsService, CharactersService, CountriesService]
+  controllers: [ArtifactSetsController, ArtifactsController, CharactersController, CountriesController, VersionsController],
+  providers: [ArtifactSetsService, ArtifactsService, CharactersService, CountriesService, VersionsService]
 })
 export class GenshinModule { }
