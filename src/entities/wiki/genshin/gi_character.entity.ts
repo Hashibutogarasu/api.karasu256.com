@@ -7,7 +7,7 @@ import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('characters')
-export class Character extends BaseEntity implements IBase {
+export class GICharacter extends BaseEntity implements IBase {
   @PrimaryGeneratedColumn('increment')
   id: string;
 

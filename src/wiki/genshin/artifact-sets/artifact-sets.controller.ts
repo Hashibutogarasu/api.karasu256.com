@@ -1,6 +1,6 @@
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { ArtifactSetsService } from './artifact-sets.service';
-import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
+import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';

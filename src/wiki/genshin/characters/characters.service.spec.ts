@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CharactersService } from './characters.service';
-import { Character } from '@/entities/genshin/wiki/character.entity';
+import { GICharacter } from '@/entities/wiki/genshin/gi_character.entity';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('CharactersService', () => {
   let service: CharactersService;
-  let mockRepository: Repository<Character>;
+  let mockRepository: Repository<GICharacter>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,13 +20,13 @@ describe('CharactersService', () => {
           }),
         },
         {
-          provide: getRepositoryToken(Character),
+          provide: getRepositoryToken(GICharacter),
           useClass: Repository
         }
       ],
     }).compile();
 
-    mockRepository = module.get<Repository<Character>>(getRepositoryToken(Character));
+    mockRepository = module.get<Repository<GICharacter>>(getRepositoryToken(GICharacter));
     jest.spyOn(mockRepository, 'findOne').mockImplementation(jest.fn());
 
     service = module.get<CharactersService>(CharactersService);
@@ -34,7 +34,7 @@ describe('CharactersService', () => {
 
   it('create a character', async () => {
     const character = await service.create({
-      name: 'Test Character',
+      name: 'Test GICharacter',
       description: 'Test Description',
       element: 'Test Element',
       icon_url: 'https://example.com/icon.png',

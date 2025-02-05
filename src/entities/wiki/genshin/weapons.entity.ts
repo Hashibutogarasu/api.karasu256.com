@@ -1,5 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Character } from "./character.entity";
+import { GICharacter } from "./gi_character.entity";
 import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
@@ -32,8 +32,8 @@ export class Weapon extends BaseEntity implements IBase {
   @Column()
   type: string;
 
-  @OneToMany(() => Character, character => character.weapon)
-  characters: Character[];
+  @OneToMany(() => GICharacter, character => character.weapon)
+  characters: GICharacter[];
 
   @OneToMany(() => VersionsEntity, version => version.weapons)
   version: VersionsEntity;

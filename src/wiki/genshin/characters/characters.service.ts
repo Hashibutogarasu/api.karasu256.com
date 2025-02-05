@@ -1,20 +1,20 @@
-import { Character } from '@/entities/genshin/wiki/character.entity';
+import { GICharacter } from '@/entities/wiki/genshin/gi_character.entity';
 import { IBaseControllerAndService } from '@/types/basecontroller_service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
-import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
-import { Country } from '@/entities/genshin/wiki/countries.entity';
-import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
+import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
+import { Country } from '@/entities/wiki/genshin/countries.entity';
+import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { CreateDto, DeleteDto, deleteSchema, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
 import { createSchema, fileterValues, getSchema, ImportCharacterDto, updateSchema } from './characters.dto';
 
 @Injectable()
 export class CharactersService implements IBaseControllerAndService {
   constructor(
-    @InjectRepository(Character)
-    private readonly charactersService: Repository<Character>,
+    @InjectRepository(GICharacter)
+    private readonly charactersService: Repository<GICharacter>,
 
     @InjectRepository(Country)
     private readonly countriesService: Repository<Country>,
@@ -29,7 +29,7 @@ export class CharactersService implements IBaseControllerAndService {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async get(query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+  async get(query: GetParamsDto<GICharacter, ["createdAt", "updatedAt"]>): Promise<GICharacter[]> {
     const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
@@ -64,7 +64,7 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async getOne(query: GetOneDto<Character>): Promise<Character> {
+  async getOne(query: GetOneDto<GICharacter>): Promise<GICharacter> {
     const parsed = getSchema.safeParse(query);
 
     if (!parsed.success) {
@@ -95,7 +95,7 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async create(dto: CreateDto<Character>): Promise<Character> {
+  async create(dto: CreateDto<GICharacter>): Promise<GICharacter> {
     const parsed = createSchema.safeParse(dto);
 
     if (!parsed.success) {
@@ -114,7 +114,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new NotFoundException('このバージョンは存在しません');
     }
 
-    const character = Character.create({
+    const character = GICharacter.create({
       ...ref,
       version: versionExists,
     });
@@ -175,7 +175,7 @@ export class CharactersService implements IBaseControllerAndService {
     });
   }
 
-  async update(dto: UpdateDto<Character>): Promise<void> {
+  async update(dto: UpdateDto<GICharacter>): Promise<void> {
     const parsed = updateSchema.safeParse(dto);
 
     if (!parsed.success) {
@@ -191,7 +191,7 @@ export class CharactersService implements IBaseControllerAndService {
     });
 
     if (!characterExists) {
-      throw new NotFoundException('Character not found');
+      throw new NotFoundException('GICharacter not found');
     }
 
     const versionExists = await this.versionRepository.findOne({
@@ -204,7 +204,7 @@ export class CharactersService implements IBaseControllerAndService {
       throw new NotFoundException('このバージョンは存在しません');
     }
 
-    await Character.update({
+    await GICharacter.update({
       id: dto.id,
     }, {
       ...ref,
@@ -228,13 +228,13 @@ export class CharactersService implements IBaseControllerAndService {
     });
 
     if (!character) {
-      throw new NotFoundException('Character not found');
+      throw new NotFoundException('GICharacter not found');
     }
 
     await this.charactersService.delete(dto.id);
   }
 
-  async import(dto: ImportCharacterDto): Promise<Character> {
+  async import(dto: ImportCharacterDto): Promise<GICharacter> {
     const version = await this.versionRepository.findOne({
       where: {
         version_string: dto.version,
@@ -244,7 +244,7 @@ export class CharactersService implements IBaseControllerAndService {
       released: true,
     });
 
-    const character = Character.create({
+    const character = GICharacter.create({
       name: dto.name,
       description: dto.desc,
       icon_url: dto.icon_url,

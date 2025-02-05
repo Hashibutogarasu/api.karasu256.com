@@ -3,7 +3,7 @@ import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, 
 import { CharactersService } from './characters.service';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, getSchemaPath } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { Character } from '@/entities/genshin/wiki/character.entity';
+import { GICharacter } from '@/entities/wiki/genshin/gi_character.entity';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 import { createSchema, getSchema, ImportCharacterDto, importCharacterSchema, ImportFromHoyoLabDto, importFromHoyoLabSchema, updateSchema } from './characters.dto';
 import { CreateDto, DeleteDto, GetOneDto, GetParamsDto, UpdateDto } from '@/utils/dto';
@@ -19,7 +19,7 @@ export class CharactersController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Post("get")
-  async get(@Body() query: GetParamsDto<Character, ["createdAt", "updatedAt"]>): Promise<Character[]> {
+  async get(@Body() query: GetParamsDto<GICharacter, ["createdAt", "updatedAt"]>): Promise<GICharacter[]> {
     return this.charactersService.get(query);
   }
 
@@ -28,7 +28,7 @@ export class CharactersController implements IBaseControllerAndService {
   })
   @PublicRoute()
   @Post('getOne')
-  async getOne(@Body() query: GetOneDto<Character>): Promise<Character> {
+  async getOne(@Body() query: GetOneDto<GICharacter>): Promise<GICharacter> {
     return this.charactersService.getOne(query);
   }
 
@@ -40,7 +40,7 @@ export class CharactersController implements IBaseControllerAndService {
     schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(@Body() dto: Omit<CreateDto<Character>, "country">): Promise<Character> {
+  async create(@Body() dto: Omit<CreateDto<GICharacter>, "country">): Promise<GICharacter> {
     return this.charactersService.create(dto);
   }
 
@@ -52,7 +52,7 @@ export class CharactersController implements IBaseControllerAndService {
     schema: zodToOpenAPI(updateSchema),
   })
   @Put()
-  async update(@Body() dto: UpdateDto<Character>): Promise<void> {
+  async update(@Body() dto: UpdateDto<GICharacter>): Promise<void> {
     return this.charactersService.update(dto);
   }
 
@@ -78,7 +78,7 @@ export class CharactersController implements IBaseControllerAndService {
     schema: zodToOpenAPI(importFromHoyoLabSchema),
   })
   @Post('importFromHoyoLab')
-  async importFromHoyoLab(@Query() dto: ImportFromHoyoLabDto): Promise<Character> {
+  async importFromHoyoLab(@Query() dto: ImportFromHoyoLabDto): Promise<GICharacter> {
     const data = await fetch(`https://sg-wiki-api-static.hoyolab.com/hoyowiki/genshin/wapi/entry_page?entry_page_id=${dto.entry_page_id}`, {
       "credentials": "omit",
       "headers": {
@@ -121,7 +121,7 @@ export class CharactersController implements IBaseControllerAndService {
     schema: zodToOpenAPI(importCharacterSchema),
   })
   @Post('import')
-  async import(@Body() dto: ImportCharacterDto): Promise<Character> {
+  async import(@Body() dto: ImportCharacterDto): Promise<GICharacter> {
     return this.charactersService.import(dto);
   }
 }

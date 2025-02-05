@@ -18688,7 +18688,7 @@
         {
           "start": 708,
           "length": 41,
-          "messageText": "Cannot find module '@/entities/genshin/wiki/character.entity' or its corresponding type declarations.",
+          "messageText": "Cannot find module '@/entities/wiki/genshin/gi_character.entity' or its corresponding type declarations.",
           "category": 1,
           "code": 2307
         }

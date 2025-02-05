@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   patchNestJsSwagger();
@@ -29,7 +30,7 @@ async function bootstrap() {
     .setTitle(`Karasu Lab API ${process.env.NODE_ENV}`)
     .setLicense("MIT", "https://opensource.org/licenses/MIT")
     .setDescription("API documentation for Karasu Lab")
-    .setVersion("1.0")
+    .setVersion("1.0.3")
     .addServer(process.env.BASE_URL)
     .addBearerAuth({
       type: 'http',

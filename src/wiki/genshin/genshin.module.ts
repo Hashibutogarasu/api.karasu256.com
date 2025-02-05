@@ -2,27 +2,27 @@ import { Module } from '@nestjs/common';
 import { CharactersController } from './characters/characters.controller';
 import { CharactersService } from './characters/characters.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Character } from '@/entities/genshin/wiki/character.entity';
+import { GICharacter } from '@/entities/wiki/genshin/gi_character.entity';
 import { WeaponsController } from './weapons/weapons.controller';
 import { WeaponsService } from './weapons/weapons.service';
-import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
+import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
 import { ArtifactsService } from './artifacts/artifacts.service';
 import { ArtifactsController } from './artifacts/artifacts.controller';
-import { Artifacts } from '@/entities/genshin/wiki/artifacts.entity';
+import { Artifacts } from '@/entities/wiki/genshin/artifacts.entity';
 import { CountriesController } from './countries/countries.controller';
 import { CountriesService } from './countries/countries.service';
 import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller';
 import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
-import { Country } from '@/entities/genshin/wiki/countries.entity';
-import { ArtifactSets } from '@/entities/genshin/wiki/artifact-sets.entity';
-import { VersionsEntity } from '@/entities/genshin/wiki/versions.entity';
+import { Country } from '@/entities/wiki/genshin/countries.entity';
+import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
+import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { VersionsController } from './versions/versions.controller';
 import { VersionsService } from './versions/versions.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      Character,
+      GICharacter,
       Weapon,
       Artifacts,
       Country,

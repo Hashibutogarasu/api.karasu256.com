@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { WeaponsService } from './weapons.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Weapon } from '@/entities/genshin/wiki/weapons.entity';
+import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
 import { Repository } from 'typeorm';
 
 describe('WeaponsService', () => {
