@@ -1,24 +1,20 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { Body, Controller, Post } from "@nestjs/common";
 import { CharactersService } from "./characters.service";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { GICharacter } from "@/entities/wiki/genshin/gi_character.entity";
 import { getSchema } from "./characters.dto";
 import { GetOneDto, GetParamsDto } from "@/utils/dto";
+import { AutoOperationName } from "@/utils/operation";
 
-@ApiTags("genshin-impact")
 @Controller("wiki/genshin/characters")
+@ApiTags("characters")
 export class CharactersController implements IBasePublicCaS<GICharacter> {
   constructor(
     private readonly charactersService: CharactersService
   ) { }
 
-  @ApiOperation({
-    operationId: "getCharacters",
-    summary: "Get characters",
-    tags: ["genshin-impact", "characters"],
-  })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
@@ -27,11 +23,6 @@ export class CharactersController implements IBasePublicCaS<GICharacter> {
     return this.charactersService.get(query);
   }
 
-  @ApiOperation({
-    operationId: "getCharacter",
-    summary: "Get character",
-    tags: ["genshin-impact", "characters"],
-  })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })

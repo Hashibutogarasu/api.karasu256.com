@@ -22,7 +22,6 @@ export class CountriesController implements IBaseAdminCaS<Country> {
     operationId: "createRegion",
     summary: "Create region",
   })
-
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })

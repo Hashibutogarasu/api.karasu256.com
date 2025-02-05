@@ -4,25 +4,51 @@
   "generator-cli": {
     "version": "7.11.0",
     "generators": {
-      "latest": {
+      "public": {
         "packageName": "@karasu-lab/karasu256-api-client",
         "generatorName": "typescript-fetch",
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/json",
-        "output": "#{cwd}/client/latest/#{name}",
+        "inputSpec": "https://api.karasu256.com/api/public/api-json",
+        "output": "#{cwd}/client/public/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
           "ngVersion": "6.1.8",
           "npmName": "@karasu-lab/karasu256-api-client",
           "withSeparateModelsAndApi": true,
-          "useSingleRequestParameter": true,
+          "useSingleRequestParameter": false,
+          "enumPropertyNaming": "original",
+          "modelPropertyNaming": "original",
+          "paramNaming": "original",
+          "supportsES6": true,
+          "withInterfaces": true,
+          "npmVersion": "1.1.3"
+        },
+        "typeMappings": {
+          "date": "Date",
+          "DateTime": "Date"
+        }
+      },
+      "admin": {
+        "packageName": "@karasu-lab/karasu256-api-admin-client",
+        "generatorName": "typescript-fetch",
+        "auth": "Bearer",
+        "gitUserId": "Hashibutogarasu",
+        "gitRepoId": "api.karasu256.com",
+        "inputSpec": "https://api.karasu256.com/api/admin/api-json",
+        "output": "#{cwd}/client/admin/#{name}",
+        "enablePostProcessFile": true,
+        "additionalProperties": {
+          "ngVersion": "6.1.8",
+          "npmName": "@karasu-lab/karasu256-api-admin-client",
+          "withSeparateModelsAndApi": true,
+          "useSingleRequestParameter": false,
           "enumPropertyNaming": "original",
           "modelPropertyNaming": "original",
           "supportsES6": true,
           "withInterfaces": true,
-          "npmVersion": "0.8.6"
+          "npmVersion": "1.2.0"
         },
         "typeMappings": {
           "date": "Date",

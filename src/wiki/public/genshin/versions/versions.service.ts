@@ -25,8 +25,6 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
     return await this.versionsRepository.find({
       where: {
         ...ref,
-        version_string,
-        released,
       },
       take: take,
       skip: skip,
@@ -48,6 +46,4 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
       },
     });
   }
-
-
 }

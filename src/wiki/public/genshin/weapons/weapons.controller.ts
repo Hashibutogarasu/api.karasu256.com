@@ -6,19 +6,15 @@ import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./weapons.dto";
 import { GetOneDto, GetParamsDto } from "@/utils/dto";
+import { AutoOperationName } from "@/utils/operation";
 
-@ApiTags("genshin-impact")
 @Controller("wiki/genshin/weapons")
+@ApiTags("weapons")
 export class WeaponsController implements IBasePublicCaS<Weapon> {
   constructor(
     private readonly weaponsService: WeaponsService,
   ) { }
 
-  @ApiOperation({
-    operationId: "getWeapons",
-    summary: "Get weapons",
-    tags: ["genshin-impact", "weapons"],
-  })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })
@@ -27,11 +23,6 @@ export class WeaponsController implements IBasePublicCaS<Weapon> {
     return this.weaponsService.get(query);
   }
 
-  @ApiOperation({
-    operationId: "getWeapon",
-    summary: "Get weapon",
-    tags: ["genshin-impact", "weapons"],
-  })
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
   })

@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
@@ -20,6 +20,9 @@ export class VersionsEntity extends BaseEntity implements IBase {
   @Column({ default: false })
   released: boolean;
 
+  // @Column({ nullable: true })
+  // release_date?: Date | null;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -27,17 +30,62 @@ export class VersionsEntity extends BaseEntity implements IBase {
   updatedAt: Date;
 
   @OneToMany(() => GICharacter, (character) => character.version)
+  @JoinColumn({ name: 'characterId' })
   characters: GICharacter[];
 
-  @ManyToMany(() => Weapon)
-  weapons: Weapon[];
+  @ManyToMany(() => Weapon, { eager: true, nullable: true })
+  @JoinTable({
+    name: 'weapon',
+    joinColumn: {
+      name: 'weaponId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'weaponId',
+      referencedColumnName: 'id',
+    },
+  })
+  weapons: Weapon[] | null;
 
-  @ManyToMany(() => ArtifactSets)
-  artifact_sets: ArtifactSets[];
+  @ManyToMany(() => ArtifactSets, { eager: true, nullable: true })
+  @JoinTable({
+    name: 'artifact_set',
+    joinColumn: {
+      name: 'artifact_setId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'artifact_setId',
+      referencedColumnName: 'id',
+    },
+  })
+  artifact_sets: ArtifactSets[] | null;
 
-  @ManyToMany(() => Country)
-  countries: Country[];
+  @ManyToMany(() => Country, { eager: true, nullable: true })
+  @JoinTable({
+    name: 'country',
+    joinColumn: {
+      name: 'countryId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'countryId',
+      referencedColumnName: 'id',
+    },
+  })
+  countries?: Country[] | null;
 
-  @ManyToMany(() => Artifacts)
-  artifacts: Artifacts[];
+  @ManyToMany(() => Artifacts, { eager: true, nullable: true })
+  @JoinTable({
+    name: 'artifact',
+    joinColumn: {
+      name: 'artifactId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'artifactId',
+      referencedColumnName: 'id',
+    },
+  })
+  artifacts?: Artifacts[] | null;
 }

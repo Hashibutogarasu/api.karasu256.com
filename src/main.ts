@@ -9,6 +9,8 @@ import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import { WikiModule } from "./wiki/wiki.module";
+import { PublicModule } from "./wiki/public/public.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -33,27 +35,22 @@ function configureApp(app: INestApplication) {
 
 async function bootstrap() {
   const publicPort = 8080;
-  const privatePort = 8081;
 
   const app = configureApp(await NestFactory.create(AppModule));
-  const privateApp = configureApp(await NestFactory.create(AppModule));
 
-  privateApp.use(basicAuth({
-    users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD },
+  app.use('/api/admin', basicAuth({
+    users: {
+      "admin": process.env.BASIC_AUTH_PASSWORD,
+    },
     challenge: true,
   }));
 
-  const proxyMiddleware = createProxyMiddleware<Request, Response>({
-    target: `http://localhost:${privatePort}`,
-    changeOrigin: true,
-  });
-
-  app.use('/api/private', proxyMiddleware);
-
   patchNestJsSwagger();
 
+  const node_env = process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1);
+
   const config = new DocumentBuilder()
-    .setTitle(`Karasu Lab API ${process.env.NODE_ENV}`)
+    .setTitle(`Karasu Lab API ${node_env}`)
     .setLicense("MIT", "https://opensource.org/licenses/MIT")
     .setDescription("API documentation for Karasu Lab")
     .setVersion("1.0.3")
@@ -79,30 +76,31 @@ async function bootstrap() {
 
   const publicdocument = SwaggerModule.createDocument(app, config, {
     include: [
+      WikiModule,
+      PublicModule,
       GenshinModule
     ],
   });
   const publicDocumentFactory = () => publicdocument;
 
-  SwaggerModule.setup("api/public/publicDocs", app, publicDocumentFactory, {
+  SwaggerModule.setup("api/public", app, publicDocumentFactory, {
     ...options,
     jsonDocumentUrl: "/api/public/api-json",
     yamlDocumentUrl: "/api/public/api-yaml",
   });
 
-  const privateDocument = SwaggerModule.createDocument(privateApp, config, {
+  const privatedocument = SwaggerModule.createDocument(app, config, {
     include: [
       AdminModule,
-      GenshinAdminModule
+      GenshinAdminModule,
     ],
   });
+  const privateDocumentFactory = () => privatedocument;
 
-  const privateDocumentFactory = () => privateDocument;
-
-  SwaggerModule.setup("privateDocs", privateApp, privateDocumentFactory, {
+  SwaggerModule.setup("api/admin", app, privateDocumentFactory, {
     ...options,
-    jsonDocumentUrl: "api-json",
-    yamlDocumentUrl: "api-yaml",
+    jsonDocumentUrl: "/api/admin/api-json",
+    yamlDocumentUrl: "/api/admin/api-yaml",
   });
 
   app.useGlobalPipes(
@@ -111,13 +109,6 @@ async function bootstrap() {
     }),
   );
 
-  privateApp.useGlobalPipes(
-    new ValidationPipe({
-      disableErrorMessages: process.env.NODE_ENV !== "production",
-    }),
-  );
-
   await app.listen(publicPort);
-  await privateApp.listen(privatePort);
 }
 bootstrap();
