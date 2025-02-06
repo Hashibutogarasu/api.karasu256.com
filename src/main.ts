@@ -11,6 +11,7 @@ import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { WikiModule } from "./wiki/wiki.module";
 import { PublicModule } from "./wiki/public/public.module";
+import { GalleriesModule } from "./wiki/admin/galleries/galleries.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -92,6 +93,7 @@ async function bootstrap() {
   const privatedocument = SwaggerModule.createDocument(app, config, {
     include: [
       AdminModule,
+      GalleriesModule,
       GenshinAdminModule,
     ],
   });
@@ -109,6 +111,6 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(publicPort);
+  await app.listen(process.env.PORT || publicPort);
 }
 bootstrap();

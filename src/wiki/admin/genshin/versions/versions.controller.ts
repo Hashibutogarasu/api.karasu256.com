@@ -18,11 +18,6 @@ export class VersionsController implements IBaseAdminCaS<VersionsEntity> {
     private readonly versionsService: VersionsService
   ) { }
 
-  @ApiOperation({
-    operationId: "createVersion",
-    summary: "Create version",
-  })
-
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -31,10 +26,6 @@ export class VersionsController implements IBaseAdminCaS<VersionsEntity> {
     return this.versionsService.create(dto);
   }
 
-  @ApiOperation({
-    operationId: "updateVersion",
-    summary: "Update version",
-  })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -43,10 +34,6 @@ export class VersionsController implements IBaseAdminCaS<VersionsEntity> {
     return this.versionsService.update(dto);
   }
 
-  @ApiOperation({
-    operationId: "deleteVersion",
-    summary: "Delete version",
-  })
   @ApiParam({
     name: "id",
     type: "string",

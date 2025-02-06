@@ -17,6 +17,10 @@ export class WeaponsService implements IBasePublicCaS<Weapon> {
     private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
+  async getAll(): Promise<Weapon[]> {
+    return await this.weaponsRepository.find();
+  }
+
   async get(query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
     const parsed = getSchema.safeParse(query);
 

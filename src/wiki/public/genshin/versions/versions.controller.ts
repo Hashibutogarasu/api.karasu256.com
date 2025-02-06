@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { VersionsService } from "./versions.service";
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { VersionsEntity } from "@/entities/wiki/genshin/versions.entity";
@@ -14,6 +14,11 @@ export class VersionsController implements IBasePublicCaS<VersionsEntity> {
   constructor(
     private readonly versionsService: VersionsService
   ) { }
+
+  @Get()
+  async getAll() {
+    return this.versionsService.get({});
+  }
 
   @ApiBody({
     schema: zodToOpenAPI(getSchema),

@@ -1,7 +1,7 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { ArtifactSetsService } from "./artifact-sets.service";
 import { ArtifactSets } from "@/entities/wiki/genshin/artifact-sets.entity";
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./artifact-sets.dto";
@@ -14,6 +14,11 @@ export class ArtifactSetsController implements IBasePublicCaS<ArtifactSets> {
   constructor(
     private readonly service: ArtifactSetsService,
   ) { }
+
+  @Get()
+  async getAll() {
+    return this.service.get({});
+  }
 
   @ApiBody({
     schema: zodToOpenAPI(getSchema),

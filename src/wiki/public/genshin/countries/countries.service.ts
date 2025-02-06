@@ -17,6 +17,10 @@ export class CountriesService implements IBasePublicCaS<Country> {
     private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
+  async getAll(): Promise<Country[]> {
+    return await this.repository.find();
+  }
+
   async get(query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
     const parsed = getSchema.safeParse(query);
 

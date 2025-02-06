@@ -1,5 +1,5 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { zodToOpenAPI } from "nestjs-zod";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { CountriesService } from "./countries.service";
@@ -14,6 +14,11 @@ export class CountriesController implements IBasePublicCaS<Country> {
   constructor(
     private readonly service: CountriesService,
   ) { }
+
+  @Get()
+  async getAll(): Promise<Country[]> {
+    return this.service.getAll();
+  }
 
   @ApiBody({
     schema: zodToOpenAPI(getSchema),

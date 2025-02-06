@@ -17,6 +17,10 @@ export class ArtifactSetsService implements IBasePublicCaS<ArtifactSets> {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
+  async getAll(): Promise<ArtifactSets[]> {
+    return await this.repository.find();
+  }
+
   async get(query: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
     const parsed = getSchema.safeParse(query);
 

@@ -23,7 +23,7 @@
           "paramNaming": "original",
           "supportsES6": true,
           "withInterfaces": true,
-          "npmVersion": "1.1.3"
+          "npmVersion": "1.3.0"
         },
         "typeMappings": {
           "date": "Date",
@@ -36,7 +36,7 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/admin/api-json",
+        "inputSpec": "./api-docs/api-json.json",
         "output": "#{cwd}/client/admin/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
@@ -46,9 +46,10 @@
           "useSingleRequestParameter": false,
           "enumPropertyNaming": "original",
           "modelPropertyNaming": "original",
+          "paramNaming": "original",
           "supportsES6": true,
           "withInterfaces": true,
-          "npmVersion": "1.2.0"
+          "npmVersion": "1.4.0"
         },
         "typeMappings": {
           "date": "Date",
