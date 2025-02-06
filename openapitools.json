@@ -36,7 +36,7 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/admin/api-json",
+        "inputSpec": "./api-docs/api-json.json",
         "output": "#{cwd}/client/admin/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
