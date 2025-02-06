@@ -23,7 +23,7 @@
           "paramNaming": "original",
           "supportsES6": true,
           "withInterfaces": true,
-          "npmVersion": "1.1.3"
+          "npmVersion": "1.2.0"
         },
         "typeMappings": {
           "date": "Date",
