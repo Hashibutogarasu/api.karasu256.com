@@ -4,7 +4,7 @@ import { CreateDto, DeleteDto, UpdateDto } from '@/utils/dto';
 import { Authorization } from '@nestjs-cognito/auth';
 import { Body, Controller, Delete, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { GalleriesService } from './galleries.service';
 import { createSchema, updateSchema } from './galleries.dto';
@@ -13,6 +13,7 @@ import { createSchema, updateSchema } from './galleries.dto';
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
+  @ApiTags("galleries")
   @Controller('galleries/admin')
 export class GalleriesController implements IBaseAdminCaS<Gallery> {
   constructor(
