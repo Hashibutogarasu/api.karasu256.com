@@ -4,11 +4,9 @@ import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from "@nestjs/sw
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
-import * as basicAuth from 'express-basic-auth'
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
-import { createProxyMiddleware } from 'http-proxy-middleware';
 import { WikiModule } from "./wiki/wiki.module";
 import { PublicModule } from "./wiki/public/public.module";
 import { GalleriesModule } from "./wiki/admin/galleries/galleries.module";
@@ -38,14 +36,6 @@ async function bootstrap() {
   const publicPort = 8080;
 
   const app = configureApp(await NestFactory.create(AppModule));
-
-  app.use('/api/admin', basicAuth({
-    users: {
-      "admin": process.env.BASIC_AUTH_PASSWORD,
-    },
-    challenge: true,
-  }));
-
   patchNestJsSwagger();
 
   const node_env = process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1);
@@ -77,6 +67,7 @@ async function bootstrap() {
 
   const publicdocument = SwaggerModule.createDocument(app, config, {
     include: [
+      AppModule,
       WikiModule,
       PublicModule,
       GenshinModule
@@ -92,6 +83,7 @@ async function bootstrap() {
 
   const privatedocument = SwaggerModule.createDocument(app, config, {
     include: [
+      AppModule,
       AdminModule,
       GalleriesModule,
       GenshinAdminModule,
