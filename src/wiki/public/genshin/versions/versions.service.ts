@@ -13,6 +13,10 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
     private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
+  async getAll(): Promise<VersionsEntity[]> {
+    return await this.versionsRepository.find();
+  }
+
   async get(query: GetParamsDto<VersionsEntity, ["createdAt", "updatedAt"]>): Promise<VersionsEntity[]> {
     const parsed = getSchema.safeParse(query);
 

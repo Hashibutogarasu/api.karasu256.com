@@ -1,5 +1,5 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
-import { Controller, Param, Post, Query } from "@nestjs/common";
+import { Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { GalleriesService } from "./galleries.service";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
@@ -14,6 +14,11 @@ export class GalleriesController implements IBasePublicCaS<Gallery> {
   constructor(
     private readonly galleriesService: GalleriesService,
   ) { }
+
+  @Get()
+  async getAll(): Promise<Gallery[]> {
+    return this.galleriesService.get({});
+  }
 
   @ApiBody({
     schema: zodToOpenAPI(getSchema),

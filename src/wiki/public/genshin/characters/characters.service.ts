@@ -29,6 +29,10 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
+  async getAll(): Promise<GICharacter[]> {
+    return await this.charactersService.find();
+  }
+
   async get(query: GetParamsDto<GICharacter, ["createdAt", "updatedAt"]>): Promise<GICharacter[]> {
     const parsed = getSchema.safeParse(query);
 

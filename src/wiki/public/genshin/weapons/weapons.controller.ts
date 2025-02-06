@@ -1,5 +1,5 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { WeaponsService } from "./weapons.service";
 import { Weapon } from "@/entities/wiki/genshin/weapons.entity";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
@@ -14,6 +14,11 @@ export class WeaponsController implements IBasePublicCaS<Weapon> {
   constructor(
     private readonly weaponsService: WeaponsService,
   ) { }
+
+  @Get()
+  async getAll(): Promise<Weapon[]> {
+    return this.weaponsService.getAll();
+  }
 
   @ApiBody({
     schema: zodToOpenAPI(getSchema),

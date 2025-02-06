@@ -19,6 +19,10 @@ export class GalleriesService implements IBasePublicCaS<Gallery> {
     private readonly s3Service: S3Service,
   ) { }
 
+  async getAll(): Promise<Gallery[]> {
+    return await this.galleryRepository.find();
+  }
+
   async get(query: GetParamsDto<Gallery, ["character", "createdAt", "updatedAt"]>): Promise<Gallery[]> {
     const parsed = getSchema.safeParse(query);
 

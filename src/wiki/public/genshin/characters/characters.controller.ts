@@ -1,5 +1,5 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { CharactersService } from "./characters.service";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
@@ -14,6 +14,11 @@ export class CharactersController implements IBasePublicCaS<GICharacter> {
   constructor(
     private readonly charactersService: CharactersService
   ) { }
+
+  @Get()
+  async getAll() {
+    return this.charactersService.get({});
+  }
 
   @ApiBody({
     schema: zodToOpenAPI(getSchema),
