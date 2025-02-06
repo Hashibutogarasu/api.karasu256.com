@@ -10,6 +10,7 @@ import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 import { WikiModule } from "./wiki/wiki.module";
 import { PublicModule } from "./wiki/public/public.module";
 import { GalleriesModule } from "./wiki/admin/galleries/galleries.module";
+import { AuthModule } from "./auth/auth.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -68,6 +69,7 @@ async function bootstrap() {
   const publicdocument = SwaggerModule.createDocument(app, config, {
     include: [
       AppModule,
+      AuthModule,
       WikiModule,
       PublicModule,
       GenshinModule
@@ -84,6 +86,7 @@ async function bootstrap() {
   const privatedocument = SwaggerModule.createDocument(app, config, {
     include: [
       AppModule,
+      AuthModule,
       AdminModule,
       GalleriesModule,
       GenshinAdminModule,
