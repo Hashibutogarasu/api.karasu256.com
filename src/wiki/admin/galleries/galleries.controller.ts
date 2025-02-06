@@ -19,11 +19,6 @@ export class GalleriesController implements IBaseAdminCaS<Gallery> {
     private readonly galleriesService: GalleriesService,
   ) { }
 
-  @ApiOperation({
-    operationId: "uploadFile",
-    summary: "Upload file",
-    tags: ["galleries"],
-  })
   @Post("upload")
   @ApiConsumes("multipart/form-data")
   @ApiBody({
@@ -44,11 +39,6 @@ export class GalleriesController implements IBaseAdminCaS<Gallery> {
     return this.galleriesService.uploadFile(file);
   }
 
-  @ApiOperation({
-    operationId: "createGallery",
-    summary: "Create gallery",
-    tags: ["galleries", "admin"],
-  })
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -57,11 +47,6 @@ export class GalleriesController implements IBaseAdminCaS<Gallery> {
     return this.galleriesService.create(dto);
   }
 
-  @ApiOperation({
-    operationId: "updateGallery",
-    summary: "Update gallery",
-    tags: ["galleries", "admin"],
-  })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -70,11 +55,6 @@ export class GalleriesController implements IBaseAdminCaS<Gallery> {
     return this.galleriesService.update(dto);
   }
 
-  @ApiOperation({
-    operationId: "deleteGallery",
-    summary: "Delete gallery",
-    tags: ["galleries", "admin"],
-  })
   @ApiParam({
     name: "id",
     type: "string",

@@ -18,10 +18,6 @@ export class WeaponsController implements IBaseAdminCaS<Weapon> {
     private readonly weaponsService: WeaponsService,
   ) { }
 
-  @ApiOperation({
-    operationId: "createWeapon",
-    summary: "Create weapon",
-  })
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -30,10 +26,6 @@ export class WeaponsController implements IBaseAdminCaS<Weapon> {
     return this.weaponsService.create(dto);
   }
 
-  @ApiOperation({
-    operationId: "updateWeapon",
-    summary: "Update weapon",
-  })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -42,10 +34,6 @@ export class WeaponsController implements IBaseAdminCaS<Weapon> {
     return this.weaponsService.update(dto);
   }
 
-  @ApiOperation({
-    operationId: "deleteWeapon",
-    summary: "Delete weapon",
-  })
   @ApiParam({
     name: "id",
     type: "string",

@@ -18,10 +18,6 @@ export class ArtifactsController implements IBaseAdminCaS<Artifacts> {
     private readonly artifactsService: ArtifactsService
   ) { }
 
-  @ApiOperation({
-    operationId: "createArtifact",
-    summary: "Create artifact",
-  })
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -30,10 +26,6 @@ export class ArtifactsController implements IBaseAdminCaS<Artifacts> {
     return this.artifactsService.create(dto);
   }
 
-  @ApiOperation({
-    operationId: "updateArtifact",
-    summary: "Update artifact",
-  })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -42,10 +34,6 @@ export class ArtifactsController implements IBaseAdminCaS<Artifacts> {
     return this.artifactsService.update(dto);
   }
 
-  @ApiOperation({
-    operationId: "deleteArtifact",
-    summary: "Delete artifact",
-  })
   @ApiParam({
     name: "id",
     type: "string",

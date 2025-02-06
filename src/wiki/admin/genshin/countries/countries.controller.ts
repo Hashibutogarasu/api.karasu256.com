@@ -18,10 +18,6 @@ export class CountriesController implements IBaseAdminCaS<Country> {
     private readonly service: CountriesService,
   ) { }
 
-  @ApiOperation({
-    operationId: "createRegion",
-    summary: "Create region",
-  })
   @ApiBody({
     schema: zodToOpenAPI(createSchema),
   })
@@ -30,10 +26,6 @@ export class CountriesController implements IBaseAdminCaS<Country> {
     return this.service.create(dto);
   }
 
-  @ApiOperation({
-    operationId: "updateRegion",
-    summary: "Update region",
-  })
   @ApiBody({
     schema: zodToOpenAPI(updateSchema),
   })
@@ -42,10 +34,6 @@ export class CountriesController implements IBaseAdminCaS<Country> {
     return this.service.update(dto);
   }
 
-  @ApiOperation({
-    operationId: "deleteRegion",
-    summary: "Delete region",
-  })
   @ApiParam({
     name: "id",
     type: "string",
