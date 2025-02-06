@@ -1,9 +1,9 @@
-import { GalleriesController } from '@/wiki/public/galleries/galleries.controller';
 import { Module } from '@nestjs/common';
-import { GalleriesService } from './galleries.service';
 import { S3Service } from '@/s3/s3.service';
 import { Gallery } from '@/entities/common/galleries.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GalleriesService } from './galleries.service';
+import { GalleriesController } from './galleries.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Gallery])],

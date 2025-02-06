@@ -3,8 +3,6 @@ import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
-import { S3Service } from '@/s3/s3.service';
 import { GetOneDto, GetParamsDto } from '@/utils/dto';
 import { getSchema } from './galleries.dto';
 
@@ -13,10 +11,6 @@ export class GalleriesService implements IBasePublicCaS<Gallery> {
   constructor(
     @InjectRepository(Gallery)
     private readonly galleryRepository: Repository<Gallery>,
-
-    private readonly configService: ConfigService,
-
-    private readonly s3Service: S3Service,
   ) { }
 
   async getAll(): Promise<Gallery[]> {

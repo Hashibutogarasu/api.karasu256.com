@@ -6,7 +6,6 @@ import { zodToOpenAPI } from "nestjs-zod";
 import { Gallery } from "@/entities/common/galleries.entity";
 import { GetOneDto, GetParamsDto } from "@/utils/dto";
 import { getSchema } from "./galleries.dto";
-import { AutoOperationName } from "@/utils/operation";
 
 @Controller("wiki/galleries")
 @ApiTags("galleries")

@@ -2,7 +2,6 @@ import { Gallery } from '@/entities/common/galleries.entity';
 import { S3Service } from '@/s3/s3.service';
 import { CreateDto, DeleteDto, deleteSchema, UpdateDto } from '@/utils/dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createSchema, updateSchema } from './galleries.dto';
@@ -12,8 +11,6 @@ export class GalleriesService {
   constructor(
     @InjectRepository(Gallery)
     private readonly galleryRepository: Repository<Gallery>,
-
-    private readonly configService: ConfigService,
 
     private readonly s3Service: S3Service,
   ) { }
