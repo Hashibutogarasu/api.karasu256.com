@@ -11,7 +11,7 @@
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
         "inputSpec": "https://api.karasu256.com/api/public/api-json",
-        "output": "#{cwd}/client/public/#{name}",
+        "output": "#{cwd}/client/typescript/public/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
           "ngVersion": "6.1.8",

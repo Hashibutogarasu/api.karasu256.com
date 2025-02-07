@@ -91,7 +91,7 @@ async function bootstrap() {
     GalleriesModule,
     GenshinAdminModule,
   ], {
-    jsonDocumentUrl: "/api/admin/api-json",
+    jsonDocumentUrl: "/api/public/api-json",
     yamlDocumentUrl: "/api/admin/api-yaml",
   });
 
