@@ -1,6 +1,5 @@
-import { getParamsSchema, paginationSchema } from "@/utils/dto";
+import { getParamsSchema } from "@/utils/dto";
 import { rarityType } from "@/utils/zod_types";
-import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 const base = getParamsSchema.extend({
