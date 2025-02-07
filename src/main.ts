@@ -8,6 +8,7 @@ import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 import { GalleriesModule } from "./wiki/admin/galleries/galleries.module";
 import { AuthModule } from "./auth/auth.module";
+import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -86,10 +87,8 @@ async function bootstrap() {
 
 
   setUpDocument("Public", "api/public", app, config, options, [
-    AuthModule,
-    AdminModule,
+    GenshinModule,
     GalleriesModule,
-    GenshinAdminModule,
   ], {
     jsonDocumentUrl: "/api/public/api-json",
     yamlDocumentUrl: "/api/admin/api-yaml",
