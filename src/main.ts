@@ -85,7 +85,6 @@ async function bootstrap() {
     ],
   };
 
-
   setUpDocument("Public", "api/public", app, config, options, [
     GenshinModule,
     GalleriesModule,
