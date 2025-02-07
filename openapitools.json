@@ -22,8 +22,7 @@
           "modelPropertyNaming": "original",
           "paramNaming": "original",
           "supportsES6": true,
-          "withInterfaces": true,
-          "npmVersion": "1.4.0"
+          "withInterfaces": true
         },
         "typeMappings": {
           "date": "Date",
@@ -48,8 +47,7 @@
           "modelPropertyNaming": "original",
           "paramNaming": "original",
           "supportsES6": true,
-          "withInterfaces": true,
-          "npmVersion": "1.4.0"
+          "withInterfaces": true
         },
         "typeMappings": {
           "date": "Date",
@@ -74,8 +72,7 @@
           "modelPropertyNaming": "original",
           "paramNaming": "original",
           "supportsES6": true,
-          "withInterfaces": true,
-          "npmVersion": "1.4.0"
+          "withInterfaces": true
         },
         "typeMappings": {
           "date": "Date",
@@ -100,8 +97,7 @@
           "modelPropertyNaming": "original",
           "paramNaming": "original",
           "supportsES6": true,
-          "withInterfaces": true,
-          "pubVersion": "1.4.0"
+          "withInterfaces": true
         },
         "typeMappings": {
           "date": "DateTime",
@@ -126,8 +122,7 @@
           "modelPropertyNaming": "original",
           "paramNaming": "original",
           "supportsES6": true,
-          "withInterfaces": true,
-          "pubVersion": "1.4.0"
+          "withInterfaces": true
         },
         "typeMappings": {
           "date": "DateTime",
