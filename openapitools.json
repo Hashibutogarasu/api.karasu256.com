@@ -36,7 +36,7 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "./api-docs/api-json.json",
+        "inputSpec": "https://api.karasu256.com/api/admin/api-json",
         "output": "#{cwd}/client/admin/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
@@ -54,6 +54,57 @@
         "typeMappings": {
           "date": "Date",
           "DateTime": "Date"
+        }
+      },
+      "auth": {
+        "packageName": "@karasu-lab/karasu256-api-auth-client",
+        "generatorName": "typescript-fetch",
+        "auth": "Bearer",
+        "gitUserId": "Hashibutogarasu",
+        "gitRepoId": "api.karasu256.com",
+        "inputSpec": "https://api.karasu256.com/api/auth/api-json",
+        "output": "#{cwd}/client/auth/#{name}",
+        "enablePostProcessFile": true,
+        "additionalProperties": {
+          "ngVersion": "6.1.8",
+          "npmName": "@karasu-lab/karasu256-api-auth-client",
+          "withSeparateModelsAndApi": true,
+          "useSingleRequestParameter": false,
+          "enumPropertyNaming": "original",
+          "modelPropertyNaming": "original",
+          "paramNaming": "original",
+          "supportsES6": true,
+          "withInterfaces": true,
+          "npmVersion": "1.4.0"
+        },
+        "typeMappings": {
+          "date": "Date",
+          "DateTime": "Date"
+        }
+      },
+      "auth:dart": {
+        "packageName": "karasu256_api_auth_client",
+        "generatorName": "dart-dio",
+        "auth": "Bearer",
+        "gitUserId": "Hashibutogarasu",
+        "gitRepoId": "api.karasu256.com",
+        "inputSpec": "https://api.karasu256.com/api/auth/api-json",
+        "output": "#{cwd}/client/auth/#{name}",
+        "enablePostProcessFile": true,
+        "additionalProperties": {
+          "pubName": "karasu256_api_auth_client",
+          "withSeparateModelsAndApi": true,
+          "useSingleRequestParameter": false,
+          "enumPropertyNaming": "original",
+          "modelPropertyNaming": "original",
+          "paramNaming": "original",
+          "supportsES6": true,
+          "withInterfaces": true,
+          "pubVersion": "1.4.0"
+        },
+        "typeMappings": {
+          "date": "DateTime",
+          "DateTime": "DateTime"
         }
       }
     }

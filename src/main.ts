@@ -1,17 +1,13 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "@/app.module";
-import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from "@nestjs/swagger";
+import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions, OpenAPIObject } from "@nestjs/swagger";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
-import * as basicAuth from 'express-basic-auth'
-import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
-import { createProxyMiddleware } from 'http-proxy-middleware';
-import { WikiModule } from "./wiki/wiki.module";
-import { PublicModule } from "./wiki/public/public.module";
 import { GalleriesModule } from "./wiki/admin/galleries/galleries.module";
+import { AuthModule } from "./auth/auth.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -34,18 +30,32 @@ function configureApp(app: INestApplication) {
   return app;
 }
 
+function setUpDocument(
+  title: string,
+  path: string,
+  app: INestApplication,
+  config: DocumentBuilder,
+  options: SwaggerCustomOptions,
+  include: any[],
+  { jsonDocumentUrl, yamlDocumentUrl }: { jsonDocumentUrl: string; yamlDocumentUrl: string },
+) {
+  config.setTitle(`Karasu Lab ${title} API Document ${process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1)}`);
+  const document = SwaggerModule.createDocument(app, config.build(), {
+    include,
+  });
+  const documentFactory = () => document;
+
+  SwaggerModule.setup(path, app, documentFactory, {
+    ...options,
+    jsonDocumentUrl: jsonDocumentUrl,
+    yamlDocumentUrl: yamlDocumentUrl,
+  });
+}
+
 async function bootstrap() {
   const publicPort = 8080;
 
   const app = configureApp(await NestFactory.create(AppModule));
-
-  app.use('/api/admin', basicAuth({
-    users: {
-      "admin": process.env.BASIC_AUTH_PASSWORD,
-    },
-    challenge: true,
-  }));
-
   patchNestJsSwagger();
 
   const node_env = process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1);
@@ -62,8 +72,7 @@ async function bootstrap() {
       in: 'Header',
       name: 'Authorization',
       scheme: 'bearer',
-    })
-    .build();
+    });
 
   const options: SwaggerCustomOptions = {
     useGlobalPrefix: true,
@@ -75,34 +84,32 @@ async function bootstrap() {
     ],
   };
 
-  const publicdocument = SwaggerModule.createDocument(app, config, {
-    include: [
-      WikiModule,
-      PublicModule,
-      GenshinModule
-    ],
-  });
-  const publicDocumentFactory = () => publicdocument;
 
-  SwaggerModule.setup("api/public", app, publicDocumentFactory, {
-    ...options,
-    jsonDocumentUrl: "/api/public/api-json",
-    yamlDocumentUrl: "/api/public/api-yaml",
+  setUpDocument("Public", "api/public", app, config, options, [
+    AuthModule,
+    AdminModule,
+    GalleriesModule,
+    GenshinAdminModule,
+  ], {
+    jsonDocumentUrl: "/api/admin/api-json",
+    yamlDocumentUrl: "/api/admin/api-yaml",
   });
 
-  const privatedocument = SwaggerModule.createDocument(app, config, {
-    include: [
+  setUpDocument("Admin", "api/admin", app, config, options, [
+    AppModule,
       AdminModule,
       GalleriesModule,
       GenshinAdminModule,
-    ],
-  });
-  const privateDocumentFactory = () => privatedocument;
-
-  SwaggerModule.setup("api/admin", app, privateDocumentFactory, {
-    ...options,
+  ], {
     jsonDocumentUrl: "/api/admin/api-json",
     yamlDocumentUrl: "/api/admin/api-yaml",
+  });
+
+  setUpDocument("Auth", "api/auth", app, config, options, [
+    AuthModule,
+  ], {
+    jsonDocumentUrl: "/api/auth/api-json",
+    yamlDocumentUrl: "/api/auth/api-yaml",
   });
 
   app.useGlobalPipes(
