@@ -8,21 +8,10 @@ import {
   ForgotPasswordDto,
   RefreshTokenDto,
   SignInDto,
-  signInSchema,
-  signInOtpSchema,
-  SignInOtpDto,
   SignInWithMfaDto,
-  signInWithMfaSchema,
-  changePasswordSchema,
-  forgotPasswordConfirmSchema,
-  forgotPasswordSchema,
-  refreshTokenSchema,
-  signUpConfirmSchema,
-  signupSchema,
   SignUpConfirmDto,
   SignupDto,
   GetRefreshTokenDto,
-  getRefreshTokenSchema,
   EnableMfaDto
 } from './auth.dto';
 
