@@ -29,10 +29,17 @@ export class AuthService {
     });
   }
 
-  getUser({ email }) {
+  getUser(email) {
     return new CognitoUser({
       Username: email,
       Pool: this.userPool,
+    });
+  }
+
+  getAuthenticationDetails(email: string, password: string) {
+    return new AuthenticationDetails({
+      Username: email,
+      Password: password,
     });
   }
 
@@ -63,13 +70,10 @@ export class AuthService {
   }
 
   async signin(dto: SignInDto) {
-    const user = this.getUser({ email: dto.email });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
-      user.authenticateUser(new AuthenticationDetails({
-        Username: dto.email,
-        Password: dto.password,
-      }), {
+      user.authenticateUser(this.getAuthenticationDetails(dto.email, dto.password), {
         totpRequired: (challengeName, challengeParameters) => {
           user.sendMFACode(dto.code, ({
             onSuccess: (result) => {
@@ -91,13 +95,10 @@ export class AuthService {
   }
 
   async setUpMfa(dto: SetUpMfaDto) {
-    const user = this.getUser({ email: dto.email });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
-      user.authenticateUser(new AuthenticationDetails({
-        Username: dto.email,
-        Password: dto.password,
-      }), {
+      user.authenticateUser(this.getAuthenticationDetails(dto.email, dto.password), {
         onSuccess: (result) => {
           user.associateSoftwareToken({
             associateSecretCode: (secretCode) => {
@@ -119,13 +120,10 @@ export class AuthService {
   }
 
   async enableMfa(dto: EnableMfaDto) {
-    const user = this.getUser({ email: dto.email });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
-      user.authenticateUser(new AuthenticationDetails({
-        Username: dto.email,
-        Password: dto.password,
-      }), {
+      user.authenticateUser(this.getAuthenticationDetails(dto.email, dto.password), {
         onSuccess: (result) => {
           user.verifySoftwareToken(dto.code, dto.deviceName, {
             onSuccess: (result) => {
@@ -155,13 +153,10 @@ export class AuthService {
   }
 
   async disableMfa(dto: DisableMfaDto) {
-    const user = this.getUser({ email: dto.email });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
-      user.authenticateUser(new AuthenticationDetails({
-        Username: dto.email,
-        Password: dto.password,
-      }), {
+      user.authenticateUser(this.getAuthenticationDetails(dto.email, dto.password), {
         totpRequired: (challengeName, challengeParameters) => {
           user.sendMFACode(dto.code, ({
             onSuccess: (result) => {
@@ -221,7 +216,7 @@ export class AuthService {
   }
 
   async signinConfirm(dto: SignUpConfirmDto) {
-    const user = this.getUser({ email: dto.email });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
       user.confirmRegistration(dto.code, true, (err, result) => {
@@ -234,7 +229,7 @@ export class AuthService {
   }
 
   async forgotPassword(dto: ForgotPasswordDto) {
-    const user = this.getUser({ email: dto.email });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
       user.forgotPassword({
@@ -249,7 +244,7 @@ export class AuthService {
   }
 
   async forgotPasswordConfirm(dto: ForgotPasswordConfirmDto) {
-    const user = this.getUser({ email: dto.email });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
       user.confirmPassword(dto.code, dto.password, {
@@ -264,13 +259,10 @@ export class AuthService {
   }
 
   async changePassword(dto: ChangePasswordDto) {
-    const user = this.getUser({ email: dto.email });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
-      user.authenticateUser(new AuthenticationDetails({
-        Username: dto.email,
-        Password: dto.oldPassword
-      }), {
+      user.authenticateUser(this.getAuthenticationDetails(dto.email, dto.oldPassword), {
         totpRequired: (challengename, challengeParameters) => {
           return this.onChangePassword(user, dto);
         },
@@ -285,18 +277,10 @@ export class AuthService {
   }
 
   async getRefreshToken(dto: GetRefreshTokenDto) {
-    const user = new CognitoUser({
-      Username: dto.email,
-      Pool: this.userPool,
-    });
-
-    const authenticationDetails = new AuthenticationDetails({
-      Username: dto.email,
-      Password: dto.password,
-    });
+    const user = this.getUser(dto.email);
 
     return new Promise((resolve, reject) => {
-      user.authenticateUser(authenticationDetails, {
+      user.authenticateUser(this.getAuthenticationDetails(dto.email, dto.password), {
         onSuccess: (result) => {
           const refreshToken = result.getRefreshToken().getToken();
           resolve({ refreshToken });
@@ -309,11 +293,7 @@ export class AuthService {
   }
 
   async refreshToken(dto: RefreshTokenDto) {
-    const user = new CognitoUser({
-      Username: dto.email,
-      Pool: this.userPool,
-    });
-
+    const user = this.getUser(dto.email);
     const refreshToken = new CognitoRefreshToken({ RefreshToken: dto.refreshToken });
 
     return new Promise((resolve, reject) => {
