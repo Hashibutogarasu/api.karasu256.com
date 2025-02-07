@@ -6,7 +6,7 @@ import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
-import { GalleriesModule } from "./wiki/admin/galleries/galleries.module";
+import { GalleriesModule as GalleriesAdminModule, GalleriesModule } from "./wiki/admin/galleries/galleries.module";
 import { AuthModule } from "./auth/auth.module";
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 
@@ -96,9 +96,9 @@ async function bootstrap() {
 
   setUpDocument("Admin", "api/admin", app, config, options, [
     AppModule,
-      AdminModule,
-      GalleriesModule,
-      GenshinAdminModule,
+    AdminModule,
+    GalleriesAdminModule,
+    GenshinAdminModule,
   ], {
     jsonDocumentUrl: "/api/admin/api-json",
     yamlDocumentUrl: "/api/admin/api-yaml",
