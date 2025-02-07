@@ -11,8 +11,6 @@ import {
   RefreshTokenDto,
   SignInDto,
   signInSchema,
-  SignInWithMfaDto,
-  signInWithMfaSchema,
   changePasswordSchema,
   forgotPasswordConfirmSchema,
   forgotPasswordSchema,
@@ -24,7 +22,11 @@ import {
   GetRefreshTokenDto,
   getRefreshTokenSchema,
   EnableMfaDto,
-  enableMfaSchema
+  enableMfaSchema,
+  SetUpMfaDto,
+  setUpMfaSchema,
+  DisableMfaDto,
+  disableMfaSchema
 } from './auth.dto';
 
 @Authorization({})
@@ -62,38 +64,31 @@ export class AuthController {
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(signInSchema),
+    schema: zodToOpenAPI(setUpMfaSchema),
   })
+  @ApiBearerAuth()
   @Post("mfa/set-up")
-  async setUpMfa(@Body() dto: SignInDto) {
+  async setUpMfa(@Body() dto: SetUpMfaDto) {
     return this.authService.setUpMfa(dto);
   }
 
   @ApiBody({
     schema: zodToOpenAPI(enableMfaSchema),
   })
+  @ApiBearerAuth()
   @Post("mfa/enable")
   async enableMfa(@Body() dto: EnableMfaDto) {
     return this.authService.enableMfa(dto);
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(signInSchema),
+    schema: zodToOpenAPI(disableMfaSchema),
   })
+  @ApiBearerAuth()
   @Post("mfa/disable")
-  async disableMfa(@Body() dto: SignInDto) {
+  async disableMfa(@Body() dto: DisableMfaDto) {
     return this.authService.disableMfa(dto);
   }
-
-  @ApiBody({
-    schema: zodToOpenAPI(signInWithMfaSchema),
-  })
-  @PublicRoute()
-  @Post("sign-in/mfa")
-  async signinWithMfa(@Body() dto: SignInWithMfaDto) {
-    return this.authService.signinWithMfa(dto);
-  }
-
   @ApiBody({
     schema: zodToOpenAPI(signupSchema),
   })
@@ -106,7 +101,7 @@ export class AuthController {
   @ApiBody({
     schema: zodToOpenAPI(signUpConfirmSchema),
   })
-  @ApiBearerAuth()
+  @PublicRoute()
   @Post("sign-up/confirm")
   async signinConfirm(@Body() dto: SignUpConfirmDto) {
     return this.authService.signinConfirm(dto);
@@ -115,7 +110,7 @@ export class AuthController {
   @ApiBody({
     schema: zodToOpenAPI(forgotPasswordSchema),
   })
-  @ApiBearerAuth()
+  @PublicRoute()
   @Post("forgot-password")
   async forgotPassword(@Body() dto: ForgotPasswordDto) {
     return this.authService.forgotPassword(dto);
@@ -124,7 +119,7 @@ export class AuthController {
   @ApiBody({
     schema: zodToOpenAPI(forgotPasswordConfirmSchema),
   })
-  @ApiBearerAuth()
+  @PublicRoute()
   @Post("forgot-password/confirm")
   async forgotPasswordConfirm(@Body() dto: ForgotPasswordConfirmDto) {
     return this.authService.forgotPasswordConfirm(dto);

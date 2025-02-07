@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CognitoUserAttribute, CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoRefreshToken } from 'amazon-cognito-identity-js';
+import { CognitoUserAttribute, CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoRefreshToken, ChallengeName, CognitoUserSession } from 'amazon-cognito-identity-js';
 
 import {
   ChangePasswordDto,
@@ -8,11 +8,12 @@ import {
   ForgotPasswordDto,
   RefreshTokenDto,
   SignInDto,
-  SignInWithMfaDto,
   SignUpConfirmDto,
   SignupDto,
   GetRefreshTokenDto,
-  EnableMfaDto
+  EnableMfaDto,
+  SetUpMfaDto,
+  DisableMfaDto
 } from './auth.dto';
 
 @Injectable()
@@ -35,6 +36,32 @@ export class AuthService {
     });
   }
 
+  onSignIn(session: CognitoUserSession): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const accessToken = session.getAccessToken().getJwtToken();
+      resolve({ accessToken });
+    })
+  }
+
+  onChangePassword(user: CognitoUser, dto: ChangePasswordDto) {
+    return new Promise((resolve, reject) => {
+      user.changePassword(dto.oldPassword, dto.newPassword, (err, result) => {
+        if (err) {
+          return this.onError(err);
+        }
+        resolve({ message: 'Password changed' });
+      });
+    })
+  }
+
+  onError(error: any) {
+    return new Promise((resolve, reject) => {
+      resolve({
+        message: error
+      })
+    });
+  }
+
   async signin(dto: SignInDto) {
     const user = this.getUser({ email: dto.email });
 
@@ -43,18 +70,27 @@ export class AuthService {
         Username: dto.email,
         Password: dto.password,
       }), {
+        totpRequired: (challengeName, challengeParameters) => {
+          user.sendMFACode(dto.code, ({
+            onSuccess: (result) => {
+              this.onSignIn(result);
+            },
+            onFailure: (err) => {
+              reject(err);
+            },
+          }), challengeName)
+        },
         onSuccess: (result) => {
-          const accessToken = result.getAccessToken().getJwtToken();
-          resolve({ accessToken });
+          return this.onSignIn(result);
         },
         onFailure: (err) => {
-          reject(err);
+          return this.onError(err);
         },
       });
     });
   }
 
-  async setUpMfa(dto: SignInDto) {
+  async setUpMfa(dto: SetUpMfaDto) {
     const user = this.getUser({ email: dto.email });
 
     return new Promise((resolve, reject) => {
@@ -71,12 +107,12 @@ export class AuthService {
               });
             },
             onFailure: (err) => {
-              reject(err);
+              return this.onError(err);
             },
           });
         },
         onFailure: (err) => {
-          reject(err);
+          return this.onError(err);
         }
       });
     });
@@ -91,29 +127,34 @@ export class AuthService {
         Password: dto.password,
       }), {
         onSuccess: (result) => {
-          user.verifySoftwareToken(dto.code, dto.deviceName, {
+          user.verifySoftwareToken(dto.code, "My TOTP Device", {
             onSuccess: (result) => {
-              user.enableMFA((err, result) => {
+              user.setUserMfaPreference({
+                Enabled: dto.answerChallenge == "SMS_MFA",
+                PreferredMfa: dto.answerChallenge == "SMS_MFA",
+              }, {
+                Enabled: dto.answerChallenge == "SOFTWARE_TOKEN_MFA",
+                PreferredMfa: dto.answerChallenge == "SOFTWARE_TOKEN_MFA",
+              }, (err, result) => {
                 if (err) {
-                  reject(err);
-                  return;
+                  return this.onError(err);
                 }
                 resolve({ message: 'MFA enabled' });
               });
             },
             onFailure: (err) => {
-              reject(err);
+              return this.onError(err);
             },
           });
         },
         onFailure: (err) => {
-          reject(err);
+          return this.onError(err);
         }
       });
     });
   }
 
-  async disableMfa(dto: SignInDto) {
+  async disableMfa(dto: DisableMfaDto) {
     const user = this.getUser({ email: dto.email });
 
     return new Promise((resolve, reject) => {
@@ -121,45 +162,39 @@ export class AuthService {
         Username: dto.email,
         Password: dto.password,
       }), {
+        totpRequired: (challengeName, challengeParameters) => {
+          user.sendMFACode(dto.code, ({
+            onSuccess: (result) => {
+              user.setUserMfaPreference({
+                Enabled: false,
+                PreferredMfa: false,
+              }, {
+                Enabled: false,
+                PreferredMfa: false,
+              }, (err, result) => {
+                if (err) {
+                  return this.onError(err);
+                }
+                resolve({ message: 'MFA disabled' });
+              });
+            },
+            onFailure: (err) => {
+              return this.onError(err);
+            },
+          }), challengeName)
+        },
         onSuccess: (result) => {
           user.disableMFA((err, result) => {
             if (err) {
-              reject(err);
-              return;
+              return this.onError(err);
             }
             resolve({ message: 'MFA disabled' });
           });
         },
         onFailure: (err) => {
-          reject(err);
+          return this.onError(err);
         },
       });
-    });
-  }
-
-  async signinWithMfa(dto: SignInWithMfaDto) {
-    const user = this.getUser({ email: dto.email });
-
-    return user.authenticateUser(new AuthenticationDetails({
-      Username: dto.email,
-      Password: dto.password,
-    }), {
-      onSuccess: (result) => {
-        return new Promise((resolve, reject) => {
-          user.sendMFACode(dto.code, {
-            onSuccess: (result) => {
-              const accessToken = result.getAccessToken().getJwtToken();
-              resolve({ accessToken });
-            },
-            onFailure: (err) => {
-              reject(err);
-            },
-          });
-        });
-      },
-      onFailure: (err) => {
-        return Promise.reject(err);
-      }
     });
   }
 
@@ -178,8 +213,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.userPool.signUp(dto.email, dto.password, attributeList, [], (err, result) => {
         if (err) {
-          reject(err);
-          return;
+          return this.onError(err);
         }
         resolve({ message: 'User created' });
       });
@@ -192,8 +226,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       user.confirmRegistration(dto.code, true, (err, result) => {
         if (err) {
-          reject(err);
-          return;
+          return this.onError(err);
         }
         resolve({ message: 'User confirmed' });
       });
@@ -209,7 +242,7 @@ export class AuthService {
           resolve({ message: 'Password reseted' });
         },
         onFailure: (err) => {
-          reject(err);
+          return this.onError(err);
         },
       });
     });
@@ -224,23 +257,30 @@ export class AuthService {
           resolve({ message: 'Password changed' });
         },
         onFailure: (err) => {
-          reject(err);
+          return this.onError(err);
         },
       });
     });
   }
 
   async changePassword(dto: ChangePasswordDto) {
-    const currentUser = this.userPool.getCurrentUser();
+    const user = this.getUser({ email: dto.email });
 
     return new Promise((resolve, reject) => {
-      currentUser.changePassword(dto.oldPassword, dto.newPassword, (err, result) => {
-        if (err) {
-          reject(err);
-          return;
+      user.authenticateUser(new AuthenticationDetails({
+        Username: dto.email,
+        Password: dto.oldPassword
+      }), {
+        totpRequired: (challengename, challengeParameters) => {
+          return this.onChangePassword(user, dto);
+        },
+        onSuccess: (session) => {
+          return this.onChangePassword(user, dto);
+        },
+        onFailure: (err) => {
+          return this.onError(err);
         }
-        resolve({ message: 'Password changed' });
-      });
+      })
     });
   }
 
@@ -262,7 +302,7 @@ export class AuthService {
           resolve({ refreshToken });
         },
         onFailure: (err) => {
-          reject(err);
+          return this.onError(err);
         },
       });
     });
@@ -279,8 +319,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       user.refreshSession(refreshToken, (err, session) => {
         if (err) {
-          reject(err);
-          return;
+          return this.onError(err);
         }
         const accessToken = session.getAccessToken().getJwtToken();
         resolve({ accessToken });

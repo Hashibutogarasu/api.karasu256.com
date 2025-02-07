@@ -3,25 +3,35 @@ import { z } from "zod";
 const signInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
+  code: z.string().optional(),
 });
 
 type SignInDto = z.infer<typeof signInSchema>;
+
+const setUpMfaSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
+
+type SetUpMfaDto = z.infer<typeof setUpMfaSchema>;
 
 const enableMfaSchema = signInSchema.extend({
   deviceName: z.string().min(1),
   email: z.string().email(),
   code: z.string().min(1),
+  answerChallenge: z.enum(['CUSTOM_CHALLENGE', 'MFA_SETUP', 'NEW_PASSWORD_REQUIRED', 'SELECT_MFA_TYPE', 'SMS_MFA', 'SOFTWARE_TOKEN_MFA']),
 });
 
 type EnableMfaDto = z.infer<typeof enableMfaSchema>;
 
-const signInWithMfaSchema = z.object({
+const disableMfaSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
   code: z.string().min(1),
 });
 
-type SignInWithMfaDto = z.infer<typeof signInWithMfaSchema>;
+type DisableMfaDto = z.infer<typeof disableMfaSchema>;
+
 
 const signupSchema = z.object({
   nickname: z.string().min(1),
@@ -53,6 +63,7 @@ const forgotPasswordConfirmSchema = z.object({
 type ForgotPasswordConfirmDto = z.infer<typeof forgotPasswordConfirmSchema>;
 
 const changePasswordSchema = z.object({
+  email: z.string().email(),
   oldPassword: z.string().min(1),
   newPassword: z.string().min(1),
 });
@@ -75,7 +86,6 @@ type RefreshTokenDto = z.infer<typeof refreshTokenSchema>;
 
 export {
   signInSchema,
-  signInWithMfaSchema,
   enableMfaSchema,
   signupSchema,
   signUpConfirmSchema,
@@ -84,8 +94,9 @@ export {
   changePasswordSchema,
   getRefreshTokenSchema,
   refreshTokenSchema,
+  setUpMfaSchema,
+  disableMfaSchema,
   SignInDto,
-  SignInWithMfaDto,
   EnableMfaDto,
   SignupDto,
   SignUpConfirmDto,
@@ -94,4 +105,6 @@ export {
   ChangePasswordDto,
   GetRefreshTokenDto,
   RefreshTokenDto,
+  SetUpMfaDto,
+  DisableMfaDto,
 };
