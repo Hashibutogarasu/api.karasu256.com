@@ -1,0 +1,12 @@
+[submodule "client/dart/karasu-lab-auth-client-dart"]
+path = client/dart/karasu-lab-auth-client-dart
+url = https://github.com/Hashibutogarasu/karasu-lab-auth-client-dart.git
+[submodule "client/typescript/karasu256-api-client"]
+	path = client/typescript/karasu256-api-client
+	url = https://github.com/Hashibutogarasu/karasu256-api-client.git
+[submodule "client/typescript/karasu256-api-auth-client"]
+	path = client/typescript/karasu256-api-auth-client
+	url = https://github.com/Hashibutogarasu/karasu256-api-auth-client.git
+[submodule "client/typescript/karasu256-api-admin-client"]
+	path = client/typescript/karasu256-api-admin-client
+	url = https://github.com/Hashibutogarasu/karasu256-api-admin-client.git

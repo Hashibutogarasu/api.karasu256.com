@@ -147,7 +147,6 @@ export class AuthController {
     schema: zodToOpenAPI(refreshTokenSchema),
   })
   @PublicRoute()
-  @ApiBearerAuth()
   @Post("refresh-token")
   async refreshToken(@Body() dto: RefreshTokenDto) {
     return this.authService.refreshToken(dto);
