@@ -4,7 +4,6 @@ import { GICharacter } from '@/entities/wiki/genshin/gi_character.entity';
 import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
 import { Artifacts } from '@/entities/wiki/genshin/artifacts.entity';
 import { Country } from '@/entities/wiki/genshin/countries.entity';
-import { Gallery } from '@/entities/common/galleries.entity';
 import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
 import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { CharactersController } from './characters/characters.controller';
