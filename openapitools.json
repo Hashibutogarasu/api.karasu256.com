@@ -14,8 +14,8 @@
         "output": "#{cwd}/client/typescript/karasu256-api-client",
         "enablePostProcessFile": true,
         "additionalProperties": {
-          "ngVersion": "6.1.8",
           "npmName": "@karasu-lab/karasu256-api-client",
+          "ngVersion": "6.1.8",
           "withSeparateModelsAndApi": true,
           "useSingleRequestParameter": false,
           "enumPropertyNaming": "original",
@@ -39,8 +39,8 @@
         "output": "#{cwd}/client/typescript/karasu256-api-admin-client",
         "enablePostProcessFile": true,
         "additionalProperties": {
-          "ngVersion": "6.1.8",
           "npmName": "@karasu-lab/karasu256-api-admin-client",
+          "ngVersion": "6.1.8",
           "withSeparateModelsAndApi": true,
           "useSingleRequestParameter": false,
           "enumPropertyNaming": "original",
@@ -64,8 +64,8 @@
         "output": "#{cwd}/client/typescript/karasu256-api-auth-client",
         "enablePostProcessFile": true,
         "additionalProperties": {
-          "ngVersion": "6.1.8",
           "npmName": "@karasu-lab/karasu256-api-auth-client",
+          "ngVersion": "6.1.8",
           "withSeparateModelsAndApi": true,
           "useSingleRequestParameter": false,
           "enumPropertyNaming": "original",
