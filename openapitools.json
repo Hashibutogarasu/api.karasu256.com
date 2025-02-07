@@ -93,6 +93,7 @@
         "enablePostProcessFile": true,
         "additionalProperties": {
           "pubName": "karasu256_api_auth_client",
+          "pubHomepage": "https://karasu256.com",
           "withSeparateModelsAndApi": true,
           "useSingleRequestParameter": false,
           "enumPropertyNaming": "original",
