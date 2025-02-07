@@ -1,0 +1,3 @@
+[submodule "client/dart/karasu-lab-auth-client-dart"]
+path = client/dart/karasu-lab-auth-client-dart
+url = https://github.com/Hashibutogarasu/karasu-lab-auth-client-dart.git
