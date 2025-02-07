@@ -11,8 +11,6 @@ import {
   RefreshTokenDto,
   SignInDto,
   signInSchema,
-  signInOtpSchema,
-  SignInOtpDto,
   SignInWithMfaDto,
   signInWithMfaSchema,
   changePasswordSchema,
@@ -75,7 +73,7 @@ export class AuthController {
     schema: zodToOpenAPI(enableMfaSchema),
   })
   @Post("mfa/enable")
-  async enableMfa(dto: EnableMfaDto) {
+  async enableMfa(@Body() dto: EnableMfaDto) {
     return this.authService.enableMfa(dto);
   }
 
@@ -83,7 +81,7 @@ export class AuthController {
     schema: zodToOpenAPI(signInSchema),
   })
   @Post("mfa/disable")
-  async disableMfa(dto: SignInDto) {
+  async disableMfa(@Body() dto: SignInDto) {
     return this.authService.disableMfa(dto);
   }
 

@@ -23,13 +23,6 @@ const signInWithMfaSchema = z.object({
 
 type SignInWithMfaDto = z.infer<typeof signInWithMfaSchema>;
 
-const signInOtpSchema = z.object({
-  email: z.string().email(),
-  otp: z.string().min(1),
-});
-
-type SignInOtpDto = z.infer<typeof signInOtpSchema>;
-
 const signupSchema = z.object({
   nickname: z.string().min(1),
   email: z.string().email(),
@@ -83,7 +76,6 @@ type RefreshTokenDto = z.infer<typeof refreshTokenSchema>;
 export {
   signInSchema,
   signInWithMfaSchema,
-  signInOtpSchema,
   enableMfaSchema,
   signupSchema,
   signUpConfirmSchema,
@@ -94,7 +86,6 @@ export {
   refreshTokenSchema,
   SignInDto,
   SignInWithMfaDto,
-  SignInOtpDto,
   EnableMfaDto,
   SignupDto,
   SignUpConfirmDto,
