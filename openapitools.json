@@ -36,7 +36,7 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/admin/api-json",
+        "inputSpec": "https://api.karasu256.com/api/admin",
         "output": "#{cwd}/client/typescript/admin/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
@@ -62,7 +62,7 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/auth/api-json",
+        "inputSpec": "https://api.karasu256.com/api/auth",
         "output": "#{cwd}/client/typescript/auth/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
@@ -88,7 +88,7 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/auth/api-json",
+        "inputSpec": "https://api.karasu256.com/api/auth",
         "output": "#{cwd}/client/dart/auth/#{name}",
         "enablePostProcessFile": true,
         "additionalProperties": {
