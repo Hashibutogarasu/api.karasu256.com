@@ -10,3 +10,6 @@
 [submodule "client/typescript/karasu256-api-admin-client"]
 	path = client/typescript/karasu256-api-admin-client
 	url = https://github.com/Hashibutogarasu/karasu256-api-admin-client.git
+[submodule "client/dart/karasu-lab-public-client-dart"]
+	path = client/dart/karasu-lab-public-client-dart
+	url = https://github.com/Hashibutogarasu/karasu-lab-public-client-dart.git
