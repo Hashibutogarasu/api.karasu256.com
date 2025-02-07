@@ -57,6 +57,8 @@
     "@nestjs/websockets": "^10.4.15",
     "@openapitools/openapi-generator-cli": "^2.16.3",
     "@supabase/supabase-js": "^2.47.5",
+    "amazon-cognito-identity-js": "^6.3.12",
+    "aws-jwt-verify": "^5.0.0",
     "body-parser": "^1.20.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
