@@ -105,6 +105,7 @@ export class AuthService {
               resolve({
                 message: 'MFA setup',
                 secretCode: secretCode,
+                totpUrl: `otpauth://totp/KarasuLab:${dto.email}?secret=${secretCode}&issuer=KarasuLab`,
               });
             },
             onFailure: (err) => {
