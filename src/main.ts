@@ -38,7 +38,6 @@ function setUpDocument(
   config: DocumentBuilder,
   options: SwaggerCustomOptions,
   include: any[],
-  { jsonDocumentUrl, yamlDocumentUrl }: { jsonDocumentUrl: string; yamlDocumentUrl: string },
 ) {
   config.setTitle(`Karasu Lab ${title} API Document ${process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1)}`);
   const document = SwaggerModule.createDocument(app, config.build(), {
@@ -46,10 +45,10 @@ function setUpDocument(
   });
   const documentFactory = () => document;
 
-  SwaggerModule.setup(path, app, documentFactory, {
+  SwaggerModule.setup(`api/${path}`, app, documentFactory, {
     ...options,
-    jsonDocumentUrl: jsonDocumentUrl,
-    yamlDocumentUrl: yamlDocumentUrl,
+    jsonDocumentUrl: `api/${path}/api-json`,
+    yamlDocumentUrl: `api/${path}/api-yaml`,
   });
 }
 
@@ -85,30 +84,21 @@ async function bootstrap() {
     ],
   };
 
-  setUpDocument("Public", "api/public", app, config, options, [
+  setUpDocument("Public", "public", app, config, options, [
     GenshinModule,
     GalleriesModule,
-  ], {
-    jsonDocumentUrl: "/api/public/api-json",
-    yamlDocumentUrl: "/api/admin/api-yaml",
-  });
+  ]);
 
-  setUpDocument("Admin", "api/admin", app, config, options, [
+  setUpDocument("Admin", "admin", app, config, options, [
     AppModule,
     AdminModule,
     GalleriesAdminModule,
     GenshinAdminModule,
-  ], {
-    jsonDocumentUrl: "/api/admin/api-json",
-    yamlDocumentUrl: "/api/admin/api-yaml",
-  });
+  ]);
 
-  setUpDocument("Auth", "api/auth", app, config, options, [
+  setUpDocument("Auth", "auth", app, config, options, [
     AuthModule,
-  ], {
-    jsonDocumentUrl: "/api/auth/api-json",
-    yamlDocumentUrl: "/api/auth/api-yaml",
-  });
+  ]);
 
   app.useGlobalPipes(
     new ValidationPipe({
