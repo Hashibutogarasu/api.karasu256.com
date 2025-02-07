@@ -82,6 +82,32 @@
           "DateTime": "Date"
         }
       },
+      "public:dart": {
+        "packageName": "karasu256_api_client",
+        "generatorName": "dart-dio",
+        "auth": "Bearer",
+        "gitUserId": "Hashibutogarasu",
+        "gitRepoId": "api.karasu256.com",
+        "inputSpec": "https://api.karasu256.com/api/public/api-json",
+        "output": "#{cwd}/client/dart/karasu-lab-public-client-dart",
+        "enablePostProcessFile": true,
+        "additionalProperties": {
+          "pubName": "karasu256_api_client",
+          "pubHomepage": "https://karasu256.com",
+          "withSeparateModelsAndApi": true,
+          "useSingleRequestParameter": false,
+          "enumPropertyNaming": "original",
+          "modelPropertyNaming": "original",
+          "paramNaming": "original",
+          "supportsES6": true,
+          "withInterfaces": true,
+          "pubVersion": "1.4.0"
+        },
+        "typeMappings": {
+          "date": "DateTime",
+          "DateTime": "DateTime"
+        }
+      },
       "auth:dart": {
         "packageName": "karasu256_api_auth_client",
         "generatorName": "dart-dio",
