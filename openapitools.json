@@ -89,7 +89,7 @@
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
         "inputSpec": "https://api.karasu256.com/api/auth/api-json",
-        "output": "#{cwd}/client/dart/auth",
+        "output": "#{cwd}/client/dart/karasu-lab-auth-client-dart",
         "enablePostProcessFile": true,
         "additionalProperties": {
           "pubName": "karasu256_api_auth_client",

@@ -72,5 +72,3 @@ supabase/
 example.json
 
 api-docs/
-client/
-client/dart/auth
