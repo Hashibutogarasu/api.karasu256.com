@@ -54,7 +54,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       user.changePassword(dto.oldPassword, dto.newPassword, (err, result) => {
         if (err) {
-          return this.onError(err);
+          return reject(this.onError(err));
         }
         resolve({ message: 'Password changed' });
       });
@@ -85,10 +85,10 @@ export class AuthService {
           }), challengeName)
         },
         onSuccess: (result) => {
-          return this.onSignIn(result);
+          resolve(this.onSignIn(result));
         },
         onFailure: (err) => {
-          return this.onError(err);
+          reject(this.onError(err));
         },
       });
     });
@@ -108,12 +108,12 @@ export class AuthService {
               });
             },
             onFailure: (err) => {
-              return this.onError(err);
+              reject(this.onError(err));
             },
           });
         },
         onFailure: (err) => {
-          return this.onError(err);
+          reject(this.onError(err));
         }
       });
     });
@@ -135,18 +135,18 @@ export class AuthService {
                 PreferredMfa: dto.answerChallenge == "SOFTWARE_TOKEN_MFA",
               }, (err, result) => {
                 if (err) {
-                  return this.onError(err);
+                  return reject(this.onError(err));
                 }
                 resolve({ message: 'MFA enabled' });
               });
             },
             onFailure: (err) => {
-              return this.onError(err);
+              reject(this.onError(err));
             },
           });
         },
         onFailure: (err) => {
-          return this.onError(err);
+          reject(this.onError(err));
         }
       });
     });
@@ -168,26 +168,26 @@ export class AuthService {
                 PreferredMfa: false,
               }, (err, result) => {
                 if (err) {
-                  return this.onError(err);
+                  return reject(this.onError(err));
                 }
                 resolve({ message: 'MFA disabled' });
               });
             },
             onFailure: (err) => {
-              return this.onError(err);
+              reject(this.onError(err));
             },
           }), challengeName)
         },
         onSuccess: (result) => {
           user.disableMFA((err, result) => {
             if (err) {
-              return this.onError(err);
+              return reject(this.onError(err));
             }
             resolve({ message: 'MFA disabled' });
           });
         },
         onFailure: (err) => {
-          return this.onError(err);
+          reject(this.onError(err));
         },
       });
     });
@@ -208,7 +208,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.userPool.signUp(dto.email, dto.password, attributeList, [], (err, result) => {
         if (err) {
-          return this.onError(err);
+          return reject(this.onError(err));
         }
         resolve({ message: 'User created' });
       });
@@ -221,7 +221,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       user.confirmRegistration(dto.code, true, (err, result) => {
         if (err) {
-          return this.onError(err);
+          return reject(this.onError(err));
         }
         resolve({ message: 'User confirmed' });
       });
@@ -237,7 +237,7 @@ export class AuthService {
           resolve({ message: 'Password reseted' });
         },
         onFailure: (err) => {
-          return this.onError(err);
+          reject(this.onError(err));
         },
       });
     });
@@ -252,7 +252,7 @@ export class AuthService {
           resolve({ message: 'Password changed' });
         },
         onFailure: (err) => {
-          return this.onError(err);
+          reject(this.onError(err));
         },
       });
     });
@@ -264,13 +264,13 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       user.authenticateUser(this.getAuthenticationDetails(dto.email, dto.oldPassword), {
         totpRequired: (challengename, challengeParameters) => {
-          return this.onChangePassword(user, dto);
+          resolve(this.onChangePassword(user, dto));
         },
         onSuccess: (session) => {
-          return this.onChangePassword(user, dto);
+          resolve(this.onChangePassword(user, dto));
         },
         onFailure: (err) => {
-          return this.onError(err);
+          reject(this.onError(err));
         }
       })
     });
@@ -286,7 +286,7 @@ export class AuthService {
           resolve({ refreshToken });
         },
         onFailure: (err) => {
-          return this.onError(err);
+          reject(this.onError(err));
         },
       });
     });
@@ -299,7 +299,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       user.refreshSession(refreshToken, (err, session) => {
         if (err) {
-          return this.onError(err);
+          return reject(this.onError(err));
         }
         const accessToken = session.getAccessToken().getJwtToken();
         resolve({ accessToken });
