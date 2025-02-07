@@ -36,8 +36,8 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/admin",
-        "output": "#{cwd}/client/typescript/admin/#{name}",
+        "inputSpec": "https://api.karasu256.com/api/admin/api-json",
+        "output": "#{cwd}/client/typescript/admin",
         "enablePostProcessFile": true,
         "additionalProperties": {
           "ngVersion": "6.1.8",
@@ -62,8 +62,8 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/auth",
-        "output": "#{cwd}/client/typescript/auth/#{name}",
+        "inputSpec": "https://api.karasu256.com/api/auth/api-json",
+        "output": "#{cwd}/client/typescript/auth",
         "enablePostProcessFile": true,
         "additionalProperties": {
           "ngVersion": "6.1.8",
@@ -88,8 +88,8 @@
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
         "gitRepoId": "api.karasu256.com",
-        "inputSpec": "https://api.karasu256.com/api/auth",
-        "output": "#{cwd}/client/dart/auth/#{name}",
+        "inputSpec": "https://api.karasu256.com/api/auth/api-json",
+        "output": "#{cwd}/client/dart/auth",
         "enablePostProcessFile": true,
         "additionalProperties": {
           "pubName": "karasu256_api_auth_client",
