@@ -29,7 +29,7 @@ export class AuthService {
     });
   }
 
-  getUser(email) {
+  getUser(email: string) {
     return new CognitoUser({
       Username: email,
       Pool: this.userPool,
