@@ -22,8 +22,7 @@
           "modelPropertyNaming": "original",
           "paramNaming": "original",
           "supportsES6": true,
-          "withInterfaces": true,
-          "platform": "browser"
+          "withInterfaces": true
         },
         "typeMappings": {
           "date": "Date",
