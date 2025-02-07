@@ -55,6 +55,32 @@
           "date": "Date",
           "DateTime": "Date"
         }
+      },
+      "auth": {
+        "packageName": "@karasu-lab/karasu256-api-auth-client",
+        "generatorName": "typescript-fetch",
+        "auth": "Bearer",
+        "gitUserId": "Hashibutogarasu",
+        "gitRepoId": "api.karasu256.com",
+        "inputSpec": "./api-docs/api-json.json",
+        "output": "#{cwd}/client/auth/#{name}",
+        "enablePostProcessFile": true,
+        "additionalProperties": {
+          "ngVersion": "6.1.8",
+          "npmName": "@karasu-lab/karasu256-api-auth-client",
+          "withSeparateModelsAndApi": true,
+          "useSingleRequestParameter": false,
+          "enumPropertyNaming": "original",
+          "modelPropertyNaming": "original",
+          "paramNaming": "original",
+          "supportsES6": true,
+          "withInterfaces": true,
+          "npmVersion": "1.4.0"
+        },
+        "typeMappings": {
+          "date": "Date",
+          "DateTime": "Date"
+        }
       }
     }
   }
