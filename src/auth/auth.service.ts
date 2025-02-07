@@ -127,7 +127,7 @@ export class AuthService {
         Password: dto.password,
       }), {
         onSuccess: (result) => {
-          user.verifySoftwareToken(dto.code, "My TOTP Device", {
+          user.verifySoftwareToken(dto.code, dto.deviceName, {
             onSuccess: (result) => {
               user.setUserMfaPreference({
                 Enabled: dto.answerChallenge == "SMS_MFA",
