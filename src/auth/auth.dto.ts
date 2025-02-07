@@ -8,7 +8,7 @@ const codeSchema = z.string().min(6)
 const signInSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
-  code: codeSchema,
+  code: codeSchema.optional(),
 });
 
 type SignInDto = z.infer<typeof signInSchema>;
@@ -60,8 +60,8 @@ type ForgotPasswordDto = z.infer<typeof forgotPasswordSchema>;
 
 const forgotPasswordConfirmSchema = z.object({
   email: emailSchema,
-  code: codeSchema,
   password: passwordSchema,
+  code: codeSchema.optional(),
 });
 
 type ForgotPasswordConfirmDto = z.infer<typeof forgotPasswordConfirmSchema>;
@@ -70,6 +70,7 @@ const changePasswordSchema = z.object({
   email: emailSchema,
   oldPassword: passwordSchema,
   newPassword: passwordSchema,
+  code: codeSchema.optional(),
 });
 
 type ChangePasswordDto = z.infer<typeof changePasswordSchema>;

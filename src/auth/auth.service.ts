@@ -265,7 +265,14 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       user.authenticateUser(this.getAuthenticationDetails(dto.email, dto.oldPassword), {
         totpRequired: (challengename, challengeParameters) => {
-          resolve(this.onChangePassword(user, dto));
+          user.sendMFACode(dto.code, ({
+            onSuccess: (result) => {
+              resolve(this.onChangePassword(user, dto));
+            },
+            onFailure: (err) => {
+              resolve(this.onError(err));
+            },
+          }), challengename);
         },
         onSuccess: (session) => {
           resolve(this.onChangePassword(user, dto));
