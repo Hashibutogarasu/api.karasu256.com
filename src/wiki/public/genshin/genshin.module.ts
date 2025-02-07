@@ -19,7 +19,6 @@ import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller
 import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
 import { VersionsController } from './versions/versions.controller';
 import { VersionsService } from './versions/versions.service';
-import { S3Service } from '@/s3/s3.service';
 
 @Module({
   imports: [
@@ -33,6 +32,6 @@ import { S3Service } from '@/s3/s3.service';
     ]),
   ],
   controllers: [CharactersController, WeaponsController, ArtifactsController, CountriesController, ArtifactSetsController, VersionsController],
-  providers: [S3Service, CharactersService, WeaponsService, ArtifactsService, CountriesService, ArtifactSetsService, VersionsService]
+  providers: [CharactersService, WeaponsService, ArtifactsService, CountriesService, ArtifactSetsService, VersionsService]
 })
 export class GenshinModule { }
