@@ -83,7 +83,7 @@
         }
       },
       "public:dart": {
-        "packageName": "karasu_lab_public_client_dart",
+        "packageName": "karasu_lab_public_client",
         "generatorName": "dart-dio",
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
@@ -92,7 +92,7 @@
         "output": "#{cwd}/client/dart/karasu-lab-public-client-dart",
         "enablePostProcessFile": true,
         "additionalProperties": {
-          "pubName": "karasu_lab_public_client_dart",
+          "pubName": "karasu_lab_public_client",
           "pubHomepage": "https://karasu256.com",
           "withSeparateModelsAndApi": true,
           "useSingleRequestParameter": false,
@@ -109,7 +109,7 @@
         }
       },
       "auth:dart": {
-        "packageName": "karasu_lab_auth_client_dart",
+        "packageName": "karasu_lab_auth_client",
         "generatorName": "dart-dio",
         "auth": "Bearer",
         "gitUserId": "Hashibutogarasu",
@@ -118,7 +118,7 @@
         "output": "#{cwd}/client/dart/karasu-lab-auth-client-dart",
         "enablePostProcessFile": true,
         "additionalProperties": {
-          "pubName": "karasu_lab_auth_client_dart",
+          "pubName": "karasu_lab_auth_client",
           "pubHomepage": "https://karasu256.com",
           "withSeparateModelsAndApi": true,
           "useSingleRequestParameter": false,
