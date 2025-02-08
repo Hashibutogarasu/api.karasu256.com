@@ -12,7 +12,7 @@ import { IBaseAdminCaS } from '@/types/ibase_admin_cas';
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-  @Controller("wiki/genshin/admin/regions")
+@Controller("wiki/genshin/admin/characters")
 export class CharactersController implements IBaseAdminCaS<GICharacter> {
   constructor(
     private readonly charactersService: CharactersService
