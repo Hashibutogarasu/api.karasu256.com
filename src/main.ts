@@ -39,7 +39,7 @@ function setUpDocument(
   options: SwaggerCustomOptions,
   include: any[],
 ) {
-  config.setTitle(`Karasu Lab ${title} API Document ${process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1)}`);
+  options.customSiteTitle = title;
   const document = SwaggerModule.createDocument(app, config.build(), {
     include,
   });
@@ -52,6 +52,10 @@ function setUpDocument(
   });
 }
 
+function getTitle(title: string) {
+  return `Karasu Lab ${title} API Document ${process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1)}`;
+}
+
 async function bootstrap() {
   const publicPort = 8080;
 
@@ -61,7 +65,7 @@ async function bootstrap() {
   const node_env = process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1);
 
   const config = new DocumentBuilder()
-    .setTitle(`Karasu Lab API ${node_env}`)
+    .setTitle("Karasu Lab API")
     .setLicense("MIT", "https://opensource.org/licenses/MIT")
     .setDescription("API documentation for Karasu Lab")
     .setVersion("3.3.11")
@@ -84,19 +88,19 @@ async function bootstrap() {
     ],
   };
 
-  setUpDocument("Public", "public", app, config, options, [
+  setUpDocument(getTitle("Public"), "public", app, config, options, [
     GenshinModule,
     GalleriesModule,
   ]);
 
-  setUpDocument("Admin", "admin", app, config, options, [
+  setUpDocument(getTitle("Admin"), "admin", app, config, options, [
     AppModule,
     AdminModule,
     GalleriesAdminModule,
     GenshinAdminModule,
   ]);
 
-  setUpDocument("Auth", "auth", app, config, options, [
+  setUpDocument(getTitle("Auth"), "auth", app, config, options, [
     AuthModule,
   ]);
 
