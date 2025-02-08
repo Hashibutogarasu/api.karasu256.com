@@ -64,7 +64,7 @@ async function bootstrap() {
     .setTitle(`Karasu Lab API ${node_env}`)
     .setLicense("MIT", "https://opensource.org/licenses/MIT")
     .setDescription("API documentation for Karasu Lab")
-    .setVersion("3.3.10")
+    .setVersion("3.3.11")
     .addServer(process.env.BASE_URL)
     .addBearerAuth({
       type: 'http',
