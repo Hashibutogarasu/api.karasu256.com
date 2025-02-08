@@ -6,7 +6,7 @@ import { IBase } from "@karasu-lab/karasu-lab-sdk";
 @Entity('weapons')
 export class Weapon extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   name: string;

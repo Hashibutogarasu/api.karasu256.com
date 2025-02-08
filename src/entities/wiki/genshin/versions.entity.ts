@@ -9,7 +9,7 @@ import { Artifacts } from "./artifacts.entity";
 @Entity('versions')
 export class VersionsEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column({ nullable: true })
   name?: string | null;

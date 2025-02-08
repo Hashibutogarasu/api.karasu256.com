@@ -6,7 +6,7 @@ import { VersionsEntity } from "./versions.entity";
 export class Items extends BaseEntity {
   released: boolean;
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   name: string;

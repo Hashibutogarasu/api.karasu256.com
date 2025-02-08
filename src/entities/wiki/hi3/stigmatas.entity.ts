@@ -5,7 +5,7 @@ import { HI3Characters } from "./hi3_characters.entity";
 @Entity('stigmatas')
 export class HI3StigmatasEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @CreateDateColumn()
   createdAt: Date;

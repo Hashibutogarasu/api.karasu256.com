@@ -6,7 +6,7 @@ import { IBase } from "@karasu-lab/karasu-lab-sdk";
 @Entity('countries')
 export class Country extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   name: string;

@@ -7,7 +7,7 @@ import { VersionsEntity } from "./versions.entity";
 @Entity('artifact_sets')
 export class ArtifactSets extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id: string;
 
   @Column()
   name: string;

@@ -19,7 +19,7 @@ const createSchema = z.object({
 });
 
 const updateSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string().optional(),
   description: z.string().optional(),
   icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
