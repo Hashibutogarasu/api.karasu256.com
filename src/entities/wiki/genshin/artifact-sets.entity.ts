@@ -3,10 +3,12 @@ import { GICharacter } from "./gi_character.entity";
 import { Artifacts } from "./artifacts.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { VersionsEntity } from "./versions.entity";
+import { Transform } from 'class-transformer';
 
 @Entity('artifact_sets')
 export class ArtifactSets extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
+  @Transform(({ value }) => (value).toString())
   id: string;
 
   @Column()

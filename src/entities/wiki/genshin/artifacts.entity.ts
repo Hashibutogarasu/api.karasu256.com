@@ -2,10 +2,12 @@ import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, Ma
 import { ArtifactSets } from "./artifact-sets.entity";
 import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
+import { Transform } from 'class-transformer';
 
 @Entity('artifacts')
 export class Artifacts extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
+  @Transform(({ value }) => (value).toString())
   id: string;
 
   @Column()

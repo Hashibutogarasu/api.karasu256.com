@@ -5,10 +5,12 @@ import { ArtifactSets } from "./artifact-sets.entity";
 import { Country } from "./countries.entity";
 import { GICharacter } from "./gi_character.entity";
 import { Artifacts } from "./artifacts.entity";
+import { Transform } from 'class-transformer';
 
 @Entity('versions')
 export class VersionsEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
+  @Transform(({ value }) => (value).toString())
   id: string;
 
   @Column({ nullable: true })

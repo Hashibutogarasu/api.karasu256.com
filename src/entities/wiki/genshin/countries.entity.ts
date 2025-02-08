@@ -2,10 +2,12 @@ import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGenerat
 import { GICharacter } from "./gi_character.entity";
 import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
+import { Transform } from 'class-transformer';
 
 @Entity('countries')
 export class Country extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
+  @Transform(({ value }) => (value).toString())
   id: string;
 
   @Column()
