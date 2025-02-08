@@ -3,9 +3,9 @@ import { BaseEntity, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGen
 import { HI3Characters } from "./hi3_characters.entity";
 
 @Entity('stigmatas')
-export class HI3StigmatasEntity extends BaseEntity implements IBase {
+export class HI3StigmatasEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @CreateDateColumn()
   createdAt: Date;
