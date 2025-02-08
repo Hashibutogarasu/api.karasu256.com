@@ -30,9 +30,9 @@ export class VersionsEntity extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => GICharacter, (character) => character.version)
+  @OneToMany(() => GICharacter, (character) => character.version, { nullable: true })
   @JoinColumn({ name: 'characterId' })
-  characters: GICharacter[];
+  characters?: GICharacter[] | null;
 
   @ManyToMany(() => Weapon, { eager: true, nullable: true })
   @JoinTable({
