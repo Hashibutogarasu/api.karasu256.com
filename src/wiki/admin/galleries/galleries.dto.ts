@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 const createSchema = z.object({
-  url: z.string().url(),
+  url: z.string(),
   alt: z.string(),
-  key: z.string(),
-  character: z.string(),
+  key: z.string().optional(),
+  character: z.string().optional(),
 });
 
 const updateSchema = z.object({
