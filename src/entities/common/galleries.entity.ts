@@ -3,9 +3,9 @@ import { GICharacter } from "../wiki/genshin/gi_character.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('galleries')
-export class Gallery extends BaseEntity implements IBase {
+export class Gallery extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @Column()
   alt: string;
