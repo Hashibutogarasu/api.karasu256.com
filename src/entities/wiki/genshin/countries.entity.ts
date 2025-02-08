@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { GICharacter } from "./gi_character.entity";
 import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
@@ -28,7 +28,7 @@ export class Country extends BaseEntity {
   @JoinColumn({ name: 'characterId' })
   characters?: GICharacter[] | null;
 
-  @OneToOne(() => VersionsEntity, { nullable: true })
+  @ManyToOne(() => VersionsEntity, version => version.id, { nullable: true })
   @JoinColumn({ name: 'versionId', referencedColumnName: 'id', foreignKeyConstraintName: 'versionId' })
   version?: VersionsEntity | null;
 }
