@@ -3,7 +3,7 @@ import { IDeleteDto } from "@karasu-lab/karasu-lab-sdk";
 import { BaseEntity } from "typeorm";
 
 const baseSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -11,8 +11,8 @@ const baseSchema = z.object({
 type BaseDto = z.infer<typeof baseSchema>;
 
 const deleteSchema = z.object({
-  id: z.string().nonempty(),
-}) as ZodType<IDeleteDto>;
+  id: z.number(),
+});
 
 type DeleteDto = z.infer<typeof deleteSchema>;
 
@@ -22,7 +22,7 @@ const paginationSchema = z.object({
 })
 
 const getParamsSchema = z.object({
-  id: z.string().nonempty(),
+  id: z.number().optional(),
 }).merge(paginationSchema);
 
 type OmitFunctions<T, Exclude extends keyof T = never> = {
