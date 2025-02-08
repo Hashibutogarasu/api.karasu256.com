@@ -4,9 +4,9 @@ import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('countries')
-export class Country extends BaseEntity implements IBase {
+export class Country extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @Column()
   name: string;

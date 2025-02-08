@@ -7,9 +7,9 @@ import { GICharacter } from "./gi_character.entity";
 import { Artifacts } from "./artifacts.entity";
 
 @Entity('versions')
-export class VersionsEntity extends BaseEntity implements IBase {
+export class VersionsEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @Column({ nullable: true })
   name?: string | null;

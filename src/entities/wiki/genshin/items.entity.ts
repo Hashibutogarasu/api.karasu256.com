@@ -3,10 +3,10 @@ import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGenerat
 import { VersionsEntity } from "./versions.entity";
 
 @Entity('items')
-export class Items extends BaseEntity implements IBase {
+export class Items extends BaseEntity {
   released: boolean;
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @Column()
   name: string;

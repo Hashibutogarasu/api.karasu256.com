@@ -5,9 +5,9 @@ import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { VersionsEntity } from "./versions.entity";
 
 @Entity('artifact_sets')
-export class ArtifactSets extends BaseEntity implements IBase {
+export class ArtifactSets extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @Column()
   name: string;
