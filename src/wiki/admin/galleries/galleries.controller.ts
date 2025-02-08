@@ -36,7 +36,7 @@ export class GalleriesController implements IBaseAdminCaS<Gallery> {
     },
   })
   @UseInterceptors(FileInterceptor("file"))
-  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<{ url: string }> {
+  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<{ url?: string | null }> {
     return this.galleriesService.uploadFile(file);
   }
 
