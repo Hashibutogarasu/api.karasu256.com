@@ -4,7 +4,7 @@ import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('galleries')
 export class Gallery extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: true })
