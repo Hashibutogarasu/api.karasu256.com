@@ -27,6 +27,6 @@ export class Country extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => VersionsEntity, version => version.countries)
-  version: VersionsEntity;
+  @OneToMany(() => VersionsEntity, version => version.countries, { nullable: true })
+  version?: VersionsEntity | null;
 }
