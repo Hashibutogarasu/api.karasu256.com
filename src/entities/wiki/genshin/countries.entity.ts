@@ -18,8 +18,8 @@ export class Country extends BaseEntity {
   @Column({ nullable: true })
   sumbnail_url?: string | null;
 
-  @OneToMany(() => GICharacter, character => character.region)
-  characters: GICharacter[];
+  @OneToMany(() => GICharacter, character => character.region, { nullable: true })
+  characters?: GICharacter[] | null;
 
   @CreateDateColumn()
   createdAt: Date;
