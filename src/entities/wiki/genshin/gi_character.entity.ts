@@ -46,7 +46,7 @@ export class GICharacter extends BaseEntity {
   updatedAt: Date;
 
   @Column({ nullable: true })
-  implemented_date?: Date | null;
+  implemented_date?: string | null;
 
   @ManyToOne(() => Country, country => country.id, { nullable: true })
   region?: Country | null;

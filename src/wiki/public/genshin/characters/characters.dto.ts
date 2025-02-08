@@ -13,6 +13,7 @@ const base = getParamsSchema.extend({
   rarity: rarityType.optional(),
   version: z.string().optional(),
   property: z.string().optional(),
+  implemented_date: z.string().optional(),
   unimplemented: z.string().transform((value) => value === 'true').optional(),
 });
 
