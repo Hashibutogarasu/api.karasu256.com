@@ -98,10 +98,6 @@
           "paramNaming": "original",
           "supportsES6": true,
           "withInterfaces": true
-        },
-        "typeMappings": {
-          "date": "DateTime",
-          "DateTime": "DateTime"
         }
       },
       "auth:dart": {
@@ -123,10 +119,6 @@
           "paramNaming": "original",
           "supportsES6": true,
           "withInterfaces": true
-        },
-        "typeMappings": {
-          "date": "DateTime",
-          "DateTime": "DateTime"
         }
       }
     }
