@@ -72,11 +72,9 @@ export class CountriesService {
       throw new BadRequestException('この国は存在しません');
     }
 
-    const versionExists = await this.repository.findOne({
+    const versionExists = await this.versionsRepository.findOne({
       where: {
-        version: {
-          version_string: dto.version.version_string,
-        }
+        version_string: dto.version.version_string,
       },
     });
 
@@ -86,7 +84,9 @@ export class CountriesService {
 
     await this.repository.update(dto.id, {
       ...ref,
-      version: versionExists,
+      version: {
+        id: versionExists.id,
+      },
     });
   }
 
