@@ -6,9 +6,10 @@ import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
-import { GalleriesModule as GalleriesAdminModule, GalleriesModule } from "./wiki/admin/galleries/galleries.module";
+import { GalleriesModule as GalleriesAdminModule } from "./wiki/admin/galleries/galleries.module";
 import { AuthModule } from "./auth/auth.module";
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
+import { GalleriesModule } from "./wiki/public/galleries/galleries.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({

@@ -14,7 +14,7 @@ import { createSchema, updateSchema } from './galleries.dto';
 })
 @ApiBearerAuth()
   @ApiTags("galleries")
-  @Controller('galleries/admin')
+  @Controller('wiki/admin/galleries')
 export class GalleriesController implements IBaseAdminCaS<Gallery> {
   constructor(
     private readonly galleriesService: GalleriesService,
