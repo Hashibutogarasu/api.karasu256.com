@@ -33,9 +33,12 @@ export class WeaponsService implements IBasePublicCaS<Weapon> {
     return await this.weaponsRepository.find({
       where: {
         ...ref,
-        version: {
+        version: version && {
           id: version.id
         }
+      },
+      relations: {
+        characters: false
       },
       take: take,
       skip: skip,

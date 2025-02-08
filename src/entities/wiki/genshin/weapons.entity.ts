@@ -33,9 +33,9 @@ export class Weapon extends BaseEntity {
   @Column()
   type: string;
 
-  @OneToMany(() => GICharacter, character => character.weapon)
-  characters: GICharacter[];
+  @OneToMany(() => GICharacter, character => character.weapon, { nullable: true })
+  characters?: GICharacter[] | null;
 
-  @OneToMany(() => VersionsEntity, version => version.weapons)
-  version: VersionsEntity;
+  @OneToMany(() => VersionsEntity, version => version.weapons, { nullable: true })
+  version?: VersionsEntity | null;
 }
