@@ -18,7 +18,11 @@ export class CountriesService implements IBasePublicCaS<Country> {
   ) { }
 
   async getAll(): Promise<Country[]> {
-    return await this.repository.find();
+    return await this.repository.find({
+      relations: {
+        version: true,
+      },
+    });
   }
 
   async get(query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
@@ -37,6 +41,9 @@ export class CountriesService implements IBasePublicCaS<Country> {
           id: version.id
         },
         ...characters
+      },
+      relations: {
+        version: true,
       },
       take: take,
       skip: skip,
@@ -59,8 +66,9 @@ export class CountriesService implements IBasePublicCaS<Country> {
           version_string: version.version_string,
         }
       },
+      relations: {
+        version: true,
+      },
     });
   }
-
-
 }
