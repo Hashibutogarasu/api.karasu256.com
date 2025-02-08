@@ -57,7 +57,7 @@ export class GICharacter extends BaseEntity {
   @ManyToOne(() => VersionsEntity, version => version.id, { nullable: true })
   version?: VersionsEntity | null;
 
-  @ManyToMany(() => ArtifactSets)
+  @ManyToMany(() => ArtifactSets, { nullable: true })
   @JoinTable({
     name: "artifact_set_id",
     joinColumn: {
@@ -69,9 +69,9 @@ export class GICharacter extends BaseEntity {
       referencedColumnName: "id"
     }
   })
-  artifact_set: ArtifactSets[];
+  artifact_set?: ArtifactSets[] | null;
 
-  @ManyToMany(() => Gallery)
+  @ManyToMany(() => Gallery, { nullable: true })
   @JoinTable({
     name: "galleries_id",
     joinColumn: {
@@ -83,5 +83,5 @@ export class GICharacter extends BaseEntity {
       referencedColumnName: "id"
     }
   })
-  galleries: Gallery[];
+  galleries?: Gallery[] | null;
 }
