@@ -7,14 +7,14 @@ export class Gallery extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
-  @Column()
-  alt: string;
+  @Column({ nullable: true })
+  alt?: string | null;
 
-  @Column()
-  url: string;
+  @Column({ nullable: true })
+  url?: string | null;
 
-  @Column()
-  key: string;
+  @Column({ nullable: true })
+  key?: string | null;
 
   @CreateDateColumn()
   createdAt: Date;
