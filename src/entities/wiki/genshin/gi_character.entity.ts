@@ -51,8 +51,8 @@ export class GICharacter extends BaseEntity {
   @ManyToOne(() => Weapon, weapon => weapon.id, { nullable: true })
   weapon?: Weapon | null;
 
-  @ManyToOne(() => VersionsEntity, version => version.characters)
-  version: VersionsEntity;
+  @ManyToOne(() => VersionsEntity, version => version.characters, { nullable: true })
+  version?: VersionsEntity | null;
 
   @ManyToMany(() => ArtifactSets)
   @JoinTable({
