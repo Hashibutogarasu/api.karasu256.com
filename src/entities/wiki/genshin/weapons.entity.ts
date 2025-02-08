@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { GICharacter } from "./gi_character.entity";
 import { VersionsEntity } from "./versions.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
@@ -6,8 +6,7 @@ import { Transform } from 'class-transformer';
 
 @Entity('weapons')
 export class Weapon extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
-  @Transform(({ value }) => (value).toString())
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

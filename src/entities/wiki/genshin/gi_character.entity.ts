@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Country } from "./countries.entity";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
@@ -9,8 +9,7 @@ import { Transform } from 'class-transformer';
 
 @Entity('characters')
 export class GICharacter extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
-  @Transform(({ value }) => (value).toString())
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
@@ -9,8 +9,7 @@ import { Transform } from 'class-transformer';
 
 @Entity('versions')
 export class VersionsEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
-  @Transform(({ value }) => (value).toString())
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: true })
