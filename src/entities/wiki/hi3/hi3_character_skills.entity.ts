@@ -6,6 +6,24 @@ export class HI3CharacterSkillsEntity extends BaseEntity{
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @OneToMany(() => HI3SkillsEntity, skill => skill.leader_skill, { nullable: true })
+  leader_skill?: HI3SkillsEntity[] | null;
+
+  @OneToMany(() => HI3SkillsEntity, skill => skill.passive_skill, { nullable: true })
+  passive_skill?: HI3SkillsEntity[] | null;
+
+  @OneToMany(() => HI3SkillsEntity, skill => skill.avoidance_skill, { nullable: true })
+  avoidance_skill?: HI3SkillsEntity[] | null;
+
+  @OneToMany(() => HI3SkillsEntity, skill => skill.weapon_skill, { nullable: true })
+  weapon_skill?: HI3SkillsEntity[] | null;
+
+  @OneToMany(() => HI3SkillsEntity, skill => skill.normal_attack, { nullable: true })
+  normal_attack?: HI3SkillsEntity[] | null;
+
+  @OneToMany(() => HI3SkillsEntity, skill => skill.ultimate_skill, { nullable: true })
+  ultimate_skill?: HI3SkillsEntity[] | null;
+
   @OneToMany(() => HI3SkillsEntity, skill => skill.id, { nullable: true })
-  skills?: HI3SkillsEntity[] | null;
+  special_skill?: HI3SkillsEntity[] | null;
 }
