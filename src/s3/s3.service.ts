@@ -30,6 +30,9 @@ export class S3Service {
         Bucket: this.configService.get('CLOUDFLARE_BUCKET'),
         Key: key,
         Body: file.buffer,
+        Metadata: {
+          'Content-Type': file.mimetype,
+        }
       });
 
       this.S3.send(command)
