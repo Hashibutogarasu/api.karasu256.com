@@ -1,7 +1,8 @@
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { HI3StigmatasEntity } from "./hi3_stigmatas.entity";
 import { HI3WeaponsEntity } from "./hi3_weapons.entity";
+import { HI3CharacterSkillsEntity } from "./hi3_character_skills.entity";
 
 @Entity('hi3_characters')
 export class HI3Characters extends BaseEntity {
@@ -22,6 +23,10 @@ export class HI3Characters extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => HI3CharacterSkillsEntity, { eager: true, nullable: true })
+  @JoinColumn({ name: 'skillId' })
+  skill?: HI3CharacterSkillsEntity | null;
 
   @ManyToMany(() => HI3StigmatasEntity, stigmata => stigmata.characters, { eager: true, nullable: true })
   @JoinTable({
