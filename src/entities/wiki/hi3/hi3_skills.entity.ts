@@ -1,5 +1,6 @@
-import { BaseEntity, Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity('hi3_skills')
 export class HI3SkillsEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
