@@ -24,6 +24,6 @@ export class HI3CharacterSkillsEntity extends BaseEntity{
   @OneToMany(() => HI3SkillsEntity, skill => skill.ultimate_skill, { nullable: true })
   ultimate_skill?: HI3SkillsEntity[] | null;
 
-  @OneToMany(() => HI3SkillsEntity, skill => skill.id, { nullable: true })
+  @OneToMany(() => HI3SkillsEntity, skill => skill.special_skill, { nullable: true })
   special_skill?: HI3SkillsEntity[] | null;
 }

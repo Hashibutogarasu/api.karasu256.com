@@ -25,100 +25,30 @@ export class HI3SkillsEntity extends BaseEntity {
   children?: HI3SkillsEntity[] | null;
 
   @ManyToOne(() => HI3CharacterSkillsEntity, skill => skill.leader_skill, { nullable: true })
-  @JoinTable({
-    name: 'leader_skill',
-    joinColumn: {
-      name: 'hi3_skillsId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'leader_skillId',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   leader_skill?: HI3CharacterSkillsEntity | null;
 
   @ManyToMany(() => HI3CharacterSkillsEntity, skill => skill.passive_skill, { nullable: true })
-  @JoinTable({
-    name: 'passive_skill',
-    joinColumn: {
-      name: 'hi3_skillsId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'passive_skillId',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   passive_skill: HI3CharacterSkillsEntity | null;
 
   @ManyToOne(() => HI3CharacterSkillsEntity, skill => skill.weapon_skill, { nullable: true })
-  @JoinTable({
-    name: 'weapon_skill',
-    joinColumn: {
-      name: 'hi3_skillsId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'avoidance_skillId',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   avoidance_skill: HI3CharacterSkillsEntity | null;
 
   @ManyToOne(() => HI3CharacterSkillsEntity, skill => skill.avoidance_skill, { nullable: true })
-  @JoinTable({
-    name: 'avoidance_skill',
-    joinColumn: {
-      name: 'hi3_skillsId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'weapon_skillId',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   weapon_skill?: HI3CharacterSkillsEntity | null;
 
   @ManyToOne(() => HI3CharacterSkillsEntity, skill => skill.normal_attack, { nullable: true })
-  @JoinTable({
-    name: 'normal_attack',
-    joinColumn: {
-      name: 'hi3_skillsId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'normal_attackId',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   normal_attack?: HI3CharacterSkillsEntity | null;
 
   @ManyToOne(() => HI3CharacterSkillsEntity, skill => skill.ultimate_skill, { nullable: true })
-  @JoinTable({
-    name: 'ultimate_skill',
-    joinColumn: {
-      name: 'hi3_skillsId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'ultimate_skillId',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   ultimate_skill?: HI3CharacterSkillsEntity | null;
 
   @ManyToOne(() => HI3CharacterSkillsEntity, skill => skill.special_skill, { nullable: true })
-  @JoinTable({
-    name: 'special_skill',
-    joinColumn: {
-      name: 'hi3_skillsId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'special_skillId',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   special_skill?: HI3CharacterSkillsEntity | null;
 }
