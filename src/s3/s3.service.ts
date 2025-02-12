@@ -35,7 +35,7 @@ export class S3Service {
     await this.S3.send(command);
 
     return {
-      url: `https://${this.configService.get('CLOUDFLARE_PUBLIC_URL')}/${key}`,
+      url: `${this.configService.get('CLOUDFLARE_PUBLIC_URL')}/${key}`,
       key: command.input.Key
     };
   }
