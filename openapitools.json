@@ -120,6 +120,27 @@
           "supportsES6": true,
           "withInterfaces": true
         }
+      },
+      "admin:dart": {
+        "packageName": "karasu_lab_admin_client",
+        "generatorName": "dart-dio",
+        "auth": "Bearer",
+        "gitUserId": "Hashibutogarasu",
+        "gitRepoId": "api.karasu256.com",
+        "inputSpec": "https://api.karasu256.com/api/admin/api-json",
+        "output": "#{cwd}/client/dart/karasu-lab-admin-client-dart",
+        "enablePostProcessFile": true,
+        "additionalProperties": {
+          "pubName": "karasu_lab_admin_client",
+          "pubHomepage": "https://karasu256.com",
+          "withSeparateModelsAndApi": true,
+          "useSingleRequestParameter": false,
+          "enumPropertyNaming": "original",
+          "modelPropertyNaming": "original",
+          "paramNaming": "original",
+          "supportsES6": true,
+          "withInterfaces": true
+        }
       }
     }
   }
