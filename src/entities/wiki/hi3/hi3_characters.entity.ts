@@ -11,11 +11,11 @@ export class HI3Characters extends BaseEntity {
   @Column()
   name: string;
 
-  @Column()
-  sub_name: string;
+  @Column({ nullable: true })
+  sub_name?: string | null;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description?: string | null;
 
   @CreateDateColumn()
   createdAt: Date;
