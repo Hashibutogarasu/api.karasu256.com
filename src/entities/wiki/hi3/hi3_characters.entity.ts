@@ -24,7 +24,7 @@ export class HI3Characters extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => HI3CharacterSkillsEntity, { eager: true, nullable: true })
+  @ManyToOne(() => HI3CharacterSkillsEntity, skill => skill.characters, { eager: true, nullable: true })
   @JoinColumn({ name: 'skillId' })
   skill?: HI3CharacterSkillsEntity | null;
 

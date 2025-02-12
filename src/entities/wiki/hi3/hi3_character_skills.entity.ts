@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { HI3SkillsEntity } from "./hi3_skills.entity";
+import { HI3Characters } from "./hi3_characters.entity";
 
 @Entity('hi3_character_skills')
 export class HI3CharacterSkillsEntity extends BaseEntity{
@@ -26,4 +27,7 @@ export class HI3CharacterSkillsEntity extends BaseEntity{
 
   @OneToMany(() => HI3SkillsEntity, skill => skill.special_skill, { nullable: true })
   special_skill?: HI3SkillsEntity[] | null;
+
+  @OneToMany(() => HI3Characters, character => character.skill, { nullable: true })
+  characters?: HI3Characters[] | null;
 }
