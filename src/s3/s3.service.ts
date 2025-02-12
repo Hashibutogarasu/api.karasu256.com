@@ -1,4 +1,4 @@
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectAttributesCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -19,31 +19,25 @@ export class S3Service {
     });
   }
 
-  uploadFile(file: Express.Multer.File): Promise<{ url: string; key: string; }> {
-    return new Promise((resolve, reject) => {
-      const today = new Date();
-      const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  async uploadFile(file: Express.Multer.File): Promise<{ url: string; key: string; }> {
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 
-      const key = `galleries/${formattedDate}/${file.originalname}`;
+    const key = `galleries/${formattedDate}/${file.originalname}`;
 
-      const command = new PutObjectCommand({
-        Bucket: this.configService.get('CLOUDFLARE_BUCKET'),
-        Key: key,
-        Body: file.buffer,
-        ContentType: file.mimetype,
-      });
-
-      this.S3.send(command)
-        .then((data) => {
-          resolve({
-            url: `${this.configService.get('CLOUDFLARE_PUBLIC_URL')}/${file.originalname}`,
-            key,
-          });
-        })
-        .catch((err) => {
-          reject(err);
-        });
+    const command = new PutObjectCommand({
+      Bucket: this.configService.get('CLOUDFLARE_BUCKET'),
+      Key: key,
+      Body: file.buffer,
+      ContentType: file.mimetype,
     });
+
+    await this.S3.send(command);
+
+    return {
+      url: `https://${this.configService.get('CLOUDFLARE_PUBLIC_URL')}/${key}`,
+      key: command.input.Key
+    };
   }
 
   deleteFile(key: string): Promise<void> {
