@@ -1,7 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { HI3Characters } from "./hi3_characters.entity";
 
-@Entity('stigmatas')
+@Entity('hi3_stigmatas')
 export class HI3StigmatasEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: string;
