@@ -10,7 +10,8 @@ import { GalleriesModule as GalleriesAdminModule } from "./wiki/admin/galleries/
 import { AuthModule } from "./auth/auth.module";
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { GalleriesModule } from "./wiki/public/galleries/galleries.module";
-import { HI3Module } from "./wiki/admin/honkai_impact_3rd/hi3.module";
+import { HI3Module as HI3AdminModule } from "./wiki/admin/honkai_impact_3rd/hi3.module";
+import { Hi3Module } from "./wiki/public/honkai_impact_3rd/hi3.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -93,6 +94,7 @@ async function bootstrap() {
   setUpDocument(getTitle("Public"), "public", app, config, options, [
     GenshinModule,
     GalleriesModule,
+    Hi3Module,
   ]);
 
   setUpDocument(getTitle("Admin"), "admin", app, config, options, [
@@ -100,7 +102,7 @@ async function bootstrap() {
     AdminModule,
     GalleriesAdminModule,
     GenshinAdminModule,
-    HI3Module,
+    HI3AdminModule,
   ]);
 
   setUpDocument(getTitle("Auth"), "auth", app, config, options, [

@@ -16,5 +16,4 @@ const getSchema = base.extend({});
 
 export {
   getSchema,
-
 }
