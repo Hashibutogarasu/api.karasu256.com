@@ -28,7 +28,7 @@ export class HI3SkillsEntity extends BaseEntity {
   @JoinTable({
     name: 'leader_skill',
     joinColumn: {
-      name: 'leader_skillId',
+      name: 'hi3_skillsId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
@@ -42,7 +42,7 @@ export class HI3SkillsEntity extends BaseEntity {
   @JoinTable({
     name: 'passive_skill',
     joinColumn: {
-      name: 'passive_skillId',
+      name: 'hi3_skillsId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
@@ -56,7 +56,7 @@ export class HI3SkillsEntity extends BaseEntity {
   @JoinTable({
     name: 'weapon_skill',
     joinColumn: {
-      name: 'avoidance_skillId',
+      name: 'hi3_skillsId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
@@ -70,7 +70,7 @@ export class HI3SkillsEntity extends BaseEntity {
   @JoinTable({
     name: 'avoidance_skill',
     joinColumn: {
-      name: 'weapon_skillId',
+      name: 'hi3_skillsId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
@@ -84,7 +84,7 @@ export class HI3SkillsEntity extends BaseEntity {
   @JoinTable({
     name: 'normal_attack',
     joinColumn: {
-      name: 'normal_attackId',
+      name: 'hi3_skillsId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
@@ -98,7 +98,7 @@ export class HI3SkillsEntity extends BaseEntity {
   @JoinTable({
     name: 'ultimate_skill',
     joinColumn: {
-      name: 'ultimate_skillId',
+      name: 'hi3_skillsId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
@@ -112,7 +112,7 @@ export class HI3SkillsEntity extends BaseEntity {
   @JoinTable({
     name: 'special_skill',
     joinColumn: {
-      name: 'special_skillId',
+      name: 'hi3_skillsId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
