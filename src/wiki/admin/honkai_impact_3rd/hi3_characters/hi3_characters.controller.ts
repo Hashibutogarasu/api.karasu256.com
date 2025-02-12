@@ -3,7 +3,7 @@ import { IBaseAdminCaS } from '@/types/ibase_admin_cas';
 import { CreateDto, UpdateDto, DeleteDto, deleteSchema } from '@/utils/dto';
 import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { Hi3CharactersService } from './hi3_characters.service';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { createZodDto, zodToOpenAPI } from 'nestjs-zod';
 import { Authorization } from '@nestjs-cognito/auth';
 import { createDtoSchema, updateDtoSchema } from './hi3_characters.dto';
@@ -31,8 +31,9 @@ export class Hi3CharactersController implements IBaseAdminCaS<HI3Characters> {
     return this.hi3CharactersService.update(dto);
   }
 
-  @ApiBody({
-    schema: zodToOpenAPI(deleteSchema)
+  @ApiParam({
+    name: "id",
+    type: "string",
   })
   @Delete(':id')
   async delete(@Param() dto: DeleteDto): Promise<void> {
