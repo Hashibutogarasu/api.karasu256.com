@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { HI3Characters } from "./hi3_characters.entity";
 
 @Entity('hi3_weapons')
@@ -6,47 +6,36 @@ export class HI3WeaponsEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  name: string;
+  @Column({ nullable: true })
+  name?: string | null;
 
-  @Column()
-  skill: string;
+  @Column({ nullable: true })
+  skill?: string | null;
 
-  @Column()
-  type: string;
+  @Column({ nullable: true })
+  type?: string | null;
 
-  @Column()
-  icon_url: string;
+  @Column({ nullable: true })
+  icon_url?: string | null;
 
-  @Column()
-  thumbnail_url: string;
+  @Column({ nullable: true })
+  thumbnail_url?: string | null;
 
-  @Column()
-  rarity: number;
+  @Column({ nullable: true })
+  rarity?: number | null;
 
-  @Column()
-  max_level: number;
+  @Column({ nullable: true })
+  max_level?: number | null;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description?: string | null;
 
-  @Column()
-  base_atk: number;
+  @Column({ nullable: true })
+  base_atk?: number | null;
 
-  @Column()
-  crit: number;
+  @Column({ nullable: true })
+  crit?: number | null;
 
-  @ManyToMany(() => HI3Characters, character => character.stigmata, { nullable: true })
-  @JoinTable({
-    name: 'hi3_character_weapons',
-    joinColumn: {
-      name: 'weaponId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'weaponId',
-      referencedColumnName: 'id',
-    },
-  })
-  characters?: HI3Characters[] | null;
+  @ManyToOne(() => HI3Characters, character => character.weapons, { nullable: true, orphanedRowAction: 'delete' })
+  characters?: HI3Characters | null;
 }

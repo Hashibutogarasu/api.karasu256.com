@@ -1,37 +1,37 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { HI3Characters } from "./hi3_characters.entity";
 
 @Entity('hi3_stigmatas')
 export class HI3StigmatasEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  name: string;
+  @Column({ nullable: true })
+  name?: string | null;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description?: string | null;
 
-  @Column()
-  skill: string;
+  @Column({ nullable: true })
+  skill?: string | null;
 
-  @Column()
-  type: string;
+  @Column({ nullable: true })
+  type?: string | null;
 
-  @Column()
-  two_set_skill: string;
+  @Column({ nullable: true })
+  two_set_skill?: string | null;
 
-  @Column()
-  three_set_skill: string;
+  @Column({ nullable: true })
+  three_set_skill?: string | null;
 
-  @Column()
-  max_level: number;
+  @Column({ nullable: true })
+  max_level?: number | null;
 
-  @Column()
-  icon_url: string;
+  @Column({ nullable: true })
+  icon_url?: string | null;
 
-  @Column()
-  thumbnail_url: string;
+  @Column({ nullable: true })
+  thumbnail_url?: string | null;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -39,17 +39,6 @@ export class HI3StigmatasEntity extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToMany(() => HI3Characters, character => character.stigmata, { nullable: true })
-  @JoinTable({
-    name: 'hi3_character_stigmata',
-    joinColumn: {
-      name: 'stigmataId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'characterId',
-      referencedColumnName: 'id',
-    },
-  })
-  characters?: HI3Characters[] | null;
+  @ManyToOne(() => HI3Characters, character => character.stigmatas, { nullable: true, orphanedRowAction: 'delete' })
+  characters?: HI3Characters | null;
 }

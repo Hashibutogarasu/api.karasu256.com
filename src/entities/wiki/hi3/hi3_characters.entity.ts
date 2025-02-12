@@ -1,12 +1,12 @@
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { HI3StigmatasEntity } from "./hi3_stigmatas.entity";
 import { HI3WeaponsEntity } from "./hi3_weapons.entity";
-import { HI3CharacterSkillsEntity } from "./hi3_character_skills.entity";
+import { HI3SkillsEntity } from "./hi3_skills.entity";
 
 @Entity('hi3_characters')
 export class HI3Characters extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -24,35 +24,12 @@ export class HI3Characters extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => HI3CharacterSkillsEntity, skill => skill.characters, { eager: true, nullable: true })
-  @JoinColumn({ name: 'skillId' })
-  skill?: HI3CharacterSkillsEntity | null;
+  @OneToMany(() => HI3SkillsEntity, skill => skill.characters, { eager: true, nullable: true })
+  skills?: HI3SkillsEntity[] | null;
 
-  @ManyToMany(() => HI3StigmatasEntity, stigmata => stigmata.characters, { eager: true, nullable: true })
-  @JoinTable({
-    name: 'hi3_character_stigmata',
-    joinColumn: {
-      name: 'characterId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'stigmataId',
-      referencedColumnName: 'id',
-    },
-  })
-  stigmata?: HI3StigmatasEntity[] | null;
+  @OneToMany(() => HI3StigmatasEntity, stigmata => stigmata.characters, { eager: true, nullable: true })
+  stigmatas?: HI3StigmatasEntity[] | null;
 
-  @ManyToMany(() => HI3WeaponsEntity, weapon => weapon.characters, { eager: true, nullable: true })
-  @JoinTable({
-    name: 'hi3_character_weapon',
-    joinColumn: {
-      name: 'characterId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'weaponId',
-      referencedColumnName: 'id',
-    },
-  })
+  @OneToMany(() => HI3WeaponsEntity, weapon => weapon.characters, { eager: true, nullable: true })
   weapons?: HI3WeaponsEntity[] | null;
 }

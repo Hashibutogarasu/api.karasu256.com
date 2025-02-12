@@ -56,11 +56,6 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
     return this.charactersService.delete(dto);
   }
 
-  @ApiOperation({
-    operationId: "importFromHoyoLab",
-    summary: "Import character from HoyoLab",
-    tags: ["admin"],
-  })
   @ApiQuery({
     name: "query",
     schema: zodToOpenAPI(importFromHoyoLabSchema),
@@ -101,11 +96,6 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
     });
   }
 
-  @ApiOperation({
-    operationId: "importCharacter",
-    summary: "Import character",
-    tags: ["admin"],
-  })
   @Authorization({
     allowedGroups: ["admin"],
   })
