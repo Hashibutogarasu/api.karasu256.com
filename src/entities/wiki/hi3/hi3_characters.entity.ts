@@ -16,6 +16,12 @@ export class HI3Characters extends BaseEntity {
   sub_name?: string | null;
 
   @Column({ nullable: true })
+  icon_url?: string | null;
+
+  @Column({ nullable: true })
+  thumbnail_url?: string | null;
+
+  @Column({ nullable: true })
   description?: string | null;
 
   @CreateDateColumn()

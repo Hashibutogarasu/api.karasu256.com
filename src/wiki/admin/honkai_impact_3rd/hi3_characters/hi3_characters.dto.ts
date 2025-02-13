@@ -51,6 +51,8 @@ const createDtoSchema = z.object({
   name: z.string(),
   description: z.string().nullish(),
   sub_name: z.string().nullish(),
+  icon_url: z.string().nullish(),
+  thumbnail_url: z.string().nullish(),
   skills: z.array(create_hi3_skill_schema).nullish(),
   weapons: z.array(hi3_weaponsSchema.omit({ id: true })).nullish(),
   stigmatas: z.array(hi3_stigmatasSchema.omit({ id: true })).nullish(),
@@ -58,6 +60,11 @@ const createDtoSchema = z.object({
 
 const updateDtoSchema = createDtoSchema.extend({
   id: z.string(),
+  name: z.string().nullish(),
+  description: z.string().nullish(),
+  sub_name: z.string().nullish(),
+  icon_url: z.string().nullish(),
+  thumbnail_url: z.string().nullish(),
   skills: z.array(update_hi3_skill_schema).nullish(),
   weapons: z.array(hi3_weaponsSchema.nullish()),
 });
