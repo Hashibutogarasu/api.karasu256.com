@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CognitoAuthModule as AuthModule } from '@nestjs-cognito/auth';
+import { CognitoAuthModule as AdminAuthModule } from '@nestjs-cognito/auth';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
-    AuthModule.registerAsync({
+    AdminAuthModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         jwtVerifier: {

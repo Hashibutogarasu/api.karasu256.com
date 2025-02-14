@@ -7,11 +7,12 @@ import * as bodyParser from 'body-parser';
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 import { GalleriesModule as GalleriesAdminModule } from "./wiki/admin/galleries/galleries.module";
-import { AuthModule } from "./auth/admin/admin_auth.module";
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { GalleriesModule } from "./wiki/public/galleries/galleries.module";
 import { HI3Module as HI3AdminModule } from "./wiki/admin/honkai_impact_3rd/hi3.module";
 import { Hi3Module } from "./wiki/public/honkai_impact_3rd/hi3.module";
+import { AdminAuthModule } from "./auth/admin/admin_auth.module";
+import { PublicAuthModule } from "./auth/public-auth/public-auth.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -103,10 +104,11 @@ async function bootstrap() {
     GalleriesAdminModule,
     GenshinAdminModule,
     HI3AdminModule,
+    AdminAuthModule,
   ]);
 
   setUpDocument(getTitle("Auth"), "auth", app, config, options, [
-    AuthModule,
+    PublicAuthModule,
   ]);
 
   app.useGlobalPipes(

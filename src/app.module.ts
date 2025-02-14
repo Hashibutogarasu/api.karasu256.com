@@ -4,7 +4,7 @@ import { AppService } from "@/app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { WikiModule } from './wiki/wiki.module';
 import { validate } from "./env-validator";
-import { AuthModule } from './auth/admin/admin_auth.module';
+import { AdminAuthModule } from './auth/admin/admin_auth.module';
 import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
 import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
 import { S3Service } from './s3/s3.service';
@@ -20,7 +20,7 @@ import { PublicAuthModule } from './auth/public-auth/public-auth.module';
     }),
     WikiModule,
     CognitoAuthModule,
-    AuthModule,
+    AdminAuthModule,
     CognitoAuthModule,
     TypeormConnectionModule,
     PublicAuthModule,

@@ -7,4 +7,4 @@ import { AdminAuthService } from './admin_auth.service';
   controllers: [AdminAuthController],
   providers: [AdminAuthService]
 })
-export class AuthModule {}
+export class AdminAuthModule { }
