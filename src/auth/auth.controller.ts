@@ -39,9 +39,9 @@ export class AuthController {
 
   @ApiResponse({
     schema: zodToOpenAPI(z.object({
-      groups: z.array(z.string()),
-      email: z.string().email(),
-      username: z.string(),
+      groups: z.array(z.string()).nullish(),
+      email: z.string().email().nullish(),
+      username: z.string().nullish(),
     })),
   })
   @ApiBearerAuth()
