@@ -4,11 +4,12 @@ import { AppService } from "@/app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { WikiModule } from './wiki/wiki.module';
 import { validate } from "./env-validator";
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/admin/admin_auth.module';
 import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
 import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
 import { S3Service } from './s3/s3.service';
 import { PaginationMiddleware } from "./middleware/pagination.middleware";
+import { PublicAuthModule } from './auth/public-auth/public-auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PaginationMiddleware } from "./middleware/pagination.middleware";
     AuthModule,
     CognitoAuthModule,
     TypeormConnectionModule,
+    PublicAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService, S3Service],

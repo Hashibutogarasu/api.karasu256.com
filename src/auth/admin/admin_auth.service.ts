@@ -14,10 +14,10 @@ import {
   EnableMfaDto,
   SetUpMfaDto,
   DisableMfaDto
-} from './auth.dto';
+} from './admin_auth.dto';
 
 @Injectable()
-export class AuthService {
+export class AdminAuthService {
   private userPool: CognitoUserPool;
 
   constructor(

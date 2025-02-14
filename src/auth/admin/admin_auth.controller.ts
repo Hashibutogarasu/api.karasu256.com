@@ -1,7 +1,7 @@
 import { Authorization, CognitoUser, PublicRoute } from '@nestjs-cognito/auth';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
+import { AdminAuthService } from './admin_auth.service';
 import { zodToOpenAPI } from 'nestjs-zod';
 
 import {
@@ -28,14 +28,14 @@ import {
   DisableMfaDto,
   disableMfaSchema,
   UserDto
-} from './auth.dto';
+} from './admin_auth.dto';
 import { z } from 'zod';
 
 @Authorization({})
 @Controller('auth')
-export class AuthController {
+export class AdminAuthController {
   constructor(
-    private readonly authService: AuthService,
+    private readonly authService: AdminAuthService,
   ) { }
 
   @ApiBearerAuth()

@@ -7,7 +7,7 @@ import * as bodyParser from 'body-parser';
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 import { GalleriesModule as GalleriesAdminModule } from "./wiki/admin/galleries/galleries.module";
-import { AuthModule } from "./auth/auth.module";
+import { AuthModule } from "./auth/admin/admin_auth.module";
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { GalleriesModule } from "./wiki/public/galleries/galleries.module";
 import { HI3Module as HI3AdminModule } from "./wiki/admin/honkai_impact_3rd/hi3.module";
