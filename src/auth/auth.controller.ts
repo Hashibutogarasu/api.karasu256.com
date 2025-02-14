@@ -1,6 +1,6 @@
 import { Authorization, CognitoUser, PublicRoute } from '@nestjs-cognito/auth';
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { zodToOpenAPI } from 'nestjs-zod';
 
@@ -28,6 +28,7 @@ import {
   DisableMfaDto,
   disableMfaSchema
 } from './auth.dto';
+import { z } from 'zod';
 
 @Authorization({})
 @Controller('auth')
@@ -36,6 +37,13 @@ export class AuthController {
     private readonly authService: AuthService,
   ) { }
 
+  @ApiResponse({
+    schema: zodToOpenAPI(z.object({
+      groups: z.array(z.string()),
+      email: z.string().email(),
+      username: z.string(),
+    })),
+  })
   @ApiBearerAuth()
   @Get()
   async me(@CognitoUser() {
