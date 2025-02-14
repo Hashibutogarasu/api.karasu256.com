@@ -26,7 +26,8 @@ import {
   SetUpMfaDto,
   setUpMfaSchema,
   DisableMfaDto,
-  disableMfaSchema
+  disableMfaSchema,
+  UserDto
 } from './auth.dto';
 import { z } from 'zod';
 
@@ -37,24 +38,13 @@ export class AuthController {
     private readonly authService: AuthService,
   ) { }
 
-  @ApiResponse({
-    schema: zodToOpenAPI(z.object({
-      groups: z.array(z.string()).nullish(),
-      email: z.string().email().nullish(),
-      username: z.string().nullish(),
-    })),
-  })
   @ApiBearerAuth()
   @Get()
   async me(@CognitoUser() {
     groups,
     email,
     username,
-  }: {
-    groups: string[];
-    email: string;
-    username: string;
-  }) {
+  }: UserDto): Promise<UserDto> {
     return {
       groups,
       email,
