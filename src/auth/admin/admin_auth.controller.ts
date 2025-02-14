@@ -1,6 +1,6 @@
 import { Authorization, CognitoUser, PublicRoute } from '@nestjs-cognito/auth';
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AdminAuthService } from './admin_auth.service';
 import { zodToOpenAPI } from 'nestjs-zod';
 
@@ -32,7 +32,7 @@ import {
 import { z } from 'zod';
 
 @Authorization({})
-@Controller('auth')
+@Controller('auth/admin')
 export class AdminAuthController {
   constructor(
     private readonly authService: AdminAuthService,

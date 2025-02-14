@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('public-auth')
+@Controller('auth/public')
 export class PublicAuthController {}
