@@ -34,7 +34,7 @@ export class Hi3CharactersService implements IBaseAdminCaS<HI3Characters> {
     const newSkils = skills ? await Promise.all(Array.from(skills).map(async skill => {
       const { characters, ...ref } = skill;
 
-      return this.hi3SkillsRepository.create({
+      return await this.hi3SkillsRepository.save({
         ...ref,
       });
     })) : [];
@@ -42,7 +42,7 @@ export class Hi3CharactersService implements IBaseAdminCaS<HI3Characters> {
     const newWeapons = weapons ? await Promise.all(Array.from(weapons).map(async weapon => {
       const { characters, ...ref } = weapon;
 
-      return this.hi3WeaponsRepository.create({
+      return await this.hi3WeaponsRepository.save({
         ...ref
       });
     })) : [];
@@ -50,7 +50,7 @@ export class Hi3CharactersService implements IBaseAdminCaS<HI3Characters> {
     const newStigmatas = stigmatas ? await Promise.all(Array.from(stigmatas).map(async stigmata => {
       const { characters, ...ref } = stigmata;
 
-      return this.hi3StigmatasRepository.create({
+      return await this.hi3StigmatasRepository.save({
         ...ref
       });
     })) : [];
