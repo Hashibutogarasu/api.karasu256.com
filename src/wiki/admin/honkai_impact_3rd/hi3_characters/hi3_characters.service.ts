@@ -46,10 +46,18 @@ export class Hi3CharactersService implements IBaseAdminCaS<HI3Characters> {
       return await this.createWeapon(weapon as HI3WeaponsEntity);
     })) : [];
 
+    const newStigmatas = stigmatas ? await Promise.all(Array.from(stigmatas).map(async stigmata => {
+      const { characters, ...ref } = stigmata;
+      return await this.hi3SkillsRepository.save({
+        ...ref
+      });
+    })) : [];
+
     return await this.hi3CharactersRepository.save({
       ...character,
       skills: newSkils,
       weapons: newWeapons,
+      stigmatas: newStigmatas,
     });
   }
 
