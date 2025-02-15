@@ -8,7 +8,10 @@ import { createZodDto, zodToOpenAPI } from 'nestjs-zod';
 import { Authorization } from '@nestjs-cognito/auth';
 import { createDtoSchema, updateDtoSchema } from './hi3_characters.dto';
 
-
+@Authorization({
+  allowedGroups: ["admin"],
+})
+@ApiBearerAuth()
 @Controller('wiki/honkai_impact_3rd/admin/hi3_characters')
 export class Hi3CharactersController implements IBaseAdminCaS<HI3Characters> {
   constructor(
