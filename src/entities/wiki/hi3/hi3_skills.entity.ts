@@ -1,6 +1,11 @@
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { HI3Characters } from "./hi3_characters.entity";
 
+/**
+ * @author Hashibutogarasu
+ * @class HI3SkillsEntity
+ * @description 崩壊3rdのキャラクターのスキルのエンティティ
+ */
 @Entity('hi3_skills')
 export class HI3SkillsEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')

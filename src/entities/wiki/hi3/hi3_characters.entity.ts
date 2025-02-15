@@ -1,9 +1,13 @@
-import { IBase } from "@karasu-lab/karasu-lab-sdk";
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { HI3StigmatasEntity } from "./hi3_stigmatas.entity";
 import { HI3WeaponsEntity } from "./hi3_weapons.entity";
 import { HI3SkillsEntity } from "./hi3_skills.entity";
 
+/**
+ * @author Hashibutogarasu
+ * @class HI3Characters
+ * @description 崩壊3rdのキャラクターのエンティティ
+ */
 @Entity('hi3_characters')
 export class HI3Characters extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
