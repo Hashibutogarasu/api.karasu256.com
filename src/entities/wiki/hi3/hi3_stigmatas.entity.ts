@@ -39,6 +39,6 @@ export class HI3StigmatasEntity extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => HI3Characters, character => character.stigmatas, { nullable: true, orphanedRowAction: 'delete' })
+  @ManyToOne(() => HI3Characters, character => character.stigmatas, { nullable: true, orphanedRowAction: 'delete', onDelete: 'CASCADE' })
   characters?: HI3Characters | null;
 }

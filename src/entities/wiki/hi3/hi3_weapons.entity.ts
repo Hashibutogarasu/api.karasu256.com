@@ -36,6 +36,6 @@ export class HI3WeaponsEntity extends BaseEntity {
   @Column({ nullable: true })
   crit?: number | null;
 
-  @ManyToOne(() => HI3Characters, character => character.weapons, { nullable: true, orphanedRowAction: 'delete' })
+  @ManyToOne(() => HI3Characters, character => character.weapons, { nullable: true, orphanedRowAction: 'delete', onDelete: 'CASCADE' })
   characters?: HI3Characters | null;
 }

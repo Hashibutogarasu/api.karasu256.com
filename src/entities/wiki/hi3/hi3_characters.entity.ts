@@ -30,12 +30,12 @@ export class HI3Characters extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => HI3SkillsEntity, skill => skill.characters, { eager: true, nullable: true })
+  @OneToMany(() => HI3SkillsEntity, skill => skill.characters, { eager: true, nullable: true, onDelete: 'CASCADE' })
   skills?: HI3SkillsEntity[] | null;
 
-  @OneToMany(() => HI3StigmatasEntity, stigmata => stigmata.characters, { eager: true, nullable: true })
+  @OneToMany(() => HI3StigmatasEntity, stigmata => stigmata.characters, { eager: true, nullable: true, onDelete: 'CASCADE' })
   stigmatas?: HI3StigmatasEntity[] | null;
 
-  @OneToMany(() => HI3WeaponsEntity, weapon => weapon.characters, { eager: true, nullable: true })
+  @OneToMany(() => HI3WeaponsEntity, weapon => weapon.characters, { eager: true, nullable: true, onDelete: 'CASCADE' })
   weapons?: HI3WeaponsEntity[] | null;
 }

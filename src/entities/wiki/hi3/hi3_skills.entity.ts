@@ -21,6 +21,6 @@ export class HI3SkillsEntity extends BaseEntity {
   @Column({ nullable: true })
   icon_url?: string | null;
 
-  @ManyToOne(() => HI3Characters, skill => skill.skills, { nullable: true, orphanedRowAction: 'delete' })
+  @ManyToOne(() => HI3Characters, skill => skill.skills, { nullable: true, orphanedRowAction: 'delete', onDelete: 'CASCADE' })
   characters?: HI3Characters | null;
 }
