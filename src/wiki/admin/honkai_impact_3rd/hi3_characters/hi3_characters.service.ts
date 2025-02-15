@@ -20,30 +20,6 @@ export class Hi3CharactersService implements IBaseAdminCaS<HI3Characters> {
     private readonly hi3WeaponsRepository: Repository<HI3WeaponsEntity>,
   ) { }
 
-  private async createWeapon(weapon: HI3WeaponsEntity) {
-    const newWeapon = this.hi3WeaponsRepository.create({
-      ...weapon
-    });
-
-    return await this.hi3WeaponsRepository.save(newWeapon);
-  }
-
-  private async createSkill(skill: HI3SkillsEntity) {
-    const newSkill = this.hi3SkillsRepository.create({
-      ...skill
-    });
-
-    return await this.hi3SkillsRepository.save(newSkill);
-  }
-
-  private async createStigmata(stigmata: HI3SkillsEntity) {
-    const newStigmata = this.hi3SkillsRepository.create({
-      ...stigmata
-    });
-
-    return await this.hi3SkillsRepository.save(newStigmata);
-  }
-
   async create(dto: CreateDto<HI3Characters>): Promise<HI3Characters> {
     const { weapons, skills, stigmatas, ...ref } = dto;
 
@@ -52,15 +28,27 @@ export class Hi3CharactersService implements IBaseAdminCaS<HI3Characters> {
     });
 
     const newSkils = skills ? await Promise.all(Array.from(skills).map(async skill => {
-      return await this.createSkill(skill as HI3SkillsEntity);
+      const { characters, ...ref } = skill;
+
+      return await this.hi3SkillsRepository.save({
+        ...ref
+      });
     })) : [];
 
     const newWeapons = weapons ? await Promise.all(Array.from(weapons).map(async weapon => {
-      return await this.createWeapon(weapon as HI3WeaponsEntity);
+      const { characters, ...ref } = weapon;
+
+      return await this.hi3WeaponsRepository.save({
+        ...ref
+      });
     })) : [];
 
     const newStigmatas = stigmatas ? await Promise.all(Array.from(stigmatas).map(async stigmata => {
-      return await this.createStigmata(stigmata as HI3SkillsEntity);
+      const { characters, ...ref } = stigmata;
+
+      return await this.hi3SkillsRepository.save({
+        ...ref
+      });
     })) : [];
 
     return await this.hi3CharactersRepository.save({
