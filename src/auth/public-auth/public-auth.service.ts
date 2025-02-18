@@ -53,7 +53,7 @@ export class PublicAuthService {
   }
 
   async handleResetPassword(res: Response, auth: Auth, actionCode: string, apiKey: string, continueUrl: string, lang: string) {
-    const redirectUrl = continueUrl || this.configService.get("FRONTEND_URL");
+    const redirectUrl = continueUrl || this.configService.get("ACCOUNT_FRONT_URL");
     const queryParams = `?oobCode=${actionCode}&apiKey=${apiKey}&lang=${lang}`;
     const url = `${redirectUrl}/reset-password${queryParams}`;
 
@@ -61,7 +61,7 @@ export class PublicAuthService {
   }
 
   async handleRecoverEmail(res: Response, auth: Auth, actionCode: string, apiKey: string, lang: string) {
-    const redirectUrl = this.configService.get("FRONTEND_URL");
+    const redirectUrl = this.configService.get("ACCOUNT_FRONT_URL");
     const queryParams = `?oobCode=${actionCode}&apiKey=${apiKey}&lang=${lang}`;
     const url = `${redirectUrl}/recover-email${queryParams}`;
 
@@ -69,7 +69,7 @@ export class PublicAuthService {
   }
 
   async handleVerifyEmail(res: Response, auth: Auth, actionCode: string, apiKey: string, continueUrl: string, lang: string) {
-    const redirectUrl = continueUrl || this.configService.get("FRONTEND_URL");
+    const redirectUrl = continueUrl || this.configService.get("ACCOUNT_FRONT_URL");
     const queryParams = `?oobCode=${actionCode}&apiKey=${apiKey}&lang=${lang}`;
     const url = `${redirectUrl}/verify-email${queryParams}`;
 
