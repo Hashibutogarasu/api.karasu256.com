@@ -1,4 +1,76 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Request, Response, UseGuards } from '@nestjs/common';
+import { PublicAuthService } from './public-auth.service';
+import { SignInDto, signInSchema, SignUpDto, signUpSchema, accessTokenSchema, userRecordSchema, ActionQueryParamDto, actionQueryParamSchema, actionQueryModeSchema, actionQueryoobCodeSchema, actionQueryApiKeySchema, actionQueryContinueUrlSchema, actionQueryLangSchema } from './public-auth.dto';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { zodToOpenAPI } from 'nestjs-zod';
+import { UserCredential } from 'firebase/auth';
+import { AuthGuard } from '@nestjs/passport';
+import { Response as ExResponse } from 'express';
 
 @Controller('auth/public')
-export class PublicAuthController {}
+export class PublicAuthController {
+  constructor(
+    private readonly publicAuthService: PublicAuthService,
+  ) { }
+
+  @ApiOkResponse({
+    description: 'The user has been successfully signed in.',
+    schema: zodToOpenAPI(accessTokenSchema),
+  })
+  @ApiBody({
+    schema: zodToOpenAPI(signInSchema),
+  })
+  @Post('signin')
+  async signin(@Body() dto: SignInDto) {
+    return await this.publicAuthService.signin(dto);
+  }
+
+  @ApiResponse({
+    status: 201,
+    description: 'The user has been successfully created.',
+    schema: zodToOpenAPI(accessTokenSchema),
+  })
+  @ApiBody({
+    schema: zodToOpenAPI(signUpSchema),
+  })
+  @Post('signup')
+  async signup(@Body() dto: SignUpDto): Promise<UserCredential> {
+    return await this.publicAuthService.signup(dto);
+  }
+
+  @ApiOkResponse({
+    description: 'The user has been successfully retrieved.',
+    schema: zodToOpenAPI(userRecordSchema),
+  })
+  @UseGuards(AuthGuard("firebase-auth"))
+  @ApiBearerAuth()
+  @Get('me')
+  async me(@Request() req) {
+    return req.user;
+  }
+
+  @ApiQuery({
+    name: 'mode',
+    schema: zodToOpenAPI(actionQueryModeSchema),
+  })
+  @ApiQuery({
+    name: 'oobCode',
+    schema: zodToOpenAPI(actionQueryoobCodeSchema),
+  })
+  @ApiQuery({
+    name: 'apiKey',
+    schema: zodToOpenAPI(actionQueryApiKeySchema),
+  })
+  @ApiQuery({
+    name: 'continueUrl',
+    schema: zodToOpenAPI(actionQueryContinueUrlSchema),
+  })
+  @ApiQuery({
+    name: 'lang',
+    schema: zodToOpenAPI(actionQueryLangSchema),
+  })
+  @Get('action')
+  async action(@Response() res: ExResponse, @Query() query: ActionQueryParamDto) {
+    return await this.publicAuthService.action(res, query);
+  }
+}

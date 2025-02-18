@@ -13,6 +13,8 @@ import { HI3Module as HI3AdminModule } from "./wiki/admin/honkai_impact_3rd/hi3.
 import { Hi3Module } from "./wiki/public/honkai_impact_3rd/hi3.module";
 import { AdminAuthModule } from "./auth/admin/admin_auth.module";
 import { PublicAuthModule } from "./auth/public-auth/public-auth.module";
+import admin from 'firebase-admin';
+import { initializeApp } from 'firebase/app';
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -116,6 +118,20 @@ async function bootstrap() {
       disableErrorMessages: process.env.NODE_ENV !== "production",
     }),
   );
+
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+    } as admin.ServiceAccount),
+  });
+
+  initializeApp({
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+  });
 
   await app.listen(process.env.PORT || publicPort);
 }
