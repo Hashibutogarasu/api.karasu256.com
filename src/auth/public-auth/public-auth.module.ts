@@ -7,6 +7,6 @@ import { FirebaseAuthStrategy } from '@/firebase/firebase-auth.strategy';
 @Module({
   imports: [PassportModule],
   controllers: [PublicAuthController],
-  providers: [PublicAuthService, FirebaseAuthStrategy]
+  providers: [PublicAuthService, FirebaseAuthStrategy],
 })
 export class PublicAuthModule {}

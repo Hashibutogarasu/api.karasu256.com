@@ -10,6 +10,7 @@ import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection
 import { S3Service } from './s3/s3.service';
 import { PaginationMiddleware } from "./middleware/pagination.middleware";
 import { PublicAuthModule } from './auth/public-auth/public-auth.module';
+import { GoogleStrategy } from "./auth/public-auth/strategy/google.strategy";
 
 @Module({
   imports: [
@@ -26,11 +27,11 @@ import { PublicAuthModule } from './auth/public-auth/public-auth.module';
     PublicAuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ConfigService, S3Service],
+  providers: [AppService, ConfigService, S3Service, GoogleStrategy],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(PaginationMiddleware)
-      .forRoutes({ path: 'api/', method: RequestMethod.GET })
+      .forRoutes({ path: 'api/', method: RequestMethod.GET });
   }
 }

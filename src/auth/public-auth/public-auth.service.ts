@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ActionQueryParamDto, SignInDto, SignUpDto } from './public-auth.dto';
-import { verifyPasswordResetCode, confirmPasswordReset, applyActionCode, Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { ActionQueryParamDto, SignInDto, SignInGoogleCallbackDto, SignUpDto } from './public-auth.dto';
+import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, User } from 'firebase/auth';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { auth } from 'firebase-admin';
 
 @Injectable()
 export class PublicAuthService {
@@ -36,6 +37,12 @@ export class PublicAuthService {
     catch (error) {
       return error;
     }
+  }
+
+  async googleCallback({ user }: { user: User }, res: Response) {
+    const token = await auth().createCustomToken(user.uid);
+
+    res.redirect(`${this.configService.get("ACCOUNT_FRONT_URL")}#/callback/google?token=${token}`);
   }
 
   async action(res: Response, dto: ActionQueryParamDto) {

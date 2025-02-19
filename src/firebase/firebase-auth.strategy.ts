@@ -18,6 +18,7 @@ export class FirebaseAuthStrategy extends PassportStrategy(Strategy, 'firebase-a
 
       return user;
     } catch (err) {
+      console.error(err);
       throw new UnauthorizedException();
     }
   }
