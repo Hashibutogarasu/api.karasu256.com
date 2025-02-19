@@ -30,139 +30,109 @@ export class CharactersService implements IBaseAdminCaS<GICharacter> {
   ) { }
 
   async create(dto: CreateDto<GICharacter>): Promise<GICharacter> {
-    const parsed = createSchema.safeParse(dto);
+    const { version, ...rest } = dto;
 
-    if (!parsed.success) {
-      throw new BadRequestException(parsed.error.errors);
-    }
-
-    const { region, weapon, artifact_set, version, ...ref } = parsed.data;
-
-    const versionExists = await this.versionRepository.findOne({
+    const dbVersion = await this.versionRepository.findOne({
       where: {
-        version_string: version,
-      },
+        version_string: version.version_string,
+      }
+    }) ?? await this.versionRepository.save({
+      ...version as VersionsEntity,
     });
 
-    if (!versionExists) {
-      throw new NotFoundException('このバージョンは存在しません');
-    }
+    const weapon = await this.weaponsRepository.findOne({
+      where: {
+        name: dto.weapon.name,
+      },
+    }) ?? await this.weaponsRepository.save({
+      ...dto.weapon as Weapon,
+    });
+
+    const artifactSets = await Promise.all(Array.from(dto.artifact_set).map(async (artifact) => {
+      return await this.artifactSetsService.findOne({
+        where: {
+          name: artifact.name,
+        },
+      }) ?? await this.artifactSetsService.save({
+        ...artifact as ArtifactSets,
+      });
+    }));
+
+    const country = await this.countriesService.findOne({
+      where: {
+        name: dto.region.name,
+      },
+    }) ?? await this.countriesService.save({
+      ...dto.region as Country,
+    });
 
     const character = GICharacter.create({
-      ...ref,
-      version: versionExists,
+      ...rest as GICharacter,
+      version: dbVersion,
+      weapon,
+      artifact_set: artifactSets,
+      region: country,
     });
 
-    const countryExists = await this.countriesService.findOne({
-      where: {
-        name: region,
-      },
-    });
-
-    if (!countryExists) {
-      const newCountry = await this.countriesService.save({
-        name: region,
-      });
-
-      character.region = newCountry;
-    }
-
-    const weaponExists = await this.charactersService.findOne({
-      where: {
-        name: weapon,
-      },
-    });
-
-    if (!weaponExists) {
-      const newWeapon = await this.weaponsRepository.save({
-        name: weapon,
-      });
-
-      character.weapon = newWeapon;
-    }
-
-    const artifactSets: ArtifactSets[] = [];
-
-    for (const artifactSet of artifact_set) {
-      const artifactSetExists = await this.artifactSetsService.findOne({
-        where: {
-          name: artifactSet,
-        },
-      });
-
-      if (!artifactSetExists) {
-        const newArtifactSet = await this.artifactSetsService.save({
-          name: artifactSet,
-        });
-
-        artifactSets.push(newArtifactSet);
-      }
-      else {
-        artifactSets.push(artifactSetExists);
-      }
-    }
-
-    character.artifact_set = artifactSets;
-
-    return await this.charactersService.save({
-      ...character
-    });
+    return await this.charactersService.save(character);
   }
 
   async update(dto: UpdateDto<GICharacter>): Promise<void> {
-    const parsed = updateSchema.safeParse(dto);
+    const { id, ...rest } = dto;
 
-    if (!parsed.success) {
-      throw new BadRequestException(parsed.error.errors);
+    const character = await this.charactersService.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!character) {
+      throw new NotFoundException('Character not found');
     }
 
-    const { region, version, ...ref } = parsed.data;
+    const weapon = await this.weaponsRepository.findOne({
+      where: {
+        name: dto.weapon.name,
+      },
+    }) ?? await this.weaponsRepository.save({
+      ...dto.weapon as Weapon,
+    });
 
-    const characterExists = await this.charactersService.findOne({
+    const artifactSets = await Promise.all(Array.from(dto.artifact_set).map(async (artifact) => {
+      return await this.artifactSetsService.findOne({
+        where: {
+          name: artifact.name,
+        },
+      }) ?? await this.artifactSetsService.save({
+        ...artifact as ArtifactSets,
+      });
+    }));
+
+    const country = await this.countriesService.findOne({
+      where: {
+        name: dto.region.name,
+      },
+    }) ?? await this.countriesService.save({
+      ...dto.region as Country,
+    });
+
+    await this.charactersService.update(id, {
+      ...rest as GICharacter,
+      weapon,
+      artifact_set: artifactSets,
+      region: country,
+    });
+  }
+
+  async delete(dto: DeleteDto): Promise<void> {
+    const character = await this.charactersService.findOne({
       where: {
         id: dto.id,
       },
     });
 
-    if (!characterExists) {
-      throw new NotFoundException('GICharacter not found');
-    }
-
-    const versionExists = await this.versionRepository.findOne({
-      where: {
-        version_string: version,
-      },
-    });
-
-    if (!versionExists) {
-      throw new NotFoundException('このバージョンは存在しません');
-    }
-
-    await GICharacter.update({
-      id: dto.id,
-    }, {
-      ...ref,
-      version: versionExists,
-    });
-  }
-
-  async delete(dto: DeleteDto): Promise<void> {
-    const parsed = deleteSchema.safeParse(dto);
-
-    if (!parsed.success) {
-      throw new BadRequestException(parsed.error.errors);
-    }
-
-    const { ...ref } = parsed.data;
-
-    const character = await this.charactersService.findOne({
-      where: {
-        ...ref,
-      },
-    });
-
     if (!character) {
-      throw new NotFoundException('GICharacter not found');
+      throw new NotFoundException('Character not found');
     }
 
     await this.charactersService.delete(dto.id);
