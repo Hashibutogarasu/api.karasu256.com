@@ -21,10 +21,7 @@ export class Hi3CharactersService implements IBasePublicCaS<HI3Characters> {
 
     return await this.hi3CharactersRepository.find({
       where: {
-        ...query,
-        weapons: Array.from(weapons).map((weapon) => ({ id: weapon.id })),
-        stigmatas: Array.from(stigmatas).map((stigmata) => ({ id: stigmata.id })),
-        skills: Array.from(skills).map((skill) => ({ id: skill.id }))
+        ...ref,
       },
       take: take || 10,
       skip: skip || 0
@@ -37,9 +34,6 @@ export class Hi3CharactersService implements IBasePublicCaS<HI3Characters> {
     return await this.hi3CharactersRepository.findOne({
       where: {
         ...ref,
-        weapons: Array.from(weapons).map((weapon) => ({ id: weapon.id })),
-        stigmatas: Array.from(stigmatas).map((stigmata) => ({ id: stigmata.id })),
-        skills: Array.from(skills).map((skill) => ({ id: skill.id }))
       }
     });
   }
