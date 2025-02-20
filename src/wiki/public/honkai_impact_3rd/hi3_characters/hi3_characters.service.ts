@@ -1,6 +1,6 @@
 import { HI3Characters } from '@/entities/wiki/hi3/hi3_characters.entity';
 import { IBasePublicCaS } from '@/types/ibase_public_cas';
-import { GetParamsDto } from '@/utils/dto';
+import { GetOneDto, GetParamsDto } from '@/utils/dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -17,18 +17,23 @@ export class Hi3CharactersService implements IBasePublicCaS<HI3Characters> {
   }
 
   async get(query: GetParamsDto<HI3Characters, ["skills", "stigmatas", "weapons", "createdAt", "updatedAt"]>): Promise<HI3Characters[]> {
-    const { take, skip, ...ref } = query;
-
     return await this.hi3CharactersRepository.find({
-      where: ref,
-      take,
-      skip
+      where: {
+        ...query
+      }
     });
   }
 
-  async getOne(query: GetParamsDto<HI3Characters, ["skills", "stigmatas", "weapons", "createdAt", "updatedAt"]>): Promise<HI3Characters> {
+  async getOne(query: GetOneDto<HI3Characters>): Promise<HI3Characters> {
+    const { weapons, stigmatas, skills, ...ref } = query;
+
     return await this.hi3CharactersRepository.findOne({
-      where: query
+      where: {
+        ...ref,
+        weapons: weapons.map((weapon) => ({ id: weapon.id })),
+        stigmatas: stigmatas.map((stigmata) => ({ id: stigmata.id })),
+        skills: skills.map((skill) => ({ id: skill.id }))
+      }
     });
   }
 }

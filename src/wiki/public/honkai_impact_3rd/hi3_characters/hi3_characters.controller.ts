@@ -2,7 +2,7 @@ import { HI3Characters } from '@/entities/wiki/hi3/hi3_characters.entity';
 import { IBasePublicCaS } from '@/types/ibase_public_cas';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Hi3CharactersService } from './hi3_characters.service';
-import { GetParamsDto } from '@/utils/dto';
+import { GetOneDto, GetParamsDto } from '@/utils/dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { getSchema } from './hi3_characters.dto';
@@ -31,7 +31,7 @@ export class Hi3CharactersController implements IBasePublicCaS<HI3Characters> {
     schema: zodToOpenAPI(getSchema)
   })
   @Post('getOne')
-  async getOne(@Body() query: GetParamsDto<HI3Characters, ["skills", "stigmatas", "weapons", "createdAt", "updatedAt"]>): Promise<HI3Characters> {
+  async getOne(@Body() query: GetOneDto<HI3Characters>): Promise<HI3Characters> {
     return await this.hi3CharactersService.getOne(query);
   }
 }

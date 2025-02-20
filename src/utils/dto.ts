@@ -17,8 +17,8 @@ const deleteSchema = z.object({
 type DeleteDto = z.infer<typeof deleteSchema>;
 
 const paginationSchema = z.object({
-  take: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("10").optional(),
-  skip: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("0").optional(),
+  take: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("10").nullish(),
+  skip: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("0").nullish(),
 })
 
 const getParamsSchema = z.object({

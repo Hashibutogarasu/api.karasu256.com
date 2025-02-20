@@ -40,7 +40,7 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { region, version, galleries, artifact_set, weapon, take, skip, ...ref } = query;
+    const { region, version, galleries, artifact_set, weapon, ...ref } = query;
 
     return await this.charactersService.find({
       where: {
@@ -57,8 +57,8 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
         ...galleries,
         ...artifact_set
       },
-      take: take,
-      skip: skip,
+      take: query.take || 10,
+      skip: query.skip || 0,
       relations: {
         galleries: true,
         version: true,
@@ -75,20 +75,16 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { take, skip, region, weapon, version, ...ref } = parsed.data;
+    const { region, weapon, version, artifact_set, galleries, ...ref } = query;
 
     return await this.charactersService.findOne({
       where: {
         ...ref,
-        region: region && {
-          name: region,
-        },
-        weapon: weapon && {
-          name: weapon,
-        },
-        version: version && {
-          version_string: version,
-        },
+        region: region,
+        weapon: weapon,
+        version: version,
+        galleries: galleries.map((gallery) => ({ id: gallery.id })),
+        artifact_set: artifact_set.map((artifact) => ({ id: artifact.id }))
       },
       relations: {
         galleries: true,
