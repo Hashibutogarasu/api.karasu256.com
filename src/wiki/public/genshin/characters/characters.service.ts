@@ -40,7 +40,7 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { region, version, galleries, artifact_set, weapon, ...ref } = query;
+    const { region, version, galleries, artifact_set, weapon, take, skip, ...ref } = query;
 
     return await this.charactersService.find({
       where: {
@@ -57,8 +57,8 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
         ...galleries,
         ...artifact_set
       },
-      take: query.take || 10,
-      skip: query.skip || 0,
+      take: take ?? 10,
+      skip: skip ?? 0,
       relations: {
         galleries: true,
         version: true,

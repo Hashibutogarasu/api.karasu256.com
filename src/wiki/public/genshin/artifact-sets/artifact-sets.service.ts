@@ -37,8 +37,8 @@ export class ArtifactSetsService implements IBasePublicCaS<ArtifactSets> {
           id: version.id
         }
       },
-      take: take,
-      skip: skip,
+      take: take ?? 10,
+      skip: skip ?? 0,
     });
   }
 

@@ -42,11 +42,11 @@ export class CountriesService implements IBasePublicCaS<Country> {
         },
         ...characters
       },
+      take: take ?? 10,
+      skip: skip ?? 0,
       relations: {
         version: true,
       },
-      take: take,
-      skip: skip,
     });
   }
 

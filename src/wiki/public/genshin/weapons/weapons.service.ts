@@ -40,8 +40,8 @@ export class WeaponsService implements IBasePublicCaS<Weapon> {
       relations: {
         characters: false
       },
-      take: take,
-      skip: skip,
+      take: take ?? 10,
+      skip: skip ?? 0,
     });
   }
 

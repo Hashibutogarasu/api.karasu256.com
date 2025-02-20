@@ -30,8 +30,8 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
       where: {
         ...ref,
       },
-      take: take,
-      skip: skip,
+      take: take ?? 10,
+      skip: skip ?? 0,
     });
   }
 

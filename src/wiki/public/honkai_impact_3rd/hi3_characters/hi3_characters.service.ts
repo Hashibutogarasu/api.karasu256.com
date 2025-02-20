@@ -23,8 +23,8 @@ export class Hi3CharactersService implements IBasePublicCaS<HI3Characters> {
       where: {
         ...ref,
       },
-      take: take || 10,
-      skip: skip || 0
+      take: take ?? 10,
+      skip: skip ?? 0,
     });
   }
 

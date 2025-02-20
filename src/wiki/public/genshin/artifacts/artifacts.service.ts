@@ -41,8 +41,8 @@ export class ArtifactsService implements IBasePublicCaS<Artifacts> {
       relations: {
         version: true
       },
-      take: take,
-      skip: skip,
+      take: take ?? 10,
+      skip: skip ?? 0,
     });
   }
 
