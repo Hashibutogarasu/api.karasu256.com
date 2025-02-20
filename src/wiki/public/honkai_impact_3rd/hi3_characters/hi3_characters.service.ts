@@ -16,10 +16,15 @@ export class Hi3CharactersService implements IBasePublicCaS<HI3Characters> {
     return await this.hi3CharactersRepository.find();
   }
 
-  async get(query: GetParamsDto<HI3Characters, ["skills", "stigmatas", "weapons", "createdAt", "updatedAt"]>): Promise<HI3Characters[]> {
+  async get(query: GetParamsDto<HI3Characters, ["createdAt", "updatedAt"]>): Promise<HI3Characters[]> {
+    const { weapons, stigmatas, skills, ...ref } = query;
+
     return await this.hi3CharactersRepository.find({
       where: {
-        ...query
+        ...query,
+        weapons: Array.from(weapons).map((weapon) => ({ id: weapon.id })),
+        stigmatas: Array.from(stigmatas).map((stigmata) => ({ id: stigmata.id })),
+        skills: Array.from(skills).map((skill) => ({ id: skill.id }))
       }
     });
   }
@@ -30,9 +35,9 @@ export class Hi3CharactersService implements IBasePublicCaS<HI3Characters> {
     return await this.hi3CharactersRepository.findOne({
       where: {
         ...ref,
-        weapons: weapons.map((weapon) => ({ id: weapon.id })),
-        stigmatas: stigmatas.map((stigmata) => ({ id: stigmata.id })),
-        skills: skills.map((skill) => ({ id: skill.id }))
+        weapons: Array.from(weapons).map((weapon) => ({ id: weapon.id })),
+        stigmatas: Array.from(stigmatas).map((stigmata) => ({ id: stigmata.id })),
+        skills: Array.from(skills).map((skill) => ({ id: skill.id }))
       }
     });
   }

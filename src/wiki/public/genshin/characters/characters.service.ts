@@ -83,8 +83,8 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
         region: region,
         weapon: weapon,
         version: version,
-        galleries: galleries.map((gallery) => ({ id: gallery.id })),
-        artifact_set: artifact_set.map((artifact) => ({ id: artifact.id }))
+        galleries: Array.from(galleries).map((gallery) => ({ id: gallery.id })),
+        artifact_set: Array.from(artifact_set).map((artifact) => ({ id: artifact.id }))
       },
       relations: {
         galleries: true,

@@ -12,7 +12,7 @@ import { getSchema } from './hi3_characters.dto';
 export class Hi3CharactersController implements IBasePublicCaS<HI3Characters> {
   constructor(
     private readonly hi3CharactersService: Hi3CharactersService
-  ) {}
+  ) { }
 
   @Get()
   async getAll(): Promise<HI3Characters[]> {
@@ -23,7 +23,7 @@ export class Hi3CharactersController implements IBasePublicCaS<HI3Characters> {
     schema: zodToOpenAPI(getSchema)
   })
   @Post('get')
-  async get(@Body() query: GetParamsDto<HI3Characters, ["skills", "stigmatas", "weapons", "createdAt", "updatedAt"]>): Promise<HI3Characters[]> {
+  async get(@Body() query: GetParamsDto<HI3Characters, ["createdAt", "updatedAt"]>): Promise<HI3Characters[]> {
     return await this.hi3CharactersService.get(query);
   }
 
