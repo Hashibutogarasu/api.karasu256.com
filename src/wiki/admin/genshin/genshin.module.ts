@@ -7,10 +7,6 @@ import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller';
-import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
-import { ArtifactsController } from './artifacts/artifacts.controller';
-import { ArtifactsService } from './artifacts/artifacts.service';
 import { CharactersController } from './characters/characters.controller';
 import { CharactersService } from './characters/characters.service';
 
@@ -26,7 +22,7 @@ import { CharactersService } from './characters/characters.service';
       VersionsEntity,
     ]),
   ],
-  controllers: [ArtifactSetsController, ArtifactsController, CharactersController],
-  providers: [ArtifactSetsService, ArtifactsService, CharactersService]
+  controllers: [CharactersController],
+  providers: [CharactersService]
 })
 export class GenshinAdminModule { }
