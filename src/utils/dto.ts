@@ -49,7 +49,7 @@ type GetDto<T extends BaseDto, R extends KeyOfType<T, any>[]> = Omit<PartialRecu
 
 type GetParamsDto<T extends BaseDto, R extends KeyOfType<T, any>[]> = GetDto<T, R>;
 
-type GetOneDto<T extends BaseDto> = Omit<Omit<Partial<T>, keyof BaseEntity>, keyof BaseEntity>;
+type GetOneDto<T extends BaseDto> = Omit<Omit<Omit<Partial<T>, keyof BaseEntity>, keyof BaseEntity>, "take" | "skip">;
 
 type CreateDto<T extends BaseDto> = PartialRecursively<OmitRecursively<OmitRecursively<Omit<z.infer<ZodType<Partial<Omit<T, "id" | "createdAt" | "updatedAt">>>>, keyof BaseEntity>, keyof BaseEntity>, "id" | "createdAt" | "updatedAt">, keyof BaseEntity>;
 

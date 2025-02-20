@@ -5,7 +5,7 @@ import { Hi3CharactersService } from './hi3_characters.service';
 import { GetOneDto, GetParamsDto } from '@/utils/dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { getSchema } from './hi3_characters.dto';
+import { getOneSchema, getSchema } from './hi3_characters.dto';
 
 @Controller('wiki/public/honkai_impact_3rd/hi3_characters')
 @ApiTags("hi3_characters")
@@ -28,7 +28,7 @@ export class Hi3CharactersController implements IBasePublicCaS<HI3Characters> {
   }
 
   @ApiBody({
-    schema: zodToOpenAPI(getSchema)
+    schema: zodToOpenAPI(getOneSchema)
   })
   @Post('getOne')
   async getOne(@Body() query: GetOneDto<HI3Characters>): Promise<HI3Characters> {
