@@ -24,8 +24,8 @@ export class GICharacter extends BaseEntity {
   @Column({ nullable: true })
   element?: string | null;
 
-  @Column({ nullable: true })
-  rarity?: number | null;
+  @Column({ default: 4 })
+  rarity: number;
 
   @Column({ nullable: true })
   header_img_url: string | null;

@@ -1,10 +1,19 @@
 import { z } from "zod";
 
-const createSchema = z.object({
+const galleriesSchema = z.object({
+  id: z.string(),
   url: z.string(),
   alt: z.string(),
   key: z.string().optional(),
   character: z.string().optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+const createSchema = galleriesSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 const updateSchema = z.object({
@@ -16,6 +25,7 @@ const updateSchema = z.object({
 });
 
 export {
+  galleriesSchema,
   createSchema,
   updateSchema,
 };

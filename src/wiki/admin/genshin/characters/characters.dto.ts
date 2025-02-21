@@ -1,36 +1,96 @@
-import { rarityType } from "@/utils/zod_types";
+import { rarityType, url } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
+import { weaponSchema } from "../weapons/weapons.dto";
+import { versionsSchema } from "../../versions/versions.dto";
+import { galleriesSchema } from "../../galleries/galleries.dto";
+import { artifactSetSchema } from "../../artifact-sets/artifact-sets.dto";
+import { regionSchema } from "../regions/regions.dto";
 
-const createSchema = z.object({
+const charactersSchema = z.object({
+  id: z.string(),
   name: z.string(),
-  description: z.string().optional(),
-  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
+  description: z.string().nullish(),
+  icon_url: url.nullish(),
   element: z.string(),
-  region: z.string(),
-  weapon: z.string().optional(),
-  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  artifact_set: z.array(z.string()).optional(),
-  weapon_type: z.string().optional(),
-  rarity: rarityType.optional(),
-  property: z.string().optional(),
-  version: z.string(),
+  header_img_url: url.nullish(),
+  weapon_type: z.string().nullish(),
+  rarity: rarityType.nullish(),
+  property: z.string().nullish(),
   unimplemented: z.boolean().default(false),
+  implemented_date: z.string().nullish(),
+  region: regionSchema.nullish(),
+  weapon: weaponSchema.nullish(),
+  version: versionsSchema.nullish(),
+  galleries: z.array(
+    galleriesSchema.nullish()
+  ).nullish(),
+  artifact_set: z.array(
+    artifactSetSchema.nullish()
+  ).nullish(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
-const updateSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  description: z.string().optional(),
-  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  header_img_url: z.string().url({ message: 'header_img_urlはurlである必要があります' }).optional(),
-  element: z.string().optional(),
-  region: z.string().optional(),
-  weapon_type: z.string().optional(),
-  rarity: rarityType.optional(),
-  property: z.string().optional(),
-  version: z.string().optional(),
-  unimplemented: z.boolean().optional(),
+const createSchema = charactersSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  region: regionSchema.omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  }),
+  weapon: weaponSchema.omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  }),
+  version: versionsSchema.omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    artifact_sets: true,
+    regions: true,
+  }),
+  galleries: z.array(galleriesSchema.omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    character: true,
+  })).default([]),
+  artifact_set: z.array(artifactSetSchema.omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  })).default([]),
+});
+
+const updateSchema = charactersSchema.extend({
+  region: regionSchema.omit({
+    createdAt: true,
+    updatedAt: true,
+  }).nullish(),
+  weapon: weaponSchema.omit({
+    createdAt: true,
+    updatedAt: true,
+  }).nullish(),
+  version: versionsSchema.omit({
+    createdAt: true,
+    updatedAt: true,
+    artifact_sets: true,
+    regions: true,
+  }).nullish(),
+  galleries: z.array(galleriesSchema.omit({
+    createdAt: true,
+    updatedAt: true,
+    character: true,
+  }).nullish()).nullish(),
+  artifact_set: z.array(artifactSetSchema.omit({
+    createdAt: true,
+    updatedAt: true,
+  }).nullish()).nullish(),
 });
 
 const property = z.object({
@@ -39,8 +99,8 @@ const property = z.object({
     id: z.string({ message: "value_types.idの型が不正です" }),
     value: z.string({ message: "value_types.valueの型が不正です" }),
     mi18n_key: z.string({ message: "value_types.mi18n_keyの型が不正です" }),
-    icon: z.string({ message: "value_types.iconの型が不正です" }).optional(),
-    icon_url: z.string({ message: "value_types.icon_urlの型が不正です" }).optional(),
+    icon: z.string({ message: "value_types.iconの型が不正です" }).nullish(),
+    icon_url: z.string({ message: "value_types.icon_urlの型が不正です" }).nullish(),
     enum_string: z.string({ message: "value_types.enum_stringの型が不正です" }),
   }, { message: "value_typesの型が不正です" })).default([]),
   key: z.object({
@@ -56,11 +116,11 @@ const property = z.object({
 }, { message: "propertyの型が不正です" });
 
 const fileterValues = z.object({
-  character_property: property.optional(),
-  character_weapon: property.optional(),
-  character_rarity: property.optional(),
-  character_vision: property.optional(),
-  character_region: property.optional(),
+  character_property: property.nullish(),
+  character_weapon: property.nullish(),
+  character_rarity: property.nullish(),
+  character_vision: property.nullish(),
+  character_region: property.nullish(),
 });
 
 const importFromHoyoLabSchema = z.object({
@@ -81,7 +141,7 @@ const importCharacterSchema = z.object({
     components: z.array(z.object({
       component_id: z.string(),
       layout: z.string(),
-      data: z.string().optional(),
+      data: z.string().nullish(),
       style: z.string(),
     }, { message: "componentsの型が不正です" })).default([]),
     id: z.string({ message: "idの型が不正です" }),
@@ -113,7 +173,7 @@ const importCharacterSchema = z.object({
       post_id: z.string(),
       post_user_name: z.string(),
       post_time: z.string(),
-      post_avater_url: z.string().optional(),
+      post_avater_url: z.string().nullish(),
       url: z.string(),
     }),
     server_ext: z.string(),
@@ -134,6 +194,7 @@ export {
   createSchema,
   updateSchema,
   fileterValues,
+  charactersSchema,
   importCharacterSchema,
   importFromHoyoLabSchema,
   ImportFromHoyoLabDto,

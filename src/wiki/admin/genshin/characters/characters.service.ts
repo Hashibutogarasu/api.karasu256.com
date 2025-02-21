@@ -9,6 +9,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createSchema, fileterValues, ImportCharacterDto, updateSchema } from './characters.dto';
+import { Gallery } from '@/entities/common/galleries.entity';
 
 @Injectable()
 export class CharactersService implements IBaseAdminCaS<GICharacter> {
@@ -27,58 +28,109 @@ export class CharactersService implements IBaseAdminCaS<GICharacter> {
 
     @InjectRepository(VersionsEntity)
     private readonly versionRepository: Repository<VersionsEntity>,
+
+    @InjectRepository(Gallery)
+    private readonly galleriesService: Repository<Gallery>,
   ) { }
 
   async create(dto: CreateDto<GICharacter>): Promise<GICharacter> {
-    const { version, ...rest } = dto;
+    const parsed = createSchema.safeParse(dto).data;
+    const { region, weapon: { version, ...weapon }, artifact_set, galleries, ...ref } = parsed;
 
-    const dbVersion = await this.versionRepository.findOne({
+    const dbRegion = await this.countriesService.findOne({
       where: {
-        version_string: version.version_string,
-      }
-    }) ?? await this.versionRepository.save({
-      ...version as VersionsEntity,
+        ...region,
+      },
+    }) ?? await this.countriesService.save({
+      ...region,
     });
 
-    const weapon = await this.weaponsRepository.findOne({
+    const dbWeapon = await this.weaponsRepository.findOne({
       where: {
-        name: dto.weapon.name,
+        ...weapon,
       },
     }) ?? await this.weaponsRepository.save({
-      ...dto.weapon as Weapon,
+      ...weapon,
     });
 
-    const artifactSets = await Promise.all(Array.from(dto.artifact_set).map(async (artifact) => {
+    const dbArtifactSets = await Promise.all(Array.from(artifact_set).map(async (artifact) => {
       return await this.artifactSetsService.findOne({
         where: {
-          name: artifact.name,
+          ...artifact,
         },
       }) ?? await this.artifactSetsService.save({
-        ...artifact as ArtifactSets,
+        ...artifact,
       });
     }));
 
-    const country = await this.countriesService.findOne({
+    const dbGalleries = await Promise.all(Array.from(galleries).map(async (gallery) => {
+      return await this.galleriesService.findOne({
+        where: {
+          ...gallery,
+        },
+      });
+    }));
+
+    const dbVersion = await this.versionRepository.findOne({
       where: {
-        name: dto.region.name,
+        ...parsed.version,
       },
-    }) ?? await this.countriesService.save({
-      ...dto.region as Country,
     });
 
-    const character = GICharacter.create({
-      ...rest as GICharacter,
+    return await this.charactersService.save({
+      ...ref,
+      region: dbRegion,
+      weapon: dbWeapon,
+      artifact_set: dbArtifactSets,
+      galleries: dbGalleries,
       version: dbVersion,
-      weapon,
-      artifact_set: artifactSets,
-      region: country,
     });
-
-    return await this.charactersService.save(character);
   }
 
   async update(dto: UpdateDto<GICharacter>): Promise<void> {
-    const { id, ...rest } = dto;
+    const parsed = updateSchema.safeParse(dto).data;
+
+    const { id, region, weapon: { version, ...weapon }, artifact_set, galleries, ...ref } = parsed;
+
+    const dbRegion = await this.countriesService.findOne({
+      where: {
+        ...region,
+      },
+    }) ?? await this.countriesService.save({
+      ...region,
+    });
+
+    const dbWeapon = await this.weaponsRepository.findOne({
+      where: {
+        ...weapon,
+      },
+    }) ?? await this.weaponsRepository.save({
+      ...weapon,
+    });
+
+    const dbArtifactSets = await Promise.all(Array.from(artifact_set).map(async (artifact) => {
+      return await this.artifactSetsService.findOne({
+        where: {
+          ...artifact,
+        },
+      }) ?? await this.artifactSetsService.save({
+        ...artifact,
+      });
+    }));
+
+    const dbGalleries = await Promise.all(Array.from(galleries).map(async (gallery) => {
+      return await this.galleriesService.findOne({
+        where: {
+          ...gallery,
+        },
+      });
+    }));
+
+    const dbVersion = await this.versionRepository.findOne({
+      where: {
+        ...parsed.version,
+      },
+    });
 
     const character = await this.charactersService.findOne({
       where: {
@@ -90,37 +142,13 @@ export class CharactersService implements IBaseAdminCaS<GICharacter> {
       throw new NotFoundException('Character not found');
     }
 
-    const weapon = await this.weaponsRepository.findOne({
-      where: {
-        name: dto.weapon.name,
-      },
-    }) ?? await this.weaponsRepository.save({
-      ...dto.weapon as Weapon,
-    });
-
-    const artifactSets = await Promise.all(Array.from(dto.artifact_set).map(async (artifact) => {
-      return await this.artifactSetsService.findOne({
-        where: {
-          name: artifact.name,
-        },
-      }) ?? await this.artifactSetsService.save({
-        ...artifact as ArtifactSets,
-      });
-    }));
-
-    const country = await this.countriesService.findOne({
-      where: {
-        name: dto.region.name,
-      },
-    }) ?? await this.countriesService.save({
-      ...dto.region as Country,
-    });
-
     await this.charactersService.update(id, {
-      ...rest as GICharacter,
-      weapon,
-      artifact_set: artifactSets,
-      region: country,
+      ...ref,
+      region: dbRegion,
+      weapon: dbWeapon,
+      artifact_set: dbArtifactSets,
+      galleries: dbGalleries,
+      version: dbVersion,
     });
   }
 

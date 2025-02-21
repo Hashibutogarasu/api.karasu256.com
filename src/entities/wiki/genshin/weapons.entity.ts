@@ -12,12 +12,6 @@ export class Weapon extends BaseEntity {
   @Column()
   name: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
   @Column({ nullable: true })
   description?: string | null;
 
@@ -38,4 +32,10 @@ export class Weapon extends BaseEntity {
 
   @OneToMany(() => VersionsEntity, version => version.weapons, { nullable: true })
   version?: VersionsEntity | null;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
