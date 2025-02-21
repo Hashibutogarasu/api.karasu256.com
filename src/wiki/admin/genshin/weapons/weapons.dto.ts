@@ -2,13 +2,7 @@ import { rarityType, url } from "@/utils/zod_types";
 import { z } from "zod";
 import { versionsSchema } from "../../versions/versions.dto";
 
-const weaponTypeSchema = z.enum([
-  "片手剣",
-  "法器",
-  "両手剣",
-  "弓",
-  "長柄武器",
-]);
+const weaponTypeSchema = z.string();
 
 const weaponSchema = z.object({
   id: z.string(),
