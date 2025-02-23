@@ -1,22 +1,45 @@
 import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { IBaseAdminCaS } from '@/types/ibase_admin_cas';
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
 import { VersionsService } from './versions.service';
 import { CreateDto, UpdateDto, DeleteDto } from '@/utils/dto';
+import { Authorization } from '@nestjs-cognito/auth';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import { zodToOpenAPI } from 'nestjs-zod';
+import { createSchema, updateSchema } from './versions.dto';
 
-@Controller('versions')
+@Authorization({
+  allowedGroups: ["admin"],
+})
+@ApiBearerAuth()
+@Controller('wiki/genshin/admin/versions')
 export class VersionsController implements IBaseAdminCaS<VersionsEntity> {
   constructor(
     private readonly versionsService: VersionsService
   ) { }
 
-  async create(dto: CreateDto<VersionsEntity>): Promise<VersionsEntity> {
-    return this.versionsService.create(dto);
+  @ApiBody({
+    schema: zodToOpenAPI(createSchema)
+  })
+  @Post()
+  async create(@Body() dto: CreateDto<VersionsEntity>): Promise<VersionsEntity> {
+    return await this.versionsService.create(dto);
   }
-  async update(dto: UpdateDto<VersionsEntity>): Promise<void> {
-    return this.versionsService.update(dto);
+
+  @ApiBody({
+    schema: zodToOpenAPI(updateSchema)
+  })
+  @Put()
+  async update(@Body() dto: UpdateDto<VersionsEntity>): Promise<void> {
+    return await this.versionsService.update(dto);
   }
-  async delete(dto: DeleteDto): Promise<void> {
-    return this.versionsService.delete(dto);
+
+  @ApiParam({
+    name: "id",
+    type: "string",
+  })
+  @Delete("id")
+  async delete(@Body() dto: DeleteDto): Promise<void> {
+    return await this.versionsService.delete(dto);
   }
 }
