@@ -30,7 +30,14 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
   ) { }
 
   async getAll(): Promise<GICharacter[]> {
-    return await this.charactersService.find();
+    return await this.charactersService.find({
+      order: {
+        name: "ASC",
+        version: {
+          createdAt: "DESC"
+        }
+      }
+    });
   }
 
   async get(query: GetParamsDto<GICharacter, ["createdAt", "updatedAt"]>): Promise<GICharacter[]> {
@@ -64,6 +71,12 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
         version: true,
         region: true,
         weapon: true,
+      },
+      order: {
+        name: "ASC",
+        version: {
+          createdAt: "DESC"
+        }
       }
     });
   }
