@@ -9,6 +9,19 @@ const regionSchema = z.object({
   updatedAt: z.string(),
 });
 
+const createSchema = regionSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+const updateSchema = regionSchema.omit({
+  createdAt: true,
+  updatedAt: true,
+});
+
 export {
-  regionSchema
+  regionSchema,
+  createSchema,
+  updateSchema,
 }

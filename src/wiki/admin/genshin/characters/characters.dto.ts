@@ -2,10 +2,10 @@ import { rarityType, url } from "@/utils/zod_types";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 import { weaponSchema } from "../weapons/weapons.dto";
-import { versionsSchema } from "../../versions/versions.dto";
 import { galleriesSchema } from "../../galleries/galleries.dto";
-import { artifactSetSchema } from "../../artifact-sets/artifact-sets.dto";
 import { regionSchema } from "../regions/regions.dto";
+import { versionsSchema } from "../versions/versions.dto";
+import { artifactSetSchema } from "../artifact-sets/artifact-sets.dto";
 
 const charactersSchema = z.object({
   id: z.string(),

@@ -9,6 +9,15 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CharactersController } from './characters/characters.controller';
 import { CharactersService } from './characters/characters.service';
+import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller';
+import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
+import { RegionsController } from './regions/regions.controller';
+import { RegionsService } from './regions/regions.service';
+import { WeaponsService } from './weapons/weapons.service';
+import { WeaponsController } from './weapons/weapons.controller';
+import { VersionsController } from './versions/versions.controller';
+import { VersionsService } from './versions/versions.service';
+import { VersionsController } from './versions/versions.controller';
 
 @Module({
   imports: [
@@ -22,7 +31,7 @@ import { CharactersService } from './characters/characters.service';
       VersionsEntity,
     ]),
   ],
-  controllers: [CharactersController],
-  providers: [CharactersService]
+  controllers: [CharactersController, ArtifactSetsController, RegionsController, WeaponsController, VersionsController],
+  providers: [CharactersService, ArtifactSetsService, RegionsService, WeaponsService, VersionsService]
 })
 export class GenshinAdminModule { }

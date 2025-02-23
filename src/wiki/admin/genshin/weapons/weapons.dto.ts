@@ -1,6 +1,6 @@
 import { rarityType, url } from "@/utils/zod_types";
 import { z } from "zod";
-import { versionsSchema } from "../../versions/versions.dto";
+import { versionsSchema } from "../versions/versions.dto";
 
 const weaponTypeSchema = z.string();
 
@@ -17,6 +17,19 @@ const weaponSchema = z.object({
   updatedAt: z.string(),
 });
 
+const createSchema = weaponSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+const updateSchema = weaponSchema.omit({
+  createdAt: true,
+  updatedAt: true,
+});
+
 export {
-  weaponSchema
+  weaponSchema,
+  createSchema,
+  updateSchema
 }

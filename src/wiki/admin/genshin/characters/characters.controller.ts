@@ -26,7 +26,7 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
     schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(@Body() dto: Omit<CreateDto<GICharacter>, "country">): Promise<GICharacter> {
+  async create(@Body() dto: CreateDto<GICharacter>): Promise<GICharacter> {
     return this.charactersService.create(dto);
   }
 
