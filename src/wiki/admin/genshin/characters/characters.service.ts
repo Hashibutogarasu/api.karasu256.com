@@ -155,6 +155,8 @@ export class CharactersService implements IBaseAdminCaS<GICharacter> {
       ...ref,
       region: dbRegion,
       weapon: dbWeapon,
+      artifact_set: dbArtifactSets,
+      galleries: dbGalleries,
       version: dbVersion,
     });
   }
