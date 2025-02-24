@@ -34,8 +34,13 @@ export class CharactersService implements IBaseAdminCaS<GICharacter> {
   ) { }
 
   async create(dto: CreateDto<GICharacter>): Promise<GICharacter> {
-    const parsed = createSchema.safeParse(dto).data;
-    const { region, weapon: { version, ...weapon }, artifact_set, galleries, ...ref } = parsed;
+    const parsed = createSchema.safeParse(dto);
+
+    if (parsed.success === false) {
+      throw new BadRequestException(parsed.error.errors);
+    }
+
+    const { region, weapon: { version, ...weapon }, artifact_set, galleries, ...ref } = parsed.data;
 
     const dbRegion = await this.countriesService.findOne({
       where: {
@@ -73,7 +78,7 @@ export class CharactersService implements IBaseAdminCaS<GICharacter> {
 
     const dbVersion = await this.versionRepository.findOne({
       where: {
-        ...parsed.version,
+        ...parsed.data.version,
       },
     });
 
@@ -88,9 +93,13 @@ export class CharactersService implements IBaseAdminCaS<GICharacter> {
   }
 
   async update(dto: UpdateDto<GICharacter>): Promise<void> {
-    const parsed = updateSchema.safeParse(dto).data;
+    const parsed = updateSchema.safeParse(dto);
 
-    const { id, region, weapon: { version, ...weapon }, artifact_set, galleries, ...ref } = parsed;
+    if (parsed.success === false) {
+      throw new BadRequestException(parsed.error.errors);
+    }
+
+    const { id, region, weapon: { version, ...weapon }, artifact_set, galleries, ...ref } = parsed.data;
 
     const dbRegion = await this.countriesService.findOne({
       where: {
@@ -128,7 +137,7 @@ export class CharactersService implements IBaseAdminCaS<GICharacter> {
 
     const dbVersion = await this.versionRepository.findOne({
       where: {
-        ...parsed.version,
+        ...parsed.data.version,
       },
     });
 
