@@ -5,7 +5,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { getSchema } from './weapons.dto';
-import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 
 @Injectable()
 export class WeaponsService implements IBasePublicCaS<Weapon> {
