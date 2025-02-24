@@ -6,7 +6,7 @@ import { z } from "zod";
 const getSchema = weaponSchema.omit({
   createdAt: true,
   updatedAt: true,
-});
+}).partial();
 
 export {
   getSchema,

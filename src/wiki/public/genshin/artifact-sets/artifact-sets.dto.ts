@@ -3,7 +3,7 @@ import { artifactSetSchema } from "@/wiki/admin/genshin/artifact-sets/artifact-s
 const getSchema = artifactSetSchema.omit({
   createdAt: true,
   updatedAt: true,
-});
+}).partial();
 
 export {
   getSchema,

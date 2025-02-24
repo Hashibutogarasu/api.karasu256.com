@@ -4,7 +4,7 @@ import { z } from "zod";
 const getSchema = versionsSchema.omit({
   createdAt: true,
   updatedAt: true,
-});
+}).partial();
 
 export {
   getSchema,

@@ -15,7 +15,7 @@ const getSchema = regionSchema.omit({
     createdAt: true,
     updatedAt: true,
   }))
-});
+}).partial();
 
 export {
   getSchema,
