@@ -17,8 +17,11 @@ export class ArtifactsService implements IBasePublicCaS<Artifacts> {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async getAll(): Promise<Artifacts[]> {
-    return await this.artifactsRepository.find();
+  async getAll({ take, skip }: { take: number; skip: number }): Promise<Artifacts[]> {
+    return await this.artifactsRepository.find({
+      take,
+      skip,
+    });
   }
 
   async get(query: GetParamsDto<Artifacts, ["createdAt", "updatedAt"]>): Promise<Artifacts[]> {
@@ -41,8 +44,6 @@ export class ArtifactsService implements IBasePublicCaS<Artifacts> {
       relations: {
         version: true
       },
-      take: take ?? 10,
-      skip: skip ?? 0,
     });
   }
 
@@ -53,11 +54,11 @@ export class ArtifactsService implements IBasePublicCaS<Artifacts> {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { take, skip, version, ...ref } = parsed.data;
+    const { version: { artifact_sets, regions, ...version }, ...ref } = parsed.data;
 
     const versionExists = await this.versionRepository.findOne({
       where: {
-        version_string: version,
+        ...version,
       },
     });
 

@@ -11,14 +11,17 @@ import { getSchema } from './artifact-sets.dto';
 export class ArtifactSetsService implements IBasePublicCaS<ArtifactSets> {
   constructor(
     @InjectRepository(ArtifactSets)
-    private readonly repository: Repository<ArtifactSets>,
+    private readonly artifactSetsrepository: Repository<ArtifactSets>,
 
     @InjectRepository(VersionsEntity)
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async getAll(): Promise<ArtifactSets[]> {
-    return await this.repository.find();
+  async getAll({ take, skip }: { take: number; skip: number }): Promise<ArtifactSets[]> {
+    return await this.artifactSetsrepository.find({
+      take,
+      skip,
+    });
   }
 
   async get(query: GetParamsDto<ArtifactSets, ["characters", "artifacts", "createdAt", "updatedAt"]>): Promise<ArtifactSets[]> {
@@ -28,17 +31,12 @@ export class ArtifactSetsService implements IBasePublicCaS<ArtifactSets> {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { version, take, skip, ...ref } = query;
+    const { ...ref } = parsed.data;
 
-    return await this.repository.find({
+    return await this.artifactSetsrepository.find({
       where: {
         ...ref,
-        version: {
-          id: version.id
-        }
       },
-      take: take ?? 10,
-      skip: skip ?? 0,
     });
   }
 
@@ -49,9 +47,9 @@ export class ArtifactSetsService implements IBasePublicCaS<ArtifactSets> {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { artifacts, characters, ...ref } = query;
+    const { ...ref } = parsed.data;
 
-    return await this.repository.findOne({
+    return await this.artifactSetsrepository.findOne({
       where: {
         ...ref,
       },

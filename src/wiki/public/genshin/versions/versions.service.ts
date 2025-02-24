@@ -13,8 +13,11 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
     private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
-  async getAll(): Promise<VersionsEntity[]> {
-    return await this.versionsRepository.find();
+  async getAll({ take, skip }: { take: number; skip: number }): Promise<VersionsEntity[]> {
+    return await this.versionsRepository.find({
+      take,
+      skip,
+    });
   }
 
   async get(query: GetParamsDto<VersionsEntity, ["createdAt", "updatedAt"]>): Promise<VersionsEntity[]> {
@@ -24,14 +27,12 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { artifact_sets, artifacts, characters, countries, weapons, version_string, released, take, skip, ...ref } = query;
+    const { regions, artifact_sets, ...ref } = parsed.data;
 
     return await this.versionsRepository.find({
       where: {
         ...ref,
       },
-      take: take ?? 10,
-      skip: skip ?? 0,
     });
   }
 
@@ -42,7 +43,7 @@ export class VersionsService implements IBasePublicCaS<VersionsEntity> {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { take, skip, ...ref } = query;
+    const { regions, artifact_sets, ...ref } = parsed.data;
 
     return await this.versionsRepository.findOne({
       where: {

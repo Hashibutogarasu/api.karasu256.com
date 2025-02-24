@@ -1,12 +1,11 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { ArtifactsService } from "./artifacts.service";
-import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { Artifacts } from "@/entities/wiki/genshin/artifacts.entity";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./artifacts.dto";
 import { GetParamsDto, GetOneDto } from "@/utils/dto";
-import { AutoOperationName } from "@/utils/operation";
 
 @Controller("wiki/genshin/artifacts")
 @ApiTags("artifacts")
@@ -15,9 +14,19 @@ export class ArtifactsController implements IBasePublicCaS<Artifacts> {
     private readonly artifactsService: ArtifactsService
   ) { }
 
+  @ApiQuery({
+    name: "take",
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: "skip",
+    required: false,
+    type: Number,
+  })
   @Get()
-  async getAll() {
-    return this.artifactsService.get({});
+  async getAll(@Query() dto: any) {
+    return this.artifactsService.getAll(dto);
   }
 
   @ApiBody({

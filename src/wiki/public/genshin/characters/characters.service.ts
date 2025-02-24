@@ -29,14 +29,10 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
     private readonly versionRepository: Repository<VersionsEntity>,
   ) { }
 
-  async getAll(): Promise<GICharacter[]> {
+  async getAll({ take, skip }: { take: number; skip: number }): Promise<GICharacter[]> {
     return await this.charactersService.find({
-      order: {
-        name: "ASC",
-        version: {
-          createdAt: "DESC"
-        }
-      }
+      take,
+      skip,
     });
   }
 
@@ -64,8 +60,6 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
         ...galleries,
         ...artifact_set
       },
-      take: take ?? 10,
-      skip: skip ?? 0,
       relations: {
         galleries: true,
         version: true,
@@ -88,16 +82,22 @@ export class CharactersService implements IBasePublicCaS<GICharacter> {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { region, weapon, version, artifact_set, galleries, ...ref } = query;
+    const { region, weapon, version, artifact_set, galleries, ...ref } = parsed.data;
 
     return await this.charactersService.findOne({
       where: {
         ...ref,
-        region: region,
-        weapon: weapon,
-        version: version,
-        galleries: Array.from(galleries).map((gallery) => ({ id: gallery.id })),
-        artifact_set: Array.from(artifact_set).map((artifact) => ({ id: artifact.id }))
+        region: region && {
+          id: region.id
+        },
+        weapon: weapon && {
+          id: weapon.id
+        },
+        version: version && {
+          id: version.id
+        },
+        ...galleries,
+        ...artifact_set
       },
       relations: {
         galleries: true,

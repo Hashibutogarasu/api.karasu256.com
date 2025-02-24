@@ -1,14 +1,21 @@
-import { getParamsSchema } from "@/utils/dto";
+import { charactersSchema } from "@/wiki/admin/genshin/characters/characters.dto";
+import { regionSchema } from "@/wiki/admin/genshin/regions/regions.dto";
+import { versionsSchema } from "@/wiki/admin/genshin/versions/versions.dto";
 import { z } from "zod";
 
-const base = getParamsSchema.extend({
-  name: z.string().optional(),
-  description: z.string().optional(),
-  icon_url: z.string().url({ message: 'icon_urlはurlである必要があります' }).optional(),
-  version: z.string().optional(),
+const getSchema = regionSchema.omit({
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  version: versionsSchema.omit({
+    createdAt: true,
+    updatedAt: true,
+  }),
+  characters: z.array(charactersSchema.omit({
+    createdAt: true,
+    updatedAt: true,
+  }))
 });
-
-const getSchema = base.extend({});
 
 export {
   getSchema,
