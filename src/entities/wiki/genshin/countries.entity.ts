@@ -16,7 +16,7 @@ export class Country extends BaseEntity {
   description?: string | null;
 
   @Column({ nullable: true })
-  sumbnail_url?: string | null;
+  thumbnail_url?: string | null;
 
   @CreateDateColumn()
   createdAt: Date;
