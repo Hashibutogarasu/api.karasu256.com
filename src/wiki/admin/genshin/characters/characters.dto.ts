@@ -68,6 +68,7 @@ const createSchema = charactersSchema.omit({
 });
 
 const updateSchema = charactersSchema.extend({
+  id: z.string(),
   region: regionSchema.omit({
     createdAt: true,
     updatedAt: true,
