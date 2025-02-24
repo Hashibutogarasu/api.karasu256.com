@@ -4,6 +4,7 @@ const regionSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().nullish(),
+  thumbnail_url: z.string().nullish(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
