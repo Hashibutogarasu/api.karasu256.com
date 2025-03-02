@@ -1,11 +1,8 @@
-import { Module } from '@nestjs/common';
-import { GenshinAdminModule } from './genshin/genshin.module';
-import { GalleriesModule } from './galleries/galleries.module';
-import { HI3Module } from './honkai_impact_3rd/hi3.module';
+import {Module} from "@nestjs/common";
 
 @Module({
-  imports: [GenshinAdminModule, GalleriesModule, HI3Module],
+  imports: [],
   controllers: [],
-  providers: []
+  providers: [],
 })
 export class AdminModule {}
