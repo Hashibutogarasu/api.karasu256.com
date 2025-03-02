@@ -17,8 +17,11 @@ export class CountriesService implements IBasePublicCaS<Country> {
     private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
-  async getAll(): Promise<Country[]> {
-    return await this.repository.find();
+  async getAll({ take, skip }: { take: number; skip: number }): Promise<Country[]> {
+    return await this.repository.find({
+      take,
+      skip,
+    });
   }
 
   async get(query: GetParamsDto<Country, ["createdAt", "updatedAt"]>): Promise<Country[]> {
@@ -28,7 +31,7 @@ export class CountriesService implements IBasePublicCaS<Country> {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { version, characters, take, skip, ...ref } = query;
+    const { characters, version, ...ref } = parsed.data;
 
     return await this.repository.find({
       where: {
@@ -36,10 +39,10 @@ export class CountriesService implements IBasePublicCaS<Country> {
         version: {
           id: version.id
         },
-        ...characters
       },
-      take: take,
-      skip: skip,
+      relations: {
+        version: true,
+      },
     });
   }
 
@@ -50,7 +53,7 @@ export class CountriesService implements IBasePublicCaS<Country> {
       throw new BadRequestException(parsed.error.errors[0].message);
     }
 
-    const { take, skip, version, ...ref } = query;
+    const { characters, version, ...ref } = parsed.data;
 
     return await this.repository.findOne({
       where: {
@@ -59,8 +62,9 @@ export class CountriesService implements IBasePublicCaS<Country> {
           version_string: version.version_string,
         }
       },
+      relations: {
+        version: true,
+      },
     });
   }
-
-
 }

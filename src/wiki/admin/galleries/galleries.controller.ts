@@ -14,7 +14,7 @@ import { createSchema, updateSchema } from './galleries.dto';
 })
 @ApiBearerAuth()
   @ApiTags("galleries")
-  @Controller('galleries/admin')
+  @Controller('wiki/admin/galleries')
 export class GalleriesController implements IBaseAdminCaS<Gallery> {
   constructor(
     private readonly galleriesService: GalleriesService,
@@ -36,7 +36,7 @@ export class GalleriesController implements IBaseAdminCaS<Gallery> {
     },
   })
   @UseInterceptors(FileInterceptor("file"))
-  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<{ url: string }> {
+  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<{ url?: string | null }> {
     return this.galleriesService.uploadFile(file);
   }
 

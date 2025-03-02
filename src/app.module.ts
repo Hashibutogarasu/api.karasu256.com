@@ -4,11 +4,13 @@ import { AppService } from "@/app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { WikiModule } from './wiki/wiki.module';
 import { validate } from "./env-validator";
-import { AuthModule } from './auth/auth.module';
+import { AdminAuthModule } from './auth/admin/admin_auth.module';
 import { CognitoAuthModule } from './cognito-auth/cognito-auth.module';
 import { TypeormConnectionModule } from './typeorm-connection/typeorm-connection.module';
 import { S3Service } from './s3/s3.service';
 import { PaginationMiddleware } from "./middleware/pagination.middleware";
+import { PublicAuthModule } from './auth/public-auth/public-auth.module';
+import { GoogleStrategy } from "./auth/public-auth/strategy/google.strategy";
 
 @Module({
   imports: [
@@ -19,16 +21,17 @@ import { PaginationMiddleware } from "./middleware/pagination.middleware";
     }),
     WikiModule,
     CognitoAuthModule,
-    AuthModule,
+    AdminAuthModule,
     CognitoAuthModule,
     TypeormConnectionModule,
+    PublicAuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ConfigService, S3Service],
+  providers: [AppService, ConfigService, S3Service, GoogleStrategy],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(PaginationMiddleware)
-      .forRoutes({ path: 'api/', method: RequestMethod.GET })
+      .forRoutes({ path: 'api/', method: RequestMethod.GET });
   }
 }

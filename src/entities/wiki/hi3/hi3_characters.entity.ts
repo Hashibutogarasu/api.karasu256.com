@@ -1,20 +1,32 @@
-import { IBase } from "@karasu-lab/karasu-lab-sdk";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { HI3StigmatasEntity } from "./stigmatas.entity";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { HI3StigmatasEntity } from "./hi3_stigmatas.entity";
+import { HI3WeaponsEntity } from "./hi3_weapons.entity";
+import { HI3SkillsEntity } from "./hi3_skills.entity";
 
+/**
+ * @author Hashibutogarasu
+ * @class HI3Characters
+ * @description 崩壊3rdのキャラクターのエンティティ
+ */
 @Entity('hi3_characters')
-export class HI3Characters extends BaseEntity implements IBase {
-  @PrimaryGeneratedColumn('increment')
+export class HI3Characters extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   name: string;
 
-  @Column()
-  sub_name: string;
+  @Column({ nullable: true })
+  sub_name?: string | null;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  icon_url?: string | null;
+
+  @Column({ nullable: true })
+  thumbnail_url?: string | null;
+
+  @Column({ nullable: true })
+  description?: string | null;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -22,17 +34,12 @@ export class HI3Characters extends BaseEntity implements IBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToMany(() => HI3StigmatasEntity, stigmata => stigmata.characters, { eager: true, nullable: true })
-  @JoinTable({
-    name: 'hi3_character_stigmata',
-    joinColumn: {
-      name: 'characterId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'stigmataId',
-      referencedColumnName: 'id',
-    },
-  })
-  stigmata?: HI3StigmatasEntity[] | null;
+  @OneToMany(() => HI3SkillsEntity, skill => skill.characters, { eager: true, nullable: true, onDelete: 'CASCADE' })
+  skills?: HI3SkillsEntity[] | null;
+
+  @OneToMany(() => HI3StigmatasEntity, stigmata => stigmata.characters, { eager: true, nullable: true, onDelete: 'CASCADE' })
+  stigmatas?: HI3StigmatasEntity[] | null;
+
+  @OneToMany(() => HI3WeaponsEntity, weapon => weapon.characters, { eager: true, nullable: true, onDelete: 'CASCADE' })
+  weapons?: HI3WeaponsEntity[] | null;
 }

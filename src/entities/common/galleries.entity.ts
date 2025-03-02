@@ -3,18 +3,18 @@ import { GICharacter } from "../wiki/genshin/gi_character.entity";
 import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('galleries')
-export class Gallery extends BaseEntity implements IBase {
-  @PrimaryGeneratedColumn('increment')
+export class Gallery extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  alt: string;
+  @Column({ nullable: true })
+  alt?: string | null;
 
-  @Column()
-  url: string;
+  @Column({ nullable: true })
+  url?: string | null;
 
-  @Column()
-  key: string;
+  @Column({ nullable: true })
+  key?: string | null;
 
   @CreateDateColumn()
   createdAt: Date;

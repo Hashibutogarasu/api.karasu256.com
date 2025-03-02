@@ -1,14 +1,13 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Country } from "./countries.entity";
 import { Weapon } from "./weapons.entity";
 import { ArtifactSets } from "./artifact-sets.entity";
 import { Gallery } from "../../common/galleries.entity";
 import { VersionsEntity } from "./versions.entity";
-import { IBase } from "@karasu-lab/karasu-lab-sdk";
 
 @Entity('characters')
-export class GICharacter extends BaseEntity implements IBase {
-  @PrimaryGeneratedColumn('increment')
+export class GICharacter extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -23,8 +22,8 @@ export class GICharacter extends BaseEntity implements IBase {
   @Column({ nullable: true })
   element?: string | null;
 
-  @Column({ nullable: true })
-  rarity?: number | null;
+  @Column({ default: 4 })
+  rarity: number;
 
   @Column({ nullable: true })
   header_img_url: string | null;
@@ -44,16 +43,19 @@ export class GICharacter extends BaseEntity implements IBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Country, region => region.id, { nullable: true })
+  @Column({ nullable: true })
+  implemented_date?: string | null;
+
+  @ManyToOne(() => Country, country => country.id, { nullable: true })
   region?: Country | null;
 
   @ManyToOne(() => Weapon, weapon => weapon.id, { nullable: true })
   weapon?: Weapon | null;
 
-  @ManyToOne(() => VersionsEntity, version => version.characters)
-  version: VersionsEntity;
+  @ManyToOne(() => VersionsEntity, version => version.id, { nullable: true })
+  version?: VersionsEntity | null;
 
-  @ManyToMany(() => ArtifactSets)
+  @ManyToMany(() => ArtifactSets, { nullable: true, cascade: true })
   @JoinTable({
     name: "artifact_set_id",
     joinColumn: {
@@ -65,9 +67,9 @@ export class GICharacter extends BaseEntity implements IBase {
       referencedColumnName: "id"
     }
   })
-  artifact_set: ArtifactSets[];
+  artifact_set?: ArtifactSets[] | null;
 
-  @ManyToMany(() => Gallery)
+  @ManyToMany(() => Gallery, { nullable: true, cascade: true })
   @JoinTable({
     name: "galleries_id",
     joinColumn: {
@@ -79,5 +81,5 @@ export class GICharacter extends BaseEntity implements IBase {
       referencedColumnName: "id"
     }
   })
-  galleries: Gallery[];
+  galleries?: Gallery[] | null;
 }

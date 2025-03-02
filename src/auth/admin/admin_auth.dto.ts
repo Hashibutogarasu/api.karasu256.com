@@ -89,6 +89,14 @@ const refreshTokenSchema = z.object({
 
 type RefreshTokenDto = z.infer<typeof refreshTokenSchema>;
 
+const userSchema = z.object({
+  groups: z.array(z.string()).nullish(),
+  email: z.string().email().nullish(),
+  username: z.string().nullish(),
+});
+
+type UserDto = z.infer<typeof userSchema>;
+
 export {
   signInSchema,
   enableMfaSchema,
@@ -101,6 +109,7 @@ export {
   refreshTokenSchema,
   setUpMfaSchema,
   disableMfaSchema,
+  userSchema,
   SignInDto,
   EnableMfaDto,
   SignupDto,
@@ -112,4 +121,5 @@ export {
   RefreshTokenDto,
   SetUpMfaDto,
   DisableMfaDto,
+  UserDto,
 };

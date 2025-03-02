@@ -13,3 +13,6 @@
 [submodule "client/dart/karasu-lab-public-client-dart"]
 	path = client/dart/karasu-lab-public-client-dart
 	url = https://github.com/Hashibutogarasu/karasu-lab-public-client-dart.git
+[submodule "client/dart/karasu-lab-admin-client-dart"]
+	path = client/dart/karasu-lab-admin-client-dart
+	url = https://github.com/Hashibutogarasu/karasu-lab-admin-client-dart.git

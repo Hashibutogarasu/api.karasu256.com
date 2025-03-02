@@ -11,18 +11,18 @@ const baseSchema = z.object({
 type BaseDto = z.infer<typeof baseSchema>;
 
 const deleteSchema = z.object({
-  id: z.string().nonempty(),
-}) as ZodType<IDeleteDto>;
+  id: z.string(),
+});
 
 type DeleteDto = z.infer<typeof deleteSchema>;
 
 const paginationSchema = z.object({
-  take: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("10").optional(),
-  skip: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("0").optional(),
+  take: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("10").nullish(),
+  skip: z.string().transform((value) => parseInt(value)).refine((value) => value >= 0).default("0").nullish(),
 })
 
 const getParamsSchema = z.object({
-  id: z.string().nonempty(),
+  id: z.string().optional(),
 }).merge(paginationSchema);
 
 type OmitFunctions<T, Exclude extends keyof T = never> = {
@@ -49,7 +49,7 @@ type GetDto<T extends BaseDto, R extends KeyOfType<T, any>[]> = Omit<PartialRecu
 
 type GetParamsDto<T extends BaseDto, R extends KeyOfType<T, any>[]> = GetDto<T, R>;
 
-type GetOneDto<T extends BaseDto> = Omit<Omit<Partial<T>, keyof BaseEntity>, keyof BaseEntity>;
+type GetOneDto<T extends BaseDto> = Omit<Omit<Omit<Partial<T>, keyof BaseEntity>, keyof BaseEntity>, "take" | "skip">;
 
 type CreateDto<T extends BaseDto> = PartialRecursively<OmitRecursively<OmitRecursively<Omit<z.infer<ZodType<Partial<Omit<T, "id" | "createdAt" | "updatedAt">>>>, keyof BaseEntity>, keyof BaseEntity>, "id" | "createdAt" | "updatedAt">, keyof BaseEntity>;
 

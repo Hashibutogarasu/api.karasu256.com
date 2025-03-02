@@ -1,7 +1,7 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { CharactersService } from "./characters.service";
-import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { GICharacter } from "@/entities/wiki/genshin/gi_character.entity";
 import { getSchema } from "./characters.dto";
@@ -15,9 +15,19 @@ export class CharactersController implements IBasePublicCaS<GICharacter> {
     private readonly charactersService: CharactersService
   ) { }
 
+  @ApiQuery({
+    name: "take",
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: "skip",
+    required: false,
+    type: Number,
+  })
   @Get()
-  async getAll() {
-    return this.charactersService.get({});
+  async getAll(@Query() dto: any) {
+    return this.charactersService.getAll(dto);
   }
 
   @ApiBody({

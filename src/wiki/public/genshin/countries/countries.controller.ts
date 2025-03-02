@@ -1,7 +1,7 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { zodToOpenAPI } from "nestjs-zod";
-import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { CountriesService } from "./countries.service";
 import { getSchema } from "./contries.dto";
 import { GetParamsDto } from "@/utils/dto";
@@ -15,9 +15,19 @@ export class CountriesController implements IBasePublicCaS<Country> {
     private readonly service: CountriesService,
   ) { }
 
+  @ApiQuery({
+    name: "take",
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: "skip",
+    required: false,
+    type: Number,
+  })
   @Get()
-  async getAll(): Promise<Country[]> {
-    return this.service.getAll();
+  async getAll(@Query() dto: any): Promise<Country[]> {
+    return this.service.getAll(dto);
   }
 
   @ApiBody({

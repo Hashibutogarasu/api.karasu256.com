@@ -12,7 +12,7 @@ import { IBaseAdminCaS } from '@/types/ibase_admin_cas';
   allowedGroups: ["admin"],
 })
 @ApiBearerAuth()
-  @Controller("wiki/genshin/admin/regions")
+@Controller("wiki/genshin/admin/characters")
 export class CharactersController implements IBaseAdminCaS<GICharacter> {
   constructor(
     private readonly charactersService: CharactersService
@@ -26,7 +26,7 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
     schema: zodToOpenAPI(createSchema),
   })
   @Post()
-  async create(@Body() dto: Omit<CreateDto<GICharacter>, "country">): Promise<GICharacter> {
+  async create(@Body() dto: CreateDto<GICharacter>): Promise<GICharacter> {
     return this.charactersService.create(dto);
   }
 
@@ -56,11 +56,6 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
     return this.charactersService.delete(dto);
   }
 
-  @ApiOperation({
-    operationId: "importFromHoyoLab",
-    summary: "Import character from HoyoLab",
-    tags: ["admin"],
-  })
   @ApiQuery({
     name: "query",
     schema: zodToOpenAPI(importFromHoyoLabSchema),
@@ -101,11 +96,6 @@ export class CharactersController implements IBaseAdminCaS<GICharacter> {
     });
   }
 
-  @ApiOperation({
-    operationId: "importCharacter",
-    summary: "Import character",
-    tags: ["admin"],
-  })
   @Authorization({
     allowedGroups: ["admin"],
   })

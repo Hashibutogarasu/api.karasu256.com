@@ -7,18 +7,16 @@ import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { Weapon } from '@/entities/wiki/genshin/weapons.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller';
-import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
-import { ArtifactsController } from './artifacts/artifacts.controller';
-import { ArtifactsService } from './artifacts/artifacts.service';
 import { CharactersController } from './characters/characters.controller';
 import { CharactersService } from './characters/characters.service';
-import { CountriesController } from './countries/countries.controller';
-import { CountriesService } from './countries/countries.service';
-import { VersionsController } from './versions/versions.controller';
-import { VersionsService } from './versions/versions.service';
-import { WeaponsController } from './weapons/weapons.controller';
+import { ArtifactSetsController } from './artifact-sets/artifact-sets.controller';
+import { ArtifactSetsService } from './artifact-sets/artifact-sets.service';
+import { RegionsController } from './regions/regions.controller';
+import { RegionsService } from './regions/regions.service';
 import { WeaponsService } from './weapons/weapons.service';
+import { WeaponsController } from './weapons/weapons.controller';
+import { VersionsService } from './versions/versions.service';
+import { VersionsController } from './versions/versions.controller';
 
 @Module({
   imports: [
@@ -32,7 +30,7 @@ import { WeaponsService } from './weapons/weapons.service';
       VersionsEntity,
     ]),
   ],
-  controllers: [ArtifactSetsController, ArtifactsController, CharactersController, CountriesController, VersionsController, WeaponsController],
-  providers: [ArtifactSetsService, ArtifactsService, CharactersService, CountriesService, VersionsService, WeaponsService]
+  controllers: [CharactersController, ArtifactSetsController, RegionsController, WeaponsController, VersionsController],
+  providers: [CharactersService, ArtifactSetsService, RegionsService, WeaponsService, VersionsService]
 })
 export class GenshinAdminModule { }

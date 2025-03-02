@@ -5,20 +5,19 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { getSchema } from './weapons.dto';
-import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 
 @Injectable()
 export class WeaponsService implements IBasePublicCaS<Weapon> {
   constructor(
     @InjectRepository(Weapon)
     private readonly weaponsRepository: Repository<Weapon>,
-
-    @InjectRepository(VersionsEntity)
-    private readonly versionsRepository: Repository<VersionsEntity>
   ) { }
 
-  async getAll(): Promise<Weapon[]> {
-    return await this.weaponsRepository.find();
+  async getAll({ take, skip }: { take: number; skip: number }): Promise<Weapon[]> {
+    return await this.weaponsRepository.find({
+      take,
+      skip,
+    });
   }
 
   async get(query: GetParamsDto<Weapon, ["characters", "createdAt", "updatedAt"]>): Promise<Weapon[]> {
@@ -28,17 +27,18 @@ export class WeaponsService implements IBasePublicCaS<Weapon> {
       throw new BadRequestException(parsed.error.errors);
     }
 
-    const { version, take, skip, ...ref } = query;
+    const { version, ...ref } = parsed.data;
 
     return await this.weaponsRepository.find({
       where: {
         ...ref,
-        version: {
+        version: version && {
           id: version.id
         }
       },
-      take: take,
-      skip: skip,
+      relations: {
+        characters: false
+      },
     });
   }
 
@@ -55,11 +55,9 @@ export class WeaponsService implements IBasePublicCaS<Weapon> {
       where: {
         ...ref,
         version: version && {
-          version_string: version
+          id: version.id
         }
       },
     });
   }
-
-
 }

@@ -6,9 +6,15 @@ import { patchNestJsSwagger } from "nestjs-zod";
 import * as bodyParser from 'body-parser';
 import { AdminModule } from "./wiki/admin/admin.module";
 import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
-import { GalleriesModule as GalleriesAdminModule, GalleriesModule } from "./wiki/admin/galleries/galleries.module";
-import { AuthModule } from "./auth/auth.module";
+import { GalleriesModule as GalleriesAdminModule } from "./wiki/admin/galleries/galleries.module";
 import { GenshinModule } from "./wiki/public/genshin/genshin.module";
+import { GalleriesModule } from "./wiki/public/galleries/galleries.module";
+import { HI3Module as HI3AdminModule } from "./wiki/admin/honkai_impact_3rd/hi3.module";
+import { Hi3Module } from "./wiki/public/honkai_impact_3rd/hi3.module";
+import { AdminAuthModule } from "./auth/admin/admin_auth.module";
+import { PublicAuthModule } from "./auth/public-auth/public-auth.module";
+import admin from 'firebase-admin';
+import { initializeApp } from 'firebase/app';
 
 function configureApp(app: INestApplication) {
   app.enableCors({
@@ -38,19 +44,22 @@ function setUpDocument(
   config: DocumentBuilder,
   options: SwaggerCustomOptions,
   include: any[],
-  { jsonDocumentUrl, yamlDocumentUrl }: { jsonDocumentUrl: string; yamlDocumentUrl: string },
 ) {
-  config.setTitle(`Karasu Lab ${title} API Document ${process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1)}`);
+  options.customSiteTitle = title;
   const document = SwaggerModule.createDocument(app, config.build(), {
     include,
   });
   const documentFactory = () => document;
 
-  SwaggerModule.setup(path, app, documentFactory, {
+  SwaggerModule.setup(`api/${path}`, app, documentFactory, {
     ...options,
-    jsonDocumentUrl: jsonDocumentUrl,
-    yamlDocumentUrl: yamlDocumentUrl,
+    jsonDocumentUrl: `api/${path}/api-json`,
+    yamlDocumentUrl: `api/${path}/api-yaml`,
   });
+}
+
+function getTitle(title: string) {
+  return `Karasu Lab ${title} API Document ${process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1)}`;
 }
 
 async function bootstrap() {
@@ -62,10 +71,10 @@ async function bootstrap() {
   const node_env = process.env.NODE_ENV.charAt(0).toUpperCase() + process.env.NODE_ENV.slice(1);
 
   const config = new DocumentBuilder()
-    .setTitle(`Karasu Lab API ${node_env}`)
+    .setTitle("Karasu Lab API")
     .setLicense("MIT", "https://opensource.org/licenses/MIT")
     .setDescription("API documentation for Karasu Lab")
-    .setVersion("3.3.0")
+    .setVersion("4.3.0")
     .addServer(process.env.BASE_URL)
     .addBearerAuth({
       type: 'http',
@@ -85,37 +94,44 @@ async function bootstrap() {
     ],
   };
 
-
-  setUpDocument("Public", "api/public", app, config, options, [
+  setUpDocument(getTitle("Public"), "public", app, config, options, [
     GenshinModule,
     GalleriesModule,
-  ], {
-    jsonDocumentUrl: "/api/public/api-json",
-    yamlDocumentUrl: "/api/admin/api-yaml",
-  });
+    Hi3Module,
+  ]);
 
-  setUpDocument("Admin", "api/admin", app, config, options, [
+  setUpDocument(getTitle("Admin"), "admin", app, config, options, [
     AppModule,
     AdminModule,
     GalleriesAdminModule,
     GenshinAdminModule,
-  ], {
-    jsonDocumentUrl: "/api/admin/api-json",
-    yamlDocumentUrl: "/api/admin/api-yaml",
-  });
+    HI3AdminModule,
+    AdminAuthModule,
+  ]);
 
-  setUpDocument("Auth", "api/auth", app, config, options, [
-    AuthModule,
-  ], {
-    jsonDocumentUrl: "/api/auth/api-json",
-    yamlDocumentUrl: "/api/auth/api-yaml",
-  });
+  setUpDocument(getTitle("Auth"), "auth", app, config, options, [
+    PublicAuthModule,
+  ]);
 
   app.useGlobalPipes(
     new ValidationPipe({
       disableErrorMessages: process.env.NODE_ENV !== "production",
     }),
   );
+
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+    } as admin.ServiceAccount),
+  });
+
+  initializeApp({
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+  });
 
   await app.listen(process.env.PORT || publicPort);
 }

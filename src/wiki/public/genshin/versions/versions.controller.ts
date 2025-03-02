@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { VersionsService } from "./versions.service";
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
 import { VersionsEntity } from "@/entities/wiki/genshin/versions.entity";
 import { GetParamsDto } from "@/utils/dto";
-import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./versions.dto";
 import { AutoOperationName } from "@/utils/operation";
@@ -15,9 +15,19 @@ export class VersionsController implements IBasePublicCaS<VersionsEntity> {
     private readonly versionsService: VersionsService
   ) { }
 
+  @ApiQuery({
+    name: "take",
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: "skip",
+    required: false,
+    type: Number,
+  })
   @Get()
-  async getAll() {
-    return this.versionsService.get({});
+  async getAll(@Query() dto: any) {
+    return this.versionsService.getAll(dto);
   }
 
   @ApiBody({

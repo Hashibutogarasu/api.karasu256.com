@@ -1,19 +1,31 @@
 import { z } from "zod";
+import { artifactSetSchema } from "../artifact-sets/artifact-sets.dto";
+import { regionSchema } from "../regions/regions.dto";
 
-const createSchema = z.object({
-  name: z.string().optional(),
+const versionsSchema = z.object({
+  id: z.string(),
+  name: z.string(),
   version_string: z.string(),
-  released: z.boolean().optional(),
+  released: z.boolean(),
+  artifact_sets: z.array(artifactSetSchema).nullish(),
+  regions: z.array(regionSchema).nullish(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
-const updateSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  version_string: z.string().optional(),
-  released: z.boolean().optional(),
+const createSchema = versionsSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+const updateSchema = versionsSchema.omit({
+  createdAt: true,
+  updatedAt: true,
 });
 
 export {
+  versionsSchema,
   createSchema,
-  updateSchema,
+  updateSchema
 }

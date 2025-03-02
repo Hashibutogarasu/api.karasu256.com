@@ -1,8 +1,8 @@
 import { IBasePublicCaS } from "@/types/ibase_public_cas";
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { WeaponsService } from "./weapons.service";
 import { Weapon } from "@/entities/wiki/genshin/weapons.entity";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { zodToOpenAPI } from "nestjs-zod";
 import { getSchema } from "./weapons.dto";
 import { GetOneDto, GetParamsDto } from "@/utils/dto";
@@ -15,9 +15,19 @@ export class WeaponsController implements IBasePublicCaS<Weapon> {
     private readonly weaponsService: WeaponsService,
   ) { }
 
+  @ApiQuery({
+    name: "take",
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: "skip",
+    required: false,
+    type: Number,
+  })
   @Get()
-  async getAll(): Promise<Weapon[]> {
-    return this.weaponsService.getAll();
+  async getAll(@Query() dto: any): Promise<Weapon[]> {
+    return this.weaponsService.getAll(dto);
   }
 
   @ApiBody({

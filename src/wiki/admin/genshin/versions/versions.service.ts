@@ -1,57 +1,95 @@
 import { VersionsEntity } from '@/entities/wiki/genshin/versions.entity';
 import { IBaseAdminCaS } from '@/types/ibase_admin_cas';
-import { CreateDto, DeleteDto, deleteSchema, UpdateDto } from '@/utils/dto';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { CreateDto, UpdateDto, DeleteDto } from '@/utils/dto';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createSchema, updateSchema } from './versions.dto';
+import { ArtifactSets } from '@/entities/wiki/genshin/artifact-sets.entity';
+import { Country } from '@/entities/wiki/genshin/countries.entity';
 
 @Injectable()
 export class VersionsService implements IBaseAdminCaS<VersionsEntity> {
   constructor(
     @InjectRepository(VersionsEntity)
-    private readonly versionsRepository: Repository<VersionsEntity>
+    private readonly versionsRepository: Repository<VersionsEntity>,
+
+    @InjectRepository(ArtifactSets)
+    private readonly artifactSetsRepository: Repository<ArtifactSets>,
+    
+    @InjectRepository(Country)
+    private readonly regionsRepository: Repository<Country>
   ) { }
 
-  async create(dto: CreateDto<VersionsEntity>): Promise<VersionsEntity> {
-    const parsed = createSchema.safeParse(dto);
+  async create(dto: CreateDto<any>): Promise<VersionsEntity> {
+    const { artifact_sets, regions, ...ref } = createSchema.safeParse(dto).data;
 
-    if (!parsed.success) {
-      throw new BadRequestException(parsed.error.errors[0].message);
-    }
+    const newArtifactSets = await Promise.all(Array.from(artifact_sets).map(async (artifactSet) => {
+      const artifactSetRef = await this.artifactSetsRepository.findOne({
+        where: {
+          id: artifactSet.id
+        }
+      }) ?? await this.artifactSetsRepository.save({
+        ...artifactSet
+      });
 
-    const { artifact_sets, artifacts, characters, countries, weapons, version_string, released, ...ref } = dto;
+      return artifactSetRef;
+    }));
+
+    const newRegions = await Promise.all(Array.from(regions).map(async (region) => {
+      const regionRef = await this.regionsRepository.findOne({
+        where: {
+          id: region.id
+        }
+      }) ?? await this.regionsRepository.save({
+        ...region
+      });
+
+      return regionRef;
+    }));
 
     return await this.versionsRepository.save({
-      ...ref,
-      version_string,
-      released,
+      regions: newRegions,
+      artifact_sets: newArtifactSets,
+      ...ref
     });
   }
 
   async update(dto: UpdateDto<VersionsEntity>): Promise<void> {
-    const parsed = updateSchema.safeParse(dto);
+    const { artifact_sets, regions, ...ref } = updateSchema.safeParse(dto).data;
 
-    if (!parsed.success) {
-      throw new BadRequestException(parsed.error.errors[0].message);
-    }
+    const newArtifactSets = await Promise.all(Array.from(artifact_sets).map(async (artifactSet) => {
+      const artifactSetRef = await this.artifactSetsRepository.findOne({
+        where: {
+          id: artifactSet.id
+        }
+      }) ?? await this.artifactSetsRepository.save({
+        ...artifactSet
+      });
 
-    const { id, artifact_sets, artifacts, characters, countries, weapons, version_string, released, ...ref } = dto;
+      return artifactSetRef;
+    }));
 
-    await this.versionsRepository.update(id, {
-      ...ref,
-      version_string,
-      released,
+    const newRegions = await Promise.all(Array.from(regions).map(async (region) => {
+      const regionRef = await this.regionsRepository.findOne({
+        where: {
+          id: region.id
+        }
+      }) ?? await this.regionsRepository.save({
+        ...region
+      });
+
+      return regionRef;
+    }));
+
+    await this.versionsRepository.update(ref.id, {
+      countries: newRegions,
+      artifact_sets: newArtifactSets,
+      ...ref
     });
   }
 
   async delete(dto: DeleteDto): Promise<void> {
-    const parsed = deleteSchema.safeParse(dto);
-
-    if (!parsed.success) {
-      throw new BadRequestException(parsed.error.errors[0].message);
-    }
-
     await this.versionsRepository.delete(dto.id);
   }
 }
