@@ -68,6 +68,7 @@ src/config/db/migrations/
 
 supabase/
 .env*.local
+.env.test
 
 example.json
 

@@ -50,7 +50,7 @@ const honkaiImpact3rdCharacterSchema = baseCharacterSchema.extend({
   type: z.enum(["biologic", "physic", "mecha", "quantum", "imaginary", "stardust"]),
   stigmatas: z.array(
     z.object({
-      id: z.string().uuid(),
+      id: z.string().uuid().nullish(),
       name: z.string(),
       rarity: z.number(),
       twoPiecesEffect: z.string(),
@@ -60,6 +60,7 @@ const honkaiImpact3rdCharacterSchema = baseCharacterSchema.extend({
   ),
   skills: z.array(
     z.object({
+      id: z.string().uuid().nullish(),
       type: z.string(),
       name: z.string(),
       description: z.string(),
@@ -70,6 +71,7 @@ const honkaiImpact3rdCharacterSchema = baseCharacterSchema.extend({
 });
 
 const honkaiStarRailCharacterTraceBase = z.object({
+  type: z.enum(["basicAtk", "talent", "skill", "ultimate", "technique"]),
   name: z.string(),
   description: z.string(),
   image: z.string().url().nullish(),
@@ -78,8 +80,10 @@ const honkaiStarRailCharacterTraceBase = z.object({
 const honkaiStarRailCharacterSchema = baseCharacterSchema.extend({
   relics: z.array(
     z.object({
-      id: z.string().uuid(),
+      id: z.string().uuid().nullish(),
       name: z.string(),
+      description: z.string(),
+      icon: z.string().url(),
       twoPiecesEffect: z.string(),
       fourPiecesEffect: z.string(),
     }),
@@ -88,21 +92,13 @@ const honkaiStarRailCharacterSchema = baseCharacterSchema.extend({
   idleAnimations: z.array(z.string().url()),
   eidolons: z.array(
     z.object({
+      id: z.string().uuid().nullish(),
       name: z.string(),
       description: z.string(),
       image: z.string().url(),
     }),
   ),
-  traces: z.union([
-    z.object({
-      basicAtk: honkaiStarRailCharacterTraceBase,
-      talent: honkaiStarRailCharacterTraceBase,
-      skill: honkaiStarRailCharacterTraceBase,
-      ultimate: honkaiStarRailCharacterTraceBase,
-      technique: honkaiStarRailCharacterTraceBase,
-    }),
-    z.array(honkaiStarRailCharacterTraceBase),
-  ]),
+  traces: z.array(honkaiStarRailCharacterTraceBase),
   videos: z.array(
     z.object({
       title: z.string(),

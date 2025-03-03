@@ -13,7 +13,7 @@ export class GameCharacter {
   rarity!: number;
 
   @Column({ type: "enum", enum: ["genshin_impact", "honkai_impact_3rd", "honkai_star_rail"], name: "game" })
-  game!: string;
+  game!: "genshin_impact" | "honkai_impact_3rd" | "honkai_star_rail";
 
   @Column({ type: "jsonb" })
   specificData!: Record<string, any>;
