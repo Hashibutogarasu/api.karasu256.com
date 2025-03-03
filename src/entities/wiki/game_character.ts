@@ -1,20 +1,26 @@
 import { Character, characterSchema } from "@/wiki/wiki.dto";
+import { ApiProperty } from "@nestjs/swagger";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class GameCharacter {
+  @ApiProperty()
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @ApiProperty()
   @Column()
   name!: string;
 
+  @ApiProperty()
   @Column()
   rarity!: number;
 
+  @ApiProperty()
   @Column({ type: "enum", enum: ["genshin_impact", "honkai_impact_3rd", "honkai_star_rail"], name: "game" })
   game!: "genshin_impact" | "honkai_impact_3rd" | "honkai_star_rail";
 
+  @ApiProperty()
   @Column({ type: "jsonb" })
   specificData!: Record<string, any>;
 

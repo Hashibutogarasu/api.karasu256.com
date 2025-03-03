@@ -46,6 +46,8 @@ const genshinCharacterSchema = baseCharacterSchema.extend({
   ),
 });
 
+type GenshinCharacter = z.infer<typeof genshinCharacterSchema>;
+
 const honkaiImpact3rdCharacterSchema = baseCharacterSchema.extend({
   type: z.enum(["biologic", "physic", "mecha", "quantum", "imaginary", "stardust"]),
   stigmatas: z.array(
@@ -69,6 +71,8 @@ const honkaiImpact3rdCharacterSchema = baseCharacterSchema.extend({
     }),
   ),
 });
+
+type HonkaiImpact3rdCharacter = z.infer<typeof honkaiImpact3rdCharacterSchema>;
 
 const honkaiStarRailCharacterTraceBase = z.object({
   type: z.enum(["basicAtk", "talent", "skill", "ultimate", "technique"]),
@@ -107,10 +111,12 @@ const honkaiStarRailCharacterSchema = baseCharacterSchema.extend({
   ),
 });
 
+type HonkaiStarRailCharacter = z.infer<typeof honkaiStarRailCharacterSchema>;
+
 const characterSchema = z.union([
-  genshinCharacterSchema.partial().nullish(),
-  honkaiImpact3rdCharacterSchema.partial().nullish(),
-  honkaiStarRailCharacterSchema.partial().nullish(),
+  genshinCharacterSchema,
+  honkaiImpact3rdCharacterSchema,
+  honkaiStarRailCharacterSchema,
 ]);
 
 type Character = z.infer<typeof characterSchema>;
@@ -126,10 +132,16 @@ const updateCharacterSchema = characterSchema.and(baseCharacterSchema.partial().
 type UpdateCharacterDto = z.infer<typeof updateCharacterSchema>;
 
 export {
+  genshinCharacterSchema,
+  honkaiImpact3rdCharacterSchema,
+  honkaiStarRailCharacterSchema,
   createCharacterSchema,
   updateCharacterSchema,
   characterSchema,
   Character,
   CreateCharacterDto,
-  UpdateCharacterDto
+  UpdateCharacterDto,
+  GenshinCharacter,
+  HonkaiImpact3rdCharacter,
+  HonkaiStarRailCharacter,
 }

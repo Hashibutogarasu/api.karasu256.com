@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { GameCharactersService } from './game_characters.service';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { characterSchema, CreateCharacterDto, createCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from '@/wiki/wiki.dto';
 import { DeleteDto } from '@/utils/dto';
 import { z } from 'zod';
+import { GameCharacter } from '@/entities/wiki/game_character';
 
 @Controller('game-characters')
 export class GameCharactersController {
@@ -19,10 +20,13 @@ export class GameCharactersController {
   @ApiResponse({
     status: 201,
     description: 'Create a new game character',
-    schema: zodToOpenAPI(characterSchema),
+    type: GameCharacter,
+    schema: {
+      $ref: getSchemaPath(GameCharacter)
+    },
   })
   @Post()
-  async create(@Body() dto: CreateCharacterDto) {
+  async create(@Body() dto: CreateCharacterDto): Promise<GameCharacter> {
     return await this.gameCharactersService.create(dto);
   }
 
@@ -49,10 +53,13 @@ export class GameCharactersController {
   @ApiResponse({
     status: 200,
     description: 'List all game characters',
-    schema: zodToOpenAPI(z.array(characterSchema)),
+    type: [GameCharacter],
+    schema: {
+      $ref: getSchemaPath(GameCharacter)
+    },
   })
   @Get()
-  async findAll() {
+  async findAll(): Promise<GameCharacter[]> {
     return await this.gameCharactersService.findAll();
   }
 
@@ -65,9 +72,12 @@ export class GameCharactersController {
   @ApiResponse({
     status: 200,
     description: 'Get a game character by id',
-    schema: zodToOpenAPI(characterSchema),
+    type: GameCharacter,
+    schema: {
+      $ref: getSchemaPath(GameCharacter)
+    },
   })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<GameCharacter> {
     return await this.gameCharactersService.findOne(id);
   }
 }
