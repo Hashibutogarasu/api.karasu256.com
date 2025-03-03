@@ -67,7 +67,7 @@ describe("GameCharactersController", () => {
 
     const createdCharacter = await controller.create(character);
 
-    console.log(`[${character.game}] Character ${character.name} created with id ${createdCharacter.id}`);
+    console.log(`[Create][${character.game}] ${createdCharacter.id}:${createdCharacter.name}`);
 
     expect(createdCharacter).toBeDefined();
   });
@@ -109,7 +109,7 @@ describe("GameCharactersController", () => {
 
     const { name, ...createdCharacter } = await controller.create(createCharacter);
 
-    console.log(`[${createdCharacter.game}] Character ${name} created with id ${createdCharacter.id}`);
+    console.log(`[Create][${createdCharacter.game}] ${createdCharacter.id}:${name}`);
 
     const updatecharacter: UpdateCharacterDto = {
       id: createdCharacter.id,
@@ -121,7 +121,7 @@ describe("GameCharactersController", () => {
 
     const updatedCharacter = await controller.findOne(createdCharacter.id);
 
-    console.log(`[${createdCharacter.game}] Character ${updatedCharacter.name} with id ${updatedCharacter.id} updated`);
+    console.log(`[Update][${createdCharacter.game}] ${updatedCharacter.id}:${updatedCharacter.name}`);
 
     expect(updatedCharacter).toBeDefined();
   });
@@ -160,7 +160,7 @@ describe("GameCharactersController", () => {
 
     const createdCharacter = await controller.create(character);
 
-    console.log(`[${character.game}] Character ${character.name} created with id ${createdCharacter.id}`);
+    console.log(`[Create][${character.game}] ${createdCharacter.id}:${createdCharacter.name}`);
 
     expect(createdCharacter).toBeDefined();
   });
@@ -199,7 +199,7 @@ describe("GameCharactersController", () => {
 
     const { name, ...createdCharacter } = await controller.create(character);
 
-    console.log(`[${character.game}] Character ${character.name} created with id ${createdCharacter.id}`);
+    console.log(`[Create][${character.game}] ${createdCharacter.id}:${name}`);
 
     const updateCharacter: UpdateCharacterDto = {
       id: createdCharacter.id,
@@ -211,7 +211,7 @@ describe("GameCharactersController", () => {
 
     const updatedCharacter = await controller.findOne(createdCharacter.id);
 
-    console.log(`[${character.game}] Character ${updatedCharacter.name} with id ${updatedCharacter.id} updated`);
+    console.log(`[Update][${character.game}] ${updatedCharacter.id}:${updatedCharacter.name}`);
 
     expect(updatedCharacter).toBeDefined();
   });
@@ -259,7 +259,7 @@ describe("GameCharactersController", () => {
 
     const createdCharacter = await controller.create(character);
 
-    console.log(`[${character.game}] Character ${character.name} created with id ${createdCharacter.id}`);
+    console.log(`[Create][${character.game}] ${createdCharacter.id}:${createdCharacter.name}`);
 
     expect(createdCharacter).toBeDefined();
   });
@@ -307,7 +307,7 @@ describe("GameCharactersController", () => {
 
     const { name, ...createdCharacter } = await controller.create(character);
 
-    console.log(`[${character.game}] Character ${character.name} created with id ${createdCharacter.id}`);
+    console.log(`[Create][${character.game}] ${createdCharacter.id}:${name}`);
 
     const updateCharacter: UpdateCharacterDto = {
       id: createdCharacter.id,
@@ -319,7 +319,7 @@ describe("GameCharactersController", () => {
 
     const updatedCharacter = await controller.findOne(createdCharacter.id);
 
-    console.log(`[${character.game}] Character ${updatedCharacter.name} with id ${updatedCharacter.id} updated`);
+    console.log(`[Update][${character.game}] ${updatedCharacter.id}:${updatedCharacter.name}`);
 
     expect(updatedCharacter).toBeDefined();
   });
@@ -328,9 +328,9 @@ describe("GameCharactersController", () => {
     const characters = await controller.findAll();
 
     for (const character of characters) {
-      console.log(`[${character.game}] Deleting character ${character.name} with id ${character.id}`);
+      console.log(`[Delete][${character.game}] ${character.id}:${character.name}`);
       await controller.delete({ id: character.id });
-      console.log(`[${character.game}] Character ${character.name} with id ${character.id} deleted`);
+      console.log(`[Deleted][${character.game}] ${character.id}:${character.name}`);
     }
   });
 });
