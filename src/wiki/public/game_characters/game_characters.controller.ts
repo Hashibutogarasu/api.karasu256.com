@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { GameCharactersService } from './game_characters.service';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiParam, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { CreateCharacterDto, createCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from '@/wiki/wiki.dto';
 import { DeleteDto } from '@/utils/dto';
-import { z } from 'zod';
 import { GameCharacter } from '@/entities/wiki/game_character';
 import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 
+@ApiExtraModels(GameCharacter)
 @Authorization({
   allowedGroups: ["admin"],
 })
@@ -22,14 +22,6 @@ export class GameCharactersController {
     schema: zodToOpenAPI(createCharacterSchema)
   })
   @ApiOperation({ summary: 'Create a new game character' })
-  @ApiResponse({
-    status: 201,
-    description: 'Create a new game character',
-    type: GameCharacter,
-    schema: {
-      $ref: getSchemaPath(GameCharacter)
-    },
-  })
   @Post()
   async create(@Body() dto: CreateCharacterDto): Promise<GameCharacter> {
     return await this.gameCharactersService.create(dto);
@@ -55,14 +47,6 @@ export class GameCharactersController {
   }
 
   @ApiOperation({ summary: 'List all game characters' })
-  @ApiResponse({
-    status: 200,
-    description: 'List all game characters',
-    type: [GameCharacter],
-    schema: {
-      $ref: getSchemaPath(GameCharacter)
-    },
-  })
   @PublicRoute()
   @Get()
   async findAll(): Promise<GameCharacter[]> {
@@ -74,14 +58,6 @@ export class GameCharactersController {
     type: "string",
   })
   @ApiOperation({ summary: 'Get a game character by id' })
-  @ApiResponse({
-    status: 200,
-    description: 'Get a game character by id',
-    type: GameCharacter,
-    schema: {
-      $ref: getSchemaPath(GameCharacter)
-    },
-  })
   @PublicRoute()
   @Get(":id")
   async findOne(@Param('id') id: string): Promise<GameCharacter> {
