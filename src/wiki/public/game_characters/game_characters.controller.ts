@@ -1,13 +1,18 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { GameCharactersService } from './game_characters.service';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { characterSchema, CreateCharacterDto, createCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from '@/wiki/wiki.dto';
+import { CreateCharacterDto, createCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from '@/wiki/wiki.dto';
 import { DeleteDto } from '@/utils/dto';
 import { z } from 'zod';
 import { GameCharacter } from '@/entities/wiki/game_character';
+import { Authorization, PublicRoute } from '@nestjs-cognito/auth';
 
-@Controller('game-characters')
+@Authorization({
+  allowedGroups: ["admin"],
+})
+@ApiBearerAuth()
+@Controller('wiki/game-characters')
 export class GameCharactersController {
   constructor(
     private readonly gameCharactersService: GameCharactersService
@@ -58,12 +63,12 @@ export class GameCharactersController {
       $ref: getSchemaPath(GameCharacter)
     },
   })
+  @PublicRoute()
   @Get()
   async findAll(): Promise<GameCharacter[]> {
     return await this.gameCharactersService.findAll();
   }
 
-  @Get(":id")
   @ApiParam({
     name: "id",
     type: "string",
@@ -77,6 +82,8 @@ export class GameCharactersController {
       $ref: getSchemaPath(GameCharacter)
     },
   })
+  @PublicRoute()
+  @Get(":id")
   async findOne(@Param('id') id: string): Promise<GameCharacter> {
     return await this.gameCharactersService.findOne(id);
   }
