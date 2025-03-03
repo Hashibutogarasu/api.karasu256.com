@@ -25,11 +25,11 @@ export class GameCharacter {
       throw new Error(result.error.errors.map((e) => e.message).join("\n"));
     }
 
-    const validatedData = result.data;
-    this.id = validatedData.id;
-    this.name = validatedData.name;
-    this.rarity = validatedData.rarity;
-    this.game = validatedData.game;
+    const { id, name, rarity, game, ...validatedData } = result.data;
+    this.id = id;
+    this.name = name;
+    this.rarity = rarity;
+    this.game = game;
     this.specificData = validatedData;
   }
 

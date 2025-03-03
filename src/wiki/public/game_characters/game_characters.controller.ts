@@ -2,9 +2,10 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { GameCharactersService } from './game_characters.service';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { CreateCharacterDto, createCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from '@/wiki/wiki.dto';
+import { characterSchema, CreateCharacterDto, createCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from '@/wiki/wiki.dto';
 import { DeleteDto } from '@/utils/dto';
 import { GameCharacter } from '@/entities/wiki/game_character';
+import { z } from 'zod';
 
 @Controller('game-characters')
 export class GameCharactersController {
@@ -16,6 +17,11 @@ export class GameCharactersController {
     schema: zodToOpenAPI(createCharacterSchema)
   })
   @ApiOperation({ summary: 'Create a new game character' })
+  @ApiResponse({
+    status: 201,
+    description: 'Create a new game character',
+    schema: zodToOpenAPI(characterSchema),
+  })
   @Post()
   async create(@Body() dto: CreateCharacterDto) {
     return await this.gameCharactersService.create(dto);
@@ -40,12 +46,11 @@ export class GameCharactersController {
     return await this.gameCharactersService.delete(dto);
   }
 
-
   @ApiOperation({ summary: 'List all game characters' })
   @ApiResponse({
     status: 200,
     description: 'List all game characters',
-    type: [GameCharacter]
+    schema: zodToOpenAPI(z.array(characterSchema)),
   })
   @Get()
   async findAll() {
@@ -61,7 +66,7 @@ export class GameCharactersController {
   @ApiResponse({
     status: 200,
     description: 'Get a game character by id',
-    type: GameCharacter
+    schema: zodToOpenAPI(characterSchema),
   })
   async findOne(@Param('id') id: string) {
     return await this.gameCharactersService.findOne(id);

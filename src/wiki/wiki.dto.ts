@@ -125,7 +125,6 @@ const updateCharacterSchema = characterSchema.and(baseCharacterSchema.partial().
 
 type UpdateCharacterDto = z.infer<typeof updateCharacterSchema>;
 
-
 export {
   createCharacterSchema,
   updateCharacterSchema,
