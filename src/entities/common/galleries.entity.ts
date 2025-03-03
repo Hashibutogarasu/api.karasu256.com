@@ -1,6 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { GICharacter } from "../wiki/genshin/gi_character.entity";
-import { IBase } from "@karasu-lab/karasu-lab-sdk";
+import { GameCharacter } from "../wiki/game_character";
 
 @Entity('galleries')
 export class Gallery extends BaseEntity {
@@ -22,6 +21,6 @@ export class Gallery extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => GICharacter, character => character.id, { nullable: true })
-  character?: GICharacter | null;
+  @ManyToOne(() => GameCharacter, character => character.id, { nullable: true })
+  character?: GameCharacter | null;
 }

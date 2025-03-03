@@ -3,36 +3,33 @@ import { AppModule } from "@/app.module";
 import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions, OpenAPIObject } from "@nestjs/swagger";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { patchNestJsSwagger } from "nestjs-zod";
-import * as bodyParser from 'body-parser';
+import * as bodyParser from "body-parser";
 import { AdminModule } from "./wiki/admin/admin.module";
-import { GenshinAdminModule } from "./wiki/admin/genshin/genshin.module";
 import { GalleriesModule as GalleriesAdminModule } from "./wiki/admin/galleries/galleries.module";
-import { GenshinModule } from "./wiki/public/genshin/genshin.module";
 import { GalleriesModule } from "./wiki/public/galleries/galleries.module";
-import { HI3Module as HI3AdminModule } from "./wiki/admin/honkai_impact_3rd/hi3.module";
-import { Hi3Module } from "./wiki/public/honkai_impact_3rd/hi3.module";
 import { AdminAuthModule } from "./auth/admin/admin_auth.module";
 import { PublicAuthModule } from "./auth/public-auth/public-auth.module";
-import admin from 'firebase-admin';
-import { initializeApp } from 'firebase/app';
+import admin from "firebase-admin";
+import { initializeApp } from "firebase/app";
+import { GameCharactersModule } from "./wiki/public/game_characters/game_characters.module";
 
 function configureApp(app: INestApplication) {
   app.enableCors({
     origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     credentials: true,
   });
 
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Accept");
     next();
   });
 
-  app.getHttpAdapter().getInstance().set('etag', false);
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+  app.getHttpAdapter().getInstance().set("etag", false);
+  app.use(bodyParser.json({ limit: "50mb" }));
+  app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
   return app;
 }
@@ -77,11 +74,11 @@ async function bootstrap() {
     .setVersion("4.3.0")
     .addServer(process.env.BASE_URL)
     .addBearerAuth({
-      type: 'http',
-      bearerFormat: 'Bearer',
-      in: 'Header',
-      name: 'Authorization',
-      scheme: 'bearer',
+      type: "http",
+      bearerFormat: "Bearer",
+      in: "Header",
+      name: "Authorization",
+      scheme: "bearer",
     });
 
   const options: SwaggerCustomOptions = {
@@ -94,24 +91,17 @@ async function bootstrap() {
     ],
   };
 
-  setUpDocument(getTitle("Public"), "public", app, config, options, [
-    GenshinModule,
-    GalleriesModule,
-    Hi3Module,
-  ]);
+  setUpDocument(getTitle("Public"), "public", app, config, options, [GalleriesModule, GameCharactersModule]);
 
   setUpDocument(getTitle("Admin"), "admin", app, config, options, [
     AppModule,
     AdminModule,
     GalleriesAdminModule,
-    GenshinAdminModule,
-    HI3AdminModule,
     AdminAuthModule,
+    GameCharactersModule,
   ]);
 
-  setUpDocument(getTitle("Auth"), "auth", app, config, options, [
-    PublicAuthModule,
-  ]);
+  setUpDocument(getTitle("Auth"), "auth", app, config, options, [PublicAuthModule]);
 
   app.useGlobalPipes(
     new ValidationPipe({
