@@ -4,7 +4,6 @@ import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { characterSchema, CreateCharacterDto, createCharacterSchema, UpdateCharacterDto, updateCharacterSchema } from '@/wiki/wiki.dto';
 import { DeleteDto } from '@/utils/dto';
-import { GameCharacter } from '@/entities/wiki/game_character';
 import { z } from 'zod';
 
 @Controller('game-characters')
